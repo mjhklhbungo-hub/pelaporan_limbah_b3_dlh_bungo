@@ -918,7 +918,7 @@
                                     <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                                     PDF
                                </div>`
-                            : `<img src="${fileObj.dataUrl}" alt="Thumbnail" class="w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0 bg-white">`;
+                            : `<img src="${fileObj.dataUrl || fileObj.publicUrl}" alt="Thumbnail" class="w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0 bg-white">`;
 
                         fileStatusBlock = `
                             <div class="mt-2 p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-center justify-between gap-2.5">
@@ -933,7 +933,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-1.5 shrink-0">
-                                    ${fileObj.dataUrl ? `
+                                    ${(fileObj.dataUrl || fileObj.publicUrl) ? `
                                         <button type="button" onclick="previewPihakDoc('${kat.id}', '${docType.key}')"
                                             class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors cursor-pointer" title="Pratinjau Dokumen">
                                             Lihat
@@ -1040,11 +1040,12 @@
             const docDef = DOKUMEN_LEGALITAS_TYPES.find(d => d.key === docKey);
             const docMeta = getDocMetaForKategori(katId, docDef);
             const fileObj = pihakLanjutanState[katId]?.docs[docKey];
-            if (!fileObj || !fileObj.dataUrl) {
-                showToast('Pratinjau tidak tersedia untuk file berukuran besar.', 'error');
+            const previewUrl = fileObj?.dataUrl || fileObj?.publicUrl;
+            if (!fileObj || !previewUrl) {
+                showToast('Pratinjau tidak tersedia untuk file ini.', 'error');
                 return;
             }
-            openDocPreviewModal(`${docMeta.label} — ${kat.label}`, fileObj.name, fileObj.type, fileObj.dataUrl);
+            openDocPreviewModal(`${docMeta.label} — ${kat.label}`, fileObj.name, fileObj.type, previewUrl);
         }
 
         function openDocPreviewModal(title, fileName, mimeType, dataUrl) {
@@ -1583,16 +1584,31 @@
             btn.innerHTML = `<span>Menguji Supabase...</span>`;
 
             try {
-                const { error } = await supabaseClient
+                // 1. Uji koneksi & hak akses baca tabel laporan_limbah_b3
+                const { error: tableError } = await supabaseClient
                     .from('laporan_limbah_b3')
                     .select('id')
                     .limit(1);
 
-                if (error) {
-                    showToast(`Tabel belum siap / RLS belum aktif: ${error.message}`, 'error');
-                } else {
-                    showToast('BERHASIL! Website sudah terhubung ke Database Supabase DLH Bungo.');
+                if (tableError) {
+                    const hint = tableError.code === '42501'
+                        ? ' (Jalankan perintah GRANT SELECT, INSERT pada SQL Editor Supabase)'
+                        : '';
+                    showToast(`Tabel belum siap: ${tableError.message}${hint}`, 'error');
+                    return;
                 }
+
+                // 2. Uji ketersediaan bucket Storage dokumen-limbah-b3
+                const { error: storageError } = await supabaseClient.storage
+                    .from(SUPABASE_BUCKET)
+                    .list('', { limit: 1 });
+
+                if (storageError) {
+                    showToast(`Tabel OK, namun Storage "${SUPABASE_BUCKET}" belum siap: ${storageError.message}`, 'error');
+                    return;
+                }
+
+                showToast('SEMUA SIAP! Database tabel & Storage dokumen Supabase terhubung normal.');
             } catch (err) {
                 showToast('Gagal menghubungi server Supabase. Periksa URL & Internet Anda.', 'error');
             } finally {
@@ -1788,7 +1804,8 @@
                         const docFile = pihak.docs ? pihak.docs[docType.key] : null;
                         if (docFile) {
                             const isPdf = docFile.type === 'application/pdf';
-                            const previewBtn = docFile.dataUrl
+                            const fileLink = docFile.dataUrl || docFile.publicUrl;
+                            const previewBtn = fileLink
                                 ? `<button type="button" onclick="openSavedReportDoc('${report.id}', ${idx}, '${docType.key}')" class="no-print px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-semibold cursor-pointer ml-1.5">Buka File</button>`
                                 : '';
                             docsListHtml += `
@@ -1843,8 +1860,9 @@
             const docFile = pihak.docs[docKey];
             const docDef = DOKUMEN_LEGALITAS_TYPES.find(d => d.key === docKey);
             const docMeta = getDocMetaForKategori(pihak.kategoriId, docDef);
-            if (docFile && docFile.dataUrl) {
-                openDocPreviewModal(`${docMeta.label} — ${pihak.kategoriLabel} (${pihak.namaBadanUsaha})`, docFile.name, docFile.type, docFile.dataUrl);
+            const fileLink = docFile?.dataUrl || docFile?.publicUrl;
+            if (docFile && fileLink) {
+                openDocPreviewModal(`${docMeta.label} — ${pihak.kategoriLabel} (${pihak.namaBadanUsaha})`, docFile.name, docFile.type, fileLink);
             }
         }
 
