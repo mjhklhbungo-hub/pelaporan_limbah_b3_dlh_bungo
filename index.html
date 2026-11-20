@@ -6,6 +6,8 @@
     <title>Penghasil Limbah B3 Binaan Dinas Lingkungan Hidup Kabupaten Bungo</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -102,9 +104,9 @@
                 </nav>
 
                 <div class="flex items-center gap-3 text-xs text-emerald-200">
-                    <button type="button" onclick="testCloudConnection()" id="btnTestCloud" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-400/40 text-emerald-100 font-semibold transition-colors cursor-pointer" title="Klik untuk menguji koneksi ke Google Sheets">
+                    <button type="button" onclick="testCloudConnection()" id="btnTestCloud" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-400/40 text-emerald-100 font-semibold transition-colors cursor-pointer" title="Klik untuk menguji koneksi ke Database Supabase">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>Tes Koneksi Sheets</span>
+                        <span>Tes Koneksi Supabase</span>
                     </button>
                     <div class="hidden sm:flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -494,9 +496,12 @@
                 <div class="p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h2 class="text-lg sm:text-xl font-bold text-slate-900">Daftar Laporan Limbah B3 Tersimpan</h2>
-                        <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Data laporan tersimpan secara lokal pada sesi peramban (browser) Anda.</p>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Data laporan & dokumen PDF/JPG otomatis terkirim ke Database & Storage Supabase DLH Kabupaten Bungo.</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-2.5">
+                        <button onclick="fetchReportsFromSupabase()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold transition-colors cursor-pointer flex items-center gap-1.5">
+                            <span>↻ Muat Ulang Server</span>
+                        </button>
                         <button onclick="exportToCSV()" class="px-4 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold transition-colors cursor-pointer flex items-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                             <span>Ekspor CSV</span>
@@ -684,9 +689,24 @@
 
     <script>
         // --- KONFIGURASI & STATE APLIKASI ---
-        const STORAGE_KEY = 'dlh_bungo_limbah_b3_reports_v2';
-        const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx3GiJ_zSeRzuF7WX40r4rPt2P5CVZJCIqx9n33xawvQDuQmEGQXmXVJleeGTKOeq81/exec';
+        const STORAGE_KEY = 'dlh_bungo_limbah_b3_reports_v3';
+
+        // KONFIGURASI SUPABASE DLH KABUPATEN BUNGO
+        const SUPABASE_URL = 'https://imvhmmntunuvwuetzeks.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImltdmhtbW50dW51dnd1ZXR6ZWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUxMTk3ODgsImV4cCI6MjExMDY5NTc4OH0.UPCsI6n2tM476toFdmatCEs9e_C5uezU2YGopX9ZxEA';
+        const SUPABASE_BUCKET = 'dokumen-limbah-b3';
+
+        const isSupabaseConfigured = () =>
+            SUPABASE_URL.startsWith('https://') &&
+            !SUPABASE_URL.includes('GANTI-DENGAN') &&
+            !SUPABASE_ANON_KEY.includes('GANTI-DENGAN');
+
+        const supabaseClient = isSupabaseConfigured()
+            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+            : null;
+
         let uploadedImageBase64 = '';
+        let uploadedImageFile = null;
         let uploadedFileName = '';
 
         // Definisi 5 Kategori Pihak Lanjutan & 4 Dokumen Legalitas Wajib
@@ -780,8 +800,12 @@
             // Setup Drag & Drop untuk area foto bukti penyerahan
             setupDragAndDrop();
 
-            // Muat data laporan tersimpan dari localStorage
-            renderReportsTable();
+            // Muat data laporan (dari Supabase jika aktif, atau fallback cache lokal)
+            if (supabaseClient) {
+                fetchReportsFromSupabase(true);
+            } else {
+                renderReportsTable();
+            }
         };
 
         // --- RENDER CHECKBOX & KARTU ACCORDION PIHAK LANJUTAN ---
@@ -992,56 +1016,16 @@
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                if (file.type === 'application/pdf') {
-                    // Batasi ukuran PDF Base64 maksimal 1.5 MB agar aman dikirim melalui POST Google Apps Script
-                    if (file.size > 1.5 * 1024 * 1024) {
-                        showToast('Untuk dokumen PDF, mohon kompres terlebih dahulu hingga di bawah 1,5 MB agar lancar terkirim ke Google Drive.', 'error');
-                        event.target.value = '';
-                        return;
-                    }
-                    pihakLanjutanState[katId].docs[docKey] = {
-                        name: file.name,
-                        type: file.type,
-                        sizeText: sizeText,
-                        dataUrl: e.target.result,
-                        note: ''
-                    };
-                    renderPihakLanjutanCards();
-                    showToast(`Dokumen PDF "${file.name}" berhasil dimuat.`);
-                } else {
-                    // Kompres gambar JPG/PNG menggunakan Canvas agar ukuran ringkas & cepat terkirim ke Google Drive
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const maxDim = 800;
-                        let w = img.width;
-                        let h = img.height;
-                        if (w > maxDim || h > maxDim) {
-                            if (w > h) {
-                                h = Math.round((h * maxDim) / w);
-                                w = maxDim;
-                            } else {
-                                w = Math.round((w * maxDim) / h);
-                                h = maxDim;
-                            }
-                        }
-                        canvas.width = w;
-                        canvas.height = h;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, w, h);
-
-                        pihakLanjutanState[katId].docs[docKey] = {
-                            name: file.name,
-                            type: file.type,
-                            sizeText: sizeText,
-                            dataUrl: canvas.toDataURL('image/jpeg', 0.72),
-                            note: ''
-                        };
-                        renderPihakLanjutanCards();
-                        showToast(`Gambar "${file.name}" berhasil dimuat.`);
-                    };
-                    img.src = e.target.result;
-                }
+                pihakLanjutanState[katId].docs[docKey] = {
+                    name: file.name,
+                    type: file.type,
+                    sizeText: sizeText,
+                    dataUrl: file.size <= 2 * 1024 * 1024 ? e.target.result : '',
+                    rawFile: file, // Simpan objek File asli untuk diunggah langsung ke Supabase Storage (mendukung hingga 5 MB)
+                    publicUrl: ''
+                };
+                renderPihakLanjutanCards();
+                showToast(`Dokumen "${file.name}" (${sizeText}) siap diunggah.`);
             };
             reader.readAsDataURL(file);
         }
@@ -1219,9 +1203,10 @@
                 return;
             }
 
+            uploadedImageFile = file;
             const reader = new FileReader();
             reader.onload = function(e) {
-                // Kompres ringan gambar menggunakan canvas agar hemat memori localStorage
+                // Kompres ringan gambar menggunakan canvas agar hemat memori pratinjau lokal
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
@@ -1263,6 +1248,7 @@
 
         function removeSelectedImage() {
             uploadedImageBase64 = '';
+            uploadedImageFile = null;
             uploadedFileName = '';
             document.getElementById('fotoBuktiInput').value = '';
             document.getElementById('imagePreviewEl').src = '';
@@ -1380,12 +1366,31 @@
             if (isLoading) {
                 iconDefault.classList.add('hidden');
                 iconLoading.classList.remove('hidden');
-                btnText.textContent = 'Mengirim Data & Dokumen ke Google Sheets...';
+                btnText.textContent = 'Mengunggah Dokumen & Menyimpan ke Supabase...';
             } else {
                 iconDefault.classList.remove('hidden');
                 iconLoading.classList.add('hidden');
                 btnText.textContent = 'Kirim ke Database & Pratinjau';
             }
+        }
+
+        // Helper unggah file asli (PDF/JPG/PNG) ke Supabase Storage dan kembalikan URL publiknya
+        async function uploadFileToSupabaseStorage(fileObj, storagePath) {
+            if (!supabaseClient || !fileObj) return '';
+            const cleanPath = storagePath.replace(/[^a-zA-Z0-9._\-\/]/g, '_');
+            const { error } = await supabaseClient.storage
+                .from(SUPABASE_BUCKET)
+                .upload(cleanPath, fileObj, { upsert: true, contentType: fileObj.type });
+
+            if (error) {
+                console.error('Upload storage gagal:', error);
+                throw new Error(`Gagal unggah file ${fileObj.name}: ${error.message}`);
+            }
+
+            const { data: urlData } = supabaseClient.storage
+                .from(SUPABASE_BUCKET)
+                .getPublicUrl(cleanPath);
+            return urlData?.publicUrl || '';
         }
 
         async function handleFormSubmit(event) {
@@ -1407,101 +1412,145 @@
             const kodeLimbah = document.getElementById('kodeLimbah').value.trim();
             const statusPenyerahan = document.querySelector('input[name="statusPenyerahan"]:checked').value;
 
-            // Susun data pihak lanjutan yang aktif beserta 4 dokumen legalitasnya
-            const pihakLanjutanData = statusPenyerahan === 'Sudah Diserahkan ke Pihak Lanjutan'
-                ? KATEGORI_PIHAK_LANJUTAN.filter(k => pihakLanjutanState[k.id].active).map(kat => {
-                    const st = pihakLanjutanState[kat.id];
-                    return {
-                        kategoriId: kat.id,
-                        kategoriLabel: kat.label,
-                        namaBadanUsaha: st.namaBadanUsaha.trim(),
-                        docs: JSON.parse(JSON.stringify(st.docs))
-                    };
-                })
-                : [];
-
             const reports = getSavedReports();
             const randomSuffix = Math.floor(1000 + Math.random() * 9000);
             const regNumber = `LB3-BUNGO-${new Date().getFullYear()}-${randomSuffix}`;
 
-            const newReport = {
-                id: Date.now().toString(),
-                regNo: regNumber,
-                waktuInput: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) + ' WIB',
-                namaPengisi: document.getElementById('namaPengisi').value.trim(),
-                jabatan: document.getElementById('jabatan').value.trim(),
-                namaUsaha: document.getElementById('namaUsaha').value.trim(),
-                noTelepon: document.getElementById('noTelepon').value.trim(),
-                alamatUsaha: document.getElementById('alamatUsaha').value.trim(),
-                nomorIzin: document.getElementById('nomorIzin').value.trim(),
-                tanggalTerbitIzin: document.getElementById('tanggalTerbitIzin').value,
-                jenisLimbah: jenisFinal,
-                kodeLimbah: kodeLimbah,
-                tanggalDihasilkan: document.getElementById('tanggalDihasilkan').value,
-                beratLimbah: parseFloat(document.getElementById('beratLimbah').value),
-                satuanBerat: document.getElementById('satuanBerat').value,
-                statusPenyerahan: statusPenyerahan,
-                tanggalPenyerahan: statusPenyerahan === 'Sudah Diserahkan ke Pihak Lanjutan' ? document.getElementById('tanggalPenyerahan').value : '-',
-                nomorFestronik: statusPenyerahan === 'Sudah Diserahkan ke Pihak Lanjutan' ? (document.getElementById('nomorFestronik').value.trim() || '-') : '-',
-                pihakLanjutan: pihakLanjutanData,
-                fotoBase64: uploadedImageBase64,
-                keteranganFoto: document.getElementById('keteranganFoto').value.trim(),
-                cloudSynced: false
-            };
-
-            // Kirim data ke Google Sheets & Google Drive via Google Apps Script Web App
-            // Menggunakan application/x-www-form-urlencoded (parameter 'payload') agar selalu terbaca oleh e.parameter.payload maupun e.postData.contents
+            // Proses unggah berkas ke Supabase Storage (jika sudah dikonfigurasi)
+            let fotoPublicUrl = '';
             let cloudSuccess = false;
-            try {
-                const formBody = new URLSearchParams();
-                formBody.append('payload', JSON.stringify(newReport));
+            let cloudErrorMsg = '';
 
-                await fetch(GOOGLE_SHEETS_WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    },
-                    body: formBody.toString()
-                });
+            try {
+                if (!supabaseClient) {
+                    throw new Error('SUPABASE_URL dan SUPABASE_ANON_KEY belum diisi di kode.');
+                }
+
+                // 1. Unggah Bukti Foto ke Supabase Storage
+                if (uploadedImageFile) {
+                    fotoPublicUrl = await uploadFileToSupabaseStorage(
+                        uploadedImageFile,
+                        `${regNumber}/Bukti_Foto_${uploadedImageFile.name}`
+                    );
+                }
+
+                // 2. Unggah 4 Dokumen Legalitas setiap Pihak Lanjutan ke Supabase Storage
+                const pihakLanjutanData = [];
+                if (statusPenyerahan === 'Sudah Diserahkan ke Pihak Lanjutan') {
+                    const activeKats = KATEGORI_PIHAK_LANJUTAN.filter(k => pihakLanjutanState[k.id].active);
+                    for (const kat of activeKats) {
+                        const st = pihakLanjutanState[kat.id];
+                        const docsClean = {};
+
+                        for (const docDef of DOKUMEN_LEGALITAS_TYPES) {
+                            const d = st.docs[docDef.key];
+                            if (d) {
+                                let pubUrl = '';
+                                if (d.rawFile) {
+                                    pubUrl = await uploadFileToSupabaseStorage(
+                                        d.rawFile,
+                                        `${regNumber}/${kat.id}_${docDef.key}_${d.name}`
+                                    );
+                                }
+                                docsClean[docDef.key] = {
+                                    name: d.name,
+                                    type: d.type,
+                                    sizeText: d.sizeText,
+                                    dataUrl: pubUrl || d.dataUrl || '',
+                                    publicUrl: pubUrl
+                                };
+                            } else {
+                                docsClean[docDef.key] = null;
+                            }
+                        }
+
+                        pihakLanjutanData.push({
+                            kategoriId: kat.id,
+                            kategoriLabel: kat.label,
+                            namaBadanUsaha: st.namaBadanUsaha.trim(),
+                            docs: docsClean
+                        });
+                    }
+                }
+
+                const waktuInputStr = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) + ' WIB';
+                const keteranganFotoVal = document.getElementById('keteranganFoto').value.trim();
+
+                // 3. Simpan Baris Laporan ke Tabel PostgreSQL Supabase
+                const dbPayload = {
+                    reg_no: regNumber,
+                    waktu_input: waktuInputStr,
+                    nama_perusahaan: document.getElementById('namaUsaha').value.trim(),
+                    nama_pengisi: document.getElementById('namaPengisi').value.trim(),
+                    jabatan: document.getElementById('jabatan').value.trim(),
+                    no_telepon: document.getElementById('noTelepon').value.trim(),
+                    alamat_usaha: document.getElementById('alamatUsaha').value.trim(),
+                    nomor_izin_tps: document.getElementById('nomorIzin').value.trim(),
+                    tanggal_terbit_izin: document.getElementById('tanggalTerbitIzin').value,
+                    jenis_limbah: jenisFinal,
+                    kode_limbah: kodeLimbah || '-',
+                    tanggal_dihasilkan: document.getElementById('tanggalDihasilkan').value,
+                    berat_limbah: parseFloat(document.getElementById('beratLimbah').value),
+                    satuan_berat: document.getElementById('satuanBerat').value,
+                    status_penyerahan: statusPenyerahan,
+                    tanggal_penyerahan: statusPenyerahan === 'Sudah Diserahkan ke Pihak Lanjutan' ? document.getElementById('tanggalPenyerahan').value : '-',
+                    nomor_festronik: statusPenyerahan === 'Sudah Diserahkan ke Pihak Lanjutan' ? (document.getElementById('nomorFestronik').value.trim() || '-') : '-',
+                    pihak_lanjutan: pihakLanjutanData,
+                    foto_url: fotoPublicUrl || '-',
+                    keterangan_foto: keteranganFotoVal || '-'
+                };
+
+                const { error: insertError } = await supabaseClient
+                    .from('laporan_limbah_b3')
+                    .insert([dbPayload]);
+
+                if (insertError) {
+                    throw new Error(insertError.message);
+                }
 
                 cloudSuccess = true;
-                newReport.cloudSynced = true;
-            } catch (networkErr) {
-                console.error('Gagal mengirim ke Google Sheets:', networkErr);
-            }
 
-            // Simpan salinan lokal di browser agar tanda terima & riwayat sesi tetap tersedia
-            try {
-                reports.unshift(newReport);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
-            } catch (e) {
+                const newReport = {
+                    id: Date.now().toString(),
+                    regNo: regNumber,
+                    waktuInput: waktuInputStr,
+                    namaPengisi: dbPayload.nama_pengisi,
+                    jabatan: dbPayload.jabatan,
+                    namaUsaha: dbPayload.nama_perusahaan,
+                    noTelepon: dbPayload.no_telepon,
+                    alamatUsaha: dbPayload.alamat_usaha,
+                    nomorIzin: dbPayload.nomor_izin_tps,
+                    tanggalTerbitIzin: dbPayload.tanggal_terbit_izin,
+                    jenisLimbah: dbPayload.jenis_limbah,
+                    kodeLimbah: dbPayload.kode_limbah,
+                    tanggalDihasilkan: dbPayload.tanggal_dihasilkan,
+                    beratLimbah: dbPayload.berat_limbah,
+                    satuanBerat: dbPayload.satuan_berat,
+                    statusPenyerahan: dbPayload.status_penyerahan,
+                    tanggalPenyerahan: dbPayload.tanggal_penyerahan,
+                    nomorFestronik: dbPayload.nomor_festronik,
+                    pihakLanjutan: pihakLanjutanData,
+                    fotoBase64: fotoPublicUrl || uploadedImageBase64,
+                    keteranganFoto: keteranganFotoVal,
+                    cloudSynced: true
+                };
+
                 try {
-                    const compactReport = JSON.parse(JSON.stringify(newReport));
-                    compactReport.pihakLanjutan.forEach(p => {
-                        Object.keys(p.docs).forEach(k => {
-                            if (p.docs[k] && p.docs[k].type === 'application/pdf') {
-                                p.docs[k].dataUrl = '';
-                            }
-                        });
-                    });
-                    reports[0] = compactReport;
+                    reports.unshift(newReport);
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
-                } catch (err2) {
-                    console.warn('Penyimpanan lokal penuh, melewati cache lokal.');
-                }
+                } catch (e) { /* Abaikan jika cache lokal penuh */ }
+
+                setSubmitLoadingState(false);
+                showToast('Data & dokumen PDF/JPG berhasil tersimpan di Database Supabase!');
+                renderReportsTable();
+                openReceiptModal(newReport);
+
+            } catch (err) {
+                console.error('Supabase Error:', err);
+                cloudErrorMsg = err.message || 'Terjadi kesalahan saat menyimpan ke Supabase.';
+                setSubmitLoadingState(false);
+                showToast(`Gagal kirim ke Supabase: ${cloudErrorMsg}`, 'error');
             }
-
-            setSubmitLoadingState(false);
-
-            if (cloudSuccess) {
-                showToast('Data berhasil dikirim ke Google Sheets DLH Kab. Bungo!');
-            } else {
-                showToast('Koneksi jaringan terganggu. Data disimpan sementara di perangkat ini.', 'error');
-            }
-
-            renderReportsTable();
-            openReceiptModal(newReport);
         }
 
         function resetFormConfirmation() {
@@ -1521,53 +1570,89 @@
             showToast('Formulir telah dibersihkan.');
         }
 
-        // --- TES KONEKSI KE GOOGLE APPS SCRIPT ---
+        // --- TES KONEKSI & AMBIL DATA DARI SUPABASE ---
         async function testCloudConnection() {
+            if (!supabaseClient) {
+                showToast('Konfigurasi SUPABASE_URL & SUPABASE_ANON_KEY belum diisi di file index.html.', 'error');
+                return;
+            }
+
             const btn = document.getElementById('btnTestCloud');
             const originalHtml = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = `<span>Menguji koneksi...</span>`;
+            btn.innerHTML = `<span>Menguji Supabase...</span>`;
 
             try {
-                const testPayload = {
-                    regNo: 'TES-KONEKSI-' + Math.floor(100 + Math.random() * 900),
-                    waktuInput: new Date().toLocaleString('id-ID') + ' WIB',
-                    namaUsaha: 'TES KONEKSI SISTEM DLH BUNGO',
-                    namaPengisi: 'Admin Uji Coba',
-                    jabatan: 'Sistem',
-                    noTelepon: '-',
-                    alamatUsaha: 'Kabupaten Bungo',
-                    nomorIzin: 'TES-IZIN',
-                    tanggalTerbitIzin: '-',
-                    jenisLimbah: 'Tes Koneksi Database & Drive',
-                    kodeLimbah: 'TES',
-                    tanggalDihasilkan: '-',
-                    beratLimbah: 0,
-                    satuanBerat: 'Kg',
-                    statusPenyerahan: 'Tes Koneksi',
-                    tanggalPenyerahan: '-',
-                    nomorFestronik: '-',
-                    pihakLanjutan: [],
-                    fotoBase64: '',
-                    keteranganFoto: 'Baris ini menandakan koneksi Google Sheets sudah berhasil!'
-                };
+                const { error } = await supabaseClient
+                    .from('laporan_limbah_b3')
+                    .select('id')
+                    .limit(1);
 
-                const formBody = new URLSearchParams();
-                formBody.append('payload', JSON.stringify(testPayload));
-
-                await fetch(GOOGLE_SHEETS_WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                    body: formBody.toString()
-                });
-
-                showToast('Sinyal tes terkirim! Silakan cek baris baru di Google Sheets Anda.');
+                if (error) {
+                    showToast(`Tabel belum siap / RLS belum aktif: ${error.message}`, 'error');
+                } else {
+                    showToast('BERHASIL! Website sudah terhubung ke Database Supabase DLH Bungo.');
+                }
             } catch (err) {
-                showToast('Gagal menghubungi Google Apps Script. Periksa koneksi internet Anda.', 'error');
+                showToast('Gagal menghubungi server Supabase. Periksa URL & Internet Anda.', 'error');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalHtml;
+            }
+        }
+
+        async function fetchReportsFromSupabase(silent = false) {
+            if (!supabaseClient) {
+                renderReportsTable();
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('laporan_limbah_b3')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(100);
+
+                if (error) throw error;
+
+                if (data) {
+                    const mappedReports = data.map(row => ({
+                        id: String(row.id),
+                        regNo: row.reg_no,
+                        waktuInput: row.waktu_input,
+                        namaPengisi: row.nama_pengisi,
+                        jabatan: row.jabatan,
+                        namaUsaha: row.nama_perusahaan,
+                        noTelepon: row.no_telepon,
+                        alamatUsaha: row.alamat_usaha,
+                        nomorIzin: row.nomor_izin_tps,
+                        tanggalTerbitIzin: row.tanggal_terbit_izin,
+                        jenisLimbah: row.jenis_limbah,
+                        kodeLimbah: row.kode_limbah,
+                        tanggalDihasilkan: row.tanggal_dihasilkan,
+                        beratLimbah: row.berat_limbah,
+                        satuanBerat: row.satuan_berat,
+                        statusPenyerahan: row.status_penyerahan,
+                        tanggalPenyerahan: row.tanggal_penyerahan,
+                        nomorFestronik: row.nomor_festronik,
+                        pihakLanjutan: Array.isArray(row.pihak_lanjutan) ? row.pihak_lanjutan : [],
+                        fotoBase64: (row.foto_url && row.foto_url !== '-') ? row.foto_url : '',
+                        keteranganFoto: row.keterangan_foto !== '-' ? row.keterangan_foto : '',
+                        cloudSynced: true
+                    }));
+
+                    try {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(mappedReports));
+                    } catch (e) { /* Abaikan kuota lokal */ }
+
+                    renderReportsTable();
+                    if (!silent) showToast(`Berhasil memuat ${mappedReports.length} laporan dari Supabase.`);
+                }
+            } catch (err) {
+                console.error('Gagal mengambil data dari Supabase:', err);
+                if (!silent) showToast(`Gagal memuat dari Supabase: ${err.message}`, 'error');
+                renderReportsTable();
             }
         }
 
