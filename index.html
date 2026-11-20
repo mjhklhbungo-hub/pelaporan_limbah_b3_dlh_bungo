@@ -620,6 +620,25 @@
                         </div>
                     </div>
                 </div>
+ <!-- 2B. Kerja Sama Pengelolaan Sampah (Dinamis, Bisa Tambah Banyak Pihak Pengelola) -->
+                        <div class="space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-800">Kerja Sama Pengelolaan Sampah</h3>
+                                    <p class="text-xs text-slate-500">Isi rincian mitra pengelola sampah (Bank Sampah, TPS3R, Pengangkut, atau Pengolah Berizin). Anda dapat menambahkan lebih dari satu pihak.</p>
+                                </div>
+                                <button type="button" onclick="addSampahKerjasamaRow()"
+                                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold shadow-sm cursor-pointer shrink-0">
+                                    <span>+ Tambah Pihak Pengelolaan Sampah</span>
+                                </button>
+                            </div>
+
+                            <div id="s_kerjasamaListContainer" class="space-y-3">
+                                <!-- Diisi dinamis lewat JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- BAGIAN 3: ESTIMASI TIMBULAN SAMPAH PER SUMBER -->
                 <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
