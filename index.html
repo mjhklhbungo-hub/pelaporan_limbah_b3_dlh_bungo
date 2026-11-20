@@ -1924,3 +1924,126 @@
     </script>
 </body>
 </html>
+<!-- ... existing code ... -->
+        // --- EKSPOR KE CSV (RAPI & SIAP BUKA DI MICROSOFT EXCEL INDONESIA) ---
+        function exportToCSV() {
+            const reports = getSavedReports();
+            if (reports.length === 0) {
+                showToast('Tidak ada data laporan untuk diekspor.', 'error');
+                return;
+            }
+
+            // Pemisah titik koma (;) agar Microsoft Excel pengaturan Indonesia otomatis membagi kolom dengan rapi
+            const DELIMITER = ';';
+
+            const headers = [
+                'No',
+                'No. Registrasi',
+                'Waktu Input Laporan',
+                'Nama Perusahaan / Usaha',
+                'Nama Pengisi',
+                'Jabatan',
+                'No. Telepon / WA',
+                'Alamat Lengkap Usaha',
+                'Nomor Izin / Rintek TPS LB3',
+                'Tanggal Terbit Izin',
+                'Jenis Limbah B3',
+                'Kode Limbah',
+                'Tanggal Dihasilkan',
+                'Berat Limbah',
+                'Satuan',
+                'Status Penyerahan',
+                'Tanggal Penyerahan',
+                'Nomor Festronik',
+                'Kategori Pihak Lanjutan',
+                'Nama Badan Usaha Pihak Lanjutan',
+                'Rincian & Link Dokumen Perizinan Pihak Lanjutan',
+                'Link Bukti Foto',
+                'Keterangan Foto'
+            ];
+
+            const sanitizeCell = (val, forceText = false) => {
+                // Bersihkan karakter enter/baris baru berlebih agar satu laporan tetap berada pada 1 baris tabel yang rapi
+                const cleaned = String(val ?? '-')
+                    .replace(/\r?\n|\r/g, ' | ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                const escaped = cleaned.replace(/"/g, '""');
+                // Prefix tab/apostrof opsional untuk nomor telepon & nomor izin agar tidak diubah menjadi format ilmiah di Excel
+                return forceText && cleaned !== '-' ? `"=""${escaped}"""` : `"${escaped}"`;
+            };
+
+            const rows = reports.map((r, index) => {
+                const hasPihak = Array.isArray(r.pihakLanjutan) && r.pihakLanjutan.length > 0;
+
+                const kategoriPihakText = hasPihak
+                    ? r.pihakLanjutan.map((p, i) => `${i + 1}. ${p.kategoriLabel}`).join(' | ')
+                    : '-';
+
+                const namaPihakText = hasPihak
+                    ? r.pihakLanjutan.map((p, i) => `${i + 1}. ${p.namaBadanUsaha}`).join(' | ')
+                    : '-';
+
+                const rincianDokumenText = hasPihak
+                    ? r.pihakLanjutan.map(p => {
+                        const docItems = DOKUMEN_LEGALITAS_TYPES.map(d => {
+                            const docMeta = getDocMetaForKategori(p.kategoriId, d);
+                            const docObj = p.docs?.[d.key];
+                            if (!docObj) return `${docMeta.label}: Belum ada`;
+                            const link = docObj.publicUrl || docObj.name;
+                            return `${docMeta.label}: ${link}`;
+                        }).join(' ; ');
+                        return `[${p.kategoriLabel} - ${p.namaBadanUsaha}] ${docItems}`;
+                    }).join(' || ')
+                    : '-';
+
+                const linkFotoText = (r.fotoBase64 && r.fotoBase64.startsWith('http'))
+                    ? r.fotoBase64
+                    : (r.fotoBase64 ? 'Terlampir (Lokal)' : '-');
+
+                return [
+                    sanitizeCell(index + 1),
+                    sanitizeCell(r.regNo),
+                    sanitizeCell(r.waktuInput),
+                    sanitizeCell(r.namaUsaha),
+                    sanitizeCell(r.namaPengisi),
+                    sanitizeCell(r.jabatan),
+                    sanitizeCell(r.noTelepon, true),
+                    sanitizeCell(r.alamatUsaha),
+                    sanitizeCell(r.nomorIzin, true),
+                    sanitizeCell(formatTanggalIndo(r.tanggalTerbitIzin)),
+                    sanitizeCell(r.jenisLimbah),
+                    sanitizeCell(r.kodeLimbah),
+                    sanitizeCell(formatTanggalIndo(r.tanggalDihasilkan)),
+                    sanitizeCell(r.beratLimbah),
+                    sanitizeCell(r.satuanBerat),
+                    sanitizeCell(r.statusPenyerahan),
+                    sanitizeCell(formatTanggalIndo(r.tanggalPenyerahan)),
+                    sanitizeCell(r.nomorFestronik, true),
+                    sanitizeCell(kategoriPihakText),
+                    sanitizeCell(namaPihakText),
+                    sanitizeCell(rincianDokumenText),
+                    sanitizeCell(linkFotoText),
+                    sanitizeCell(r.keteranganFoto)
+                ].join(DELIMITER);
+            });
+
+            // Tambahkan BOM UTF-8 + deklarasi 'sep=;' agar Microsoft Excel otomatis memisahkan setiap kolom
+            const headerLine = headers.map(h => `"${h}"`).join(DELIMITER);
+            const csvContent = '\uFEFFsep=;\r\n' + [headerLine, ...rows].join('\r\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Laporan_Limbah_B3_DLH_Bungo_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast('File CSV rapi (format Excel) berhasil diunduh.');
+        }
+    </script>
+</body>
+</html>
