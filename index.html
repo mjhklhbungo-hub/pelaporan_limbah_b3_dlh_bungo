@@ -91,7 +91,7 @@
                         Pelaporan Limbah B3 & Pengelolaan Sampah Binaan DLH Kab. Bungo
                     </h1>
                     <p class="text-xs sm:text-sm text-emerald-200/90 mt-0.5">
-                        Dinas Lingkungan Hidup Kabupaten Bungo • Bidang Pengelolaan Sampah & Limbah B3 
+                        Dinas Lingkungan Hidup Kabupaten Bungo Bidang Pengelolaan Sampah dan Limbah B3
                     </p>
                 </div>
             </div>
@@ -119,7 +119,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
             <div class="inline-flex flex-wrap p-1 bg-slate-200/80 rounded-xl border border-slate-300/70 gap-1">
                 <button id="tabFormBtn" onclick="switchTab('form')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white text-emerald-900 shadow-sm transition-all cursor-pointer">
-                    ☣️ Formulir Limbah B3
+                    ☣️ Laporan Pengelolaan Limbah B3
                 </button>
                 <button id="tabSampahBtn" onclick="switchTab('sampah')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
                     ♻️ Laporan Pengelolaan Sampah Sejenis Sampah Rumah Tangga
@@ -220,7 +220,7 @@
                         <!-- Tanggal Terbit Izin -->
                         <div>
                             <label for="tanggalTerbitIzin" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Tanggal Terbit Izin / Rintek <span class="text-rose-600">*</span>
+                                Tanggal Terbit Izin / Rintek TPS <span class="text-rose-600">*</span>
                             </label>
                             <input type="date" id="tanggalTerbitIzin" name="tanggalTerbitIzin" required
                                 class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
@@ -228,193 +228,180 @@
                     </div>
                 </div>
 
-                <!-- BAGIAN 3: RINCIAN DATA LIMBAH B3 -->
+                <!-- BAGIAN 3: RINCIAN DATA LIMBAH B3 DIHASILKAN (LAMPIRAN IX PP NO. 22 TAHUN 2021) -->
                 <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                     <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-3">
                         <span class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-sm flex items-center justify-center shrink-0">3</span>
                         <div>
                             <h2 class="text-base sm:text-lg font-bold text-slate-800">Rincian Data Limbah B3 Dihasilkan</h2>
-                            <p class="text-xs text-slate-500">Sesuai lampiran PP No. 22 Tahun 2021 tentang Penyelenggaraan Perlindungan & Pengelolaan LH</p>
+                            <p class="text-xs text-slate-500">Mengacu pada Lampiran IX PP Republik Indonesia Nomor 22 Tahun 2021</p>
                         </div>
                     </div>
 
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <!-- Jenis Limbah B3 -->
-                        <div>
-                            <label for="jenisLimbah" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Jenis Limbah B3 <span class="text-rose-600">*</span>
+                    <div class="p-6 space-y-5">
+                        <!-- Pilihan Cepat Mengacu Lampiran IX PP 22/2021 -->
+                        <div class="bg-emerald-50/70 border border-emerald-200 p-4 rounded-xl">
+                            <label for="presetLimbahSelect" class="block text-xs font-bold text-emerald-950 mb-1.5">
+                                📋 Referensi Cepat Lampiran IX PP No. 22 Tahun 2021 (Opsional — Isi Otomatis Kode, Jenis & Sumber)
                             </label>
-                            <input type="text" id="jenisLimbah" name="jenisLimbah" required list="jenisLimbahList" placeholder="Pilih atau ketik jenis limbah B3..."
-                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
-                            <datalist id="jenisLimbahList">
-                                <option value="Minyak Pelumas / Oli Bekas">
-                                <option value="Aki / Baterai Bekas">
-                                <option value="Filter Oli / Majun Terkontaminasi B3">
-                                <option value="Limbah Medis Infeksius">
-                                <option value="Limbah Farmasi Kadaluarsa">
-                                <option value="Lampu TL / Elektronik Bekas">
-                                <option value="Kemasan Bekas B3 / Bahan Kimia">
-                                <option value="Sludge IPAL">
-                                <option value="Fly Ash & Bottom Ash (FABA)">
-                            </datalist>
+                            <select id="presetLimbahSelect" onchange="applyLimbahPreset(this.value)"
+                                class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-emerald-300 focus:border-emerald-600 outline-none text-xs sm:text-sm font-medium text-slate-800">
+                                <option value="">-- Pilih dari Daftar Referensi Lampiran IX PP 22/2021 atau Ketik Manual di Bawah --</option>
+                                <option value="A102d|Aki / Baterai Bekas|Sumber Tidak Spesifik (Tabel 1 Lampiran IX PP 22/2021)">A102d — Aki / Baterai Bekas (Sumber Tidak Spesifik)</option>
+                                <option value="B105d|Minyak Pelumas / Oli Bekas|Sumber Tidak Spesifik (Tabel 1 Lampiran IX PP 22/2021)">B105d — Minyak Pelumas / Oli Bekas (Sumber Tidak Spesifik)</option>
+                                <option value="B107d|Limbah Elektronik (Lampu TL, PCB, Toner, Cartridge)|Sumber Tidak Spesifik (Tabel 1 Lampiran IX PP 22/2021)">B107d — Limbah Elektronik / Lampu TL / Cartridge (Sumber Tidak Spesifik)</option>
+                                <option value="B109d|Filter Oli / Filter Udara Bekas|Sumber Tidak Spesifik (Tabel 1 Lampiran IX PP 22/2021)">B109d — Filter Bekas (Sumber Tidak Spesifik)</option>
+                                <option value="B110d|Kain Majun (Used Rags) dan Kemasan Bekas B3|Sumber Tidak Spesifik (Tabel 1 Lampiran IX PP 22/2021)">B110d — Kain Majun & Kemasan Terkontaminasi B3 (Sumber Tidak Spesifik)</option>
+                                <option value="A337-1|Limbah Klinis Memiliki Karakteristik Infeksius|Fasyankes / Rumah Sakit / Klinik (Sumber Spesifik Umum Tabel 3)">A337-1 — Limbah Klinis Infeksius (Sumber Spesifik Umum)</option>
+                                <option value="A337-2|Produk Farmasi Kadaluarsa|Fasyankes / Rumah Sakit / Apotek (Sumber Spesifik Umum Tabel 3)">A337-2 — Produk Farmasi Kadaluarsa (Sumber Spesifik Umum)</option>
+                                <option value="B337-1|Kemasan Produk Farmasi / Botol Infus Terkontaminasi|Fasyankes / Rumah Sakit / Klinik (Sumber Spesifik Umum Tabel 3)">B337-1 — Kemasan Produk Farmasi (Sumber Spesifik Umum)</option>
+                                <option value="B309-1|Spent Bleaching Earth (SBE)|Industri Oleokimia / Pengolahan Minyak Nabati (Sumber Spesifik Umum Tabel 3)">B309-1 — Spent Bleaching Earth (Sumber Spesifik Umum)</option>
+                                <option value="B409|Fly Ash (Abu Terbang) Pembakaran Batubara / Boiler|Proses Pembakaran Batubara / Boiler (Sumber Spesifik Khusus Tabel 4)">B409 — Fly Ash (Sumber Spesifik Khusus)</option>
+                                <option value="B410|Bottom Ash (Abu Dasar) Pembakaran Batubara / Boiler|Proses Pembakaran Batubara / Boiler (Sumber Spesifik Khusus Tabel 4)">B410 — Bottom Ash (Sumber Spesifik Khusus)</option>
+                                <option value="B417|Refraktori bekas|Sumber Spesifik Khusus (Tabel 4 Lampiran IX PP 22/2021)">B417 — Refraktori bekas (Sumber Spesifik Khusus)</option>
+                            </select>
                         </div>
 
-                        <!-- Kode Limbah -->
-                        <div>
-                            <label for="kodeLimbah" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Kode Limbah B3 <span class="text-rose-600">*</span>
-                            </label>
-                            <input type="text" id="kodeLimbah" name="kodeLimbah" required list="kodeLimbahList" placeholder="Contoh: B105d / A337-1 / A102d"
-                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm uppercase">
-                            <datalist id="kodeLimbahList">
-                                <option value="B105d">B105d - Minyak pelumas bekas</option>
-                                <option value="A102d">A102d - Aki/baterai bekas</option>
-                                <option value="B110d">B110d - Kain majun bekas (used rags)</option>
-                                <option value="B104d">B104d - Kemasan bekas B3</option>
-                                <option value="B107d">B107d - Limbah elektronik / lampu TL</option>
-                                <option value="A337-1">A337-1 - Limbah klinis memiliki karakteristik infeksius</option>
-                                <option value="A337-2">A337-2 - Produk farmasi kedaluwarsa</option>
-                                <option value="B355-2">B355-2 - Sludge IPAL</option>
-                            </datalist>
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <!-- Kode Limbah B3 -->
+                            <div>
+                                <label for="kodeLimbah" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Kode Limbah B3 (Lampiran IX PP 22/2021) <span class="text-rose-600">*</span>
+                                </label>
+                                <input type="text" id="kodeLimbah" name="kodeLimbah" required placeholder="Contoh: B105d / A102d / A337-1 / B417"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm font-mono uppercase">
+                            </div>
 
-                        <!-- Tanggal Dihasilkan -->
-                        <div>
-                            <label for="tanggalDihasilkan" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Tanggal Limbah Dihasilkan / Masuk TPS <span class="text-rose-600">*</span>
-                            </label>
-                            <input type="date" id="tanggalDihasilkan" name="tanggalDihasilkan" required
-                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
-                        </div>
+                            <!-- Jenis Limbah B3 -->
+                            <div>
+                                <label for="jenisLimbah" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Jenis / Uraian Limbah B3 <span class="text-rose-600">*</span>
+                                </label>
+                                <input type="text" id="jenisLimbah" name="jenisLimbah" required placeholder="Contoh: Minyak Pelumas Bekas / Refraktori bekas"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
+                            </div>
 
-                        <!-- Berat Limbah & Satuan -->
-                        <div>
-                            <label for="beratLimbah" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Berat / Jumlah Limbah Dihasilkan <span class="text-rose-600">*</span>
-                            </label>
-                            <div class="flex rounded-xl shadow-sm">
-                                <input type="number" step="any" min="0.0001" id="beratLimbah" name="beratLimbah" required placeholder="Contoh: 125.5"
-                                    class="w-full px-4 py-2.5 rounded-l-xl border border-r-0 border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
-                                <select id="satuanBerat" name="satuanBerat"
-                                    class="px-3.5 py-2.5 rounded-r-xl border border-slate-300 bg-slate-50 text-slate-700 font-semibold text-sm focus:border-emerald-600 outline-none cursor-pointer">
-                                    <option value="Kg">Kg</option>
-                                    <option value="Ton">Ton</option>
-                                    <option value="Liter">Liter</option>
-                                    <option value="Drum">Drum</option>
-                                    <option value="Pcs">Pcs</option>
-                                </select>
+                            <!-- Sumber Limbah B3 -->
+                            <div class="md:col-span-2">
+                                <label for="sumberLimbah" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Sumber Limbah B3 (Sumber Tidak Spesifik / Spesifik Umum / Spesifik Khusus) <span class="text-rose-600">*</span>
+                                </label>
+                                <input type="text" id="sumberLimbah" name="sumberLimbah" required placeholder="Contoh: Sumber Tidak Spesifik (Tabel 1 Lampiran IX PP 22/2021) / Sumber Spesifik Khusus"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
+                            </div>
+
+                            <!-- Tanggal Dihasilkan -->
+                            <div>
+                                <label for="tanggalDihasilkan" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Tanggal Limbah B3 Dihasilkan / Masuk TPS <span class="text-rose-600">*</span>
+                                </label>
+                                <input type="date" id="tanggalDihasilkan" name="tanggalDihasilkan" required
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
+                            </div>
+
+                            <!-- Berat / Jumlah Limbah -->
+                            <div>
+                                <label for="beratLimbah" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Berat / Jumlah Limbah B3 Dihasilkan <span class="text-rose-600">*</span>
+                                </label>
+                                <div class="flex">
+                                    <input type="number" step="0.001" min="0.001" id="beratLimbah" name="beratLimbah" required placeholder="Contoh: 125.5"
+                                        class="w-full px-4 py-2.5 rounded-l-xl border border-r-0 border-slate-300 focus:border-emerald-600 outline-none text-sm font-bold">
+                                    <select id="satuanBerat" name="satuanBerat"
+                                        class="px-3.5 py-2.5 rounded-r-xl border border-slate-300 bg-slate-100 text-sm font-bold text-slate-800 outline-none cursor-pointer">
+                                        <option value="Kg">Kg</option>
+                                        <option value="Ton">Ton</option>
+                                        <option value="Liter">Liter</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- BAGIAN 4: STATUS PENYERAHAN, FESTRONIK & PIHAK LANJUTAN -->
+                <!-- BAGIAN 4: STATUS PENYERAHAN LIMBAH B3 & PIHAK LANJUTAN BERIZIN -->
                 <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                     <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-3">
                         <span class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-sm flex items-center justify-center shrink-0">4</span>
                         <div>
-                            <h2 class="text-base sm:text-lg font-bold text-slate-800">Status Penyerahan, Festronik & Pihak Lanjutan</h2>
-                            <p class="text-xs text-slate-500">Informasi manifest elektronik (Festronik KLHK) dan legalitas pihak ketiga pengelola lanjutan</p>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-800">Status Penyerahan & Pihak Lanjutan Berizin</h2>
+                            <p class="text-xs text-slate-500">Pilih status penyimpanan di TPS atau penyerahan kepada pihak pengelola lanjutan (Pengangkut/Pengumpul/Pemanfaat/Pengolah/Penimbun)</p>
                         </div>
                     </div>
 
-                    <div class="p-6 space-y-6">
-                        <!-- Pilihan Status Penyerahan -->
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2.5">
-                                Status Penyerahan Limbah B3 <span class="text-rose-600">*</span>
+                    <div class="p-6 space-y-5">
+                        <!-- Pilihan Radio Status Penyerahan -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/40 cursor-pointer transition-all">
+                                <input type="radio" name="statusPenyerahan" value="Disimpan di TPS Limbah B3 (Belum Diserahkan)" checked onchange="togglePenyerahanFields()" class="mt-1 w-4 h-4 text-amber-600">
+                                <div>
+                                    <span class="block text-sm font-bold text-slate-800">Disimpan di TPS Limbah B3</span>
+                                    <span class="block text-xs text-slate-500 mt-0.5">Limbah B3 masih disimpan sementara di TPS perusahaan sesuai masa simpan izin</span>
+                                </div>
                             </label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                <!-- Opsi 1: Belum Diserahkan -->
-                                <label class="relative flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-emerald-300 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50/50">
-                                    <input type="radio" name="statusPenyerahan" value="Belum Diserahkan (Tersimpan di TPS)" checked onchange="togglePenyerahanFields()"
-                                        class="mt-1 w-4 h-4 text-emerald-700 focus:ring-emerald-600">
-                                    <div>
-                                        <span class="block text-sm font-bold text-slate-800">Belum Diserahkan</span>
-                                        <span class="block text-xs text-slate-500 mt-0.5">Limbah masih tersimpan aman di dalam TPS Limbah B3 perusahaan</span>
-                                    </div>
-                                </label>
 
-                                <!-- Opsi 2: Sudah Diserahkan -->
-                                <label class="relative flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-emerald-300 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50/50">
-                                    <input type="radio" name="statusPenyerahan" value="Sudah Diserahkan ke Pihak Berizin" onchange="togglePenyerahanFields()"
-                                        class="mt-1 w-4 h-4 text-emerald-700 focus:ring-emerald-600">
-                                    <div>
-                                        <span class="block text-sm font-bold text-slate-800">Sudah Diserahkan ke Pihak Lanjutan</span>
-                                        <span class="block text-xs text-slate-500 mt-0.5">Telah diangkut/diserahkan kepada pengelola Limbah B3 berizin</span>
-                                    </div>
-                                </label>
-                            </div>
+                            <label class="flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50/40 cursor-pointer transition-all">
+                                <input type="radio" name="statusPenyerahan" value="Sudah Diserahkan ke Pihak Berizin" onchange="togglePenyerahanFields()" class="mt-1 w-4 h-4 text-emerald-700">
+                                <div>
+                                    <span class="block text-sm font-bold text-slate-800">Sudah Diserahkan ke Pihak Berizin</span>
+                                    <span class="block text-xs text-slate-500 mt-0.5">Limbah B3 telah diangkut/diserahkan disertai Manifest Elektronik (Festronik) & dokumen legalitas</span>
+                                </div>
+                            </label>
                         </div>
 
-                        <!-- Conditional Fields jika SUDAH DISERAHKAN -->
-                        <div id="penyerahanDetailsWrapper" class="hidden space-y-6 pt-4 border-t border-slate-200">
-                            <!-- Tanggal Penyerahan & Nomor Festronik -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 bg-amber-50/60 border border-amber-200/80 p-4 sm:p-5 rounded-xl">
+                        <!-- Detail Penyerahan & Pihak Lanjutan (Tampil jika Sudah Diserahkan) -->
+                        <div id="penyerahanDetailsWrapper" class="hidden space-y-5 pt-4 border-t border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label for="tanggalPenyerahan" class="block text-sm font-semibold text-slate-800 mb-1.5">
-                                        Tanggal Penyerahan Limbah B3 <span class="text-rose-600">*</span>
+                                    <label for="tanggalPenyerahan" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        Tanggal Penyerahan / Pengangkutan <span class="text-rose-600">*</span>
                                     </label>
                                     <input type="date" id="tanggalPenyerahan" name="tanggalPenyerahan"
-                                        class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm">
+                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 outline-none text-sm">
                                 </div>
 
                                 <div>
-                                    <label for="nomorFestronik" class="block text-sm font-semibold text-slate-800 mb-1.5">
-                                        Nomor Festronik / Manifest Elektronik <span class="text-rose-600">*</span>
+                                    <label for="nomorFestronik" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        Nomor Manifest Elektronik (Festronik KLHK) <span class="text-rose-600">*</span>
                                     </label>
-                                    <input type="text" id="nomorFestronik" name="nomorFestronik" placeholder="Contoh: FST-2026-00129384"
-                                        class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 outline-none transition-all text-sm uppercase">
+                                    <input type="text" id="nomorFestronik" name="nomorFestronik" placeholder="Contoh: FEST-2026-00123456"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 outline-none text-sm font-mono uppercase">
                                 </div>
                             </div>
 
-                            <!-- Pilihan Pihak Lanjutan (Dapat dipilih lebih dari satu) -->
-                            <div>
-                                <div class="mb-3">
-                                    <label class="block text-sm font-bold text-slate-800">
-                                        Kategori Pihak Lanjutan Pengelola Limbah B3 <span class="text-rose-600">*</span>
+                            <!-- Pilihan Kategori Pihak Lanjutan -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-bold text-slate-800">
+                                    Pilih Kategori Pihak Lanjutan yang Terlibat (Dapat memilih lebih dari 1) <span class="text-rose-600">*</span>
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-emerald-50/60 cursor-pointer text-xs font-bold text-slate-800">
+                                        <input type="checkbox" value="pengangkut" data-label="Pengangkut Limbah B3" onchange="handlePihakCheckbox(this)" class="pihak-checkbox w-4 h-4 rounded text-emerald-700">
+                                        <span>Pengangkut</span>
                                     </label>
-                                    <p class="text-xs text-slate-500 mt-0.5">
-                                        Centang satu atau lebih pihak lanjutan yang terlibat, kemudian isi nama perusahaan & unggah <strong>3 dokumen legalitas wajib</strong> masing-masing pihak.
-                                    </p>
-                                </div>
-
-                                <!-- Checkbox Grid Pihak Lanjutan -->
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
-                                    <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
-                                        <input type="checkbox" value="pengumpul" data-label="Pengumpul Limbah B3" onchange="handlePihakCheckbox(this)"
-                                            class="pihak-checkbox w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600">
-                                        <span class="text-sm font-semibold text-slate-800">1. Pengumpul</span>
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-emerald-50/60 cursor-pointer text-xs font-bold text-slate-800">
+                                        <input type="checkbox" value="pengumpul" data-label="Pengumpul Limbah B3" onchange="handlePihakCheckbox(this)" class="pihak-checkbox w-4 h-4 rounded text-emerald-700">
+                                        <span>Pengumpul</span>
                                     </label>
-
-                                    <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
-                                        <input type="checkbox" value="pemanfaat" data-label="Pemanfaat Limbah B3" onchange="handlePihakCheckbox(this)"
-                                            class="pihak-checkbox w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600">
-                                        <span class="text-sm font-semibold text-slate-800">2. Pemanfaat</span>
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-emerald-50/60 cursor-pointer text-xs font-bold text-slate-800">
+                                        <input type="checkbox" value="pemanfaat" data-label="Pemanfaat Limbah B3" onchange="handlePihakCheckbox(this)" class="pihak-checkbox w-4 h-4 rounded text-emerald-700">
+                                        <span>Pemanfaat</span>
                                     </label>
-
-                                    <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
-                                        <input type="checkbox" value="pengolah" data-label="Pengolah Limbah B3" onchange="handlePihakCheckbox(this)"
-                                            class="pihak-checkbox w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600">
-                                        <span class="text-sm font-semibold text-slate-800">3. Pengolah</span>
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-emerald-50/60 cursor-pointer text-xs font-bold text-slate-800">
+                                        <input type="checkbox" value="pengolah" data-label="Pengolah Limbah B3" onchange="handlePihakCheckbox(this)" class="pihak-checkbox w-4 h-4 rounded text-emerald-700">
+                                        <span>Pengolah</span>
                                     </label>
-
-                                    <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
-                                        <input type="checkbox" value="penimbun" data-label="Penimbun Limbah B3" onchange="handlePihakCheckbox(this)"
-                                            class="pihak-checkbox w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600">
-                                        <span class="text-sm font-semibold text-slate-800">4. Penimbun</span>
-                                    </label>
-
-                                    <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50 sm:col-span-2 lg:col-span-1">
-                                        <input type="checkbox" value="pengangkut" data-label="Pengangkut Limbah B3 (Transporter)" onchange="handlePihakCheckbox(this)"
-                                            class="pihak-checkbox w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600">
-                                        <span class="text-sm font-semibold text-slate-800">5. Pengangkut</span>
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-emerald-50/60 cursor-pointer text-xs font-bold text-slate-800">
+                                        <input type="checkbox" value="penimbun" data-label="Penimbun Limbah B3" onchange="handlePihakCheckbox(this)" class="pihak-checkbox w-4 h-4 rounded text-emerald-700">
+                                        <span>Penimbun</span>
                                     </label>
                                 </div>
+                            </div>
 
-                                <!-- Container Dinamis Kartu Detail & Upload Dokumen per Pihak Lanjutan -->
-                                <div id="pihakLanjutanCardsContainer" class="space-y-4">
-                                    <!-- Diisi secara dinamis melalui JavaScript saat checkbox dicentang -->
+                            <!-- Container Kartu Input Nama Badan Usaha & 3 Dokumen Legalitas Wajib -->
+                            <div id="pihakLanjutanCardsContainer" class="space-y-4">
+                                <div class="p-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 text-center text-xs text-slate-500">
+                                    Belum ada kategori pihak lanjutan yang dicentang. Silakan centang minimal 1 kategori pihak lanjutan di atas.
                                 </div>
                             </div>
                         </div>
@@ -469,6 +456,132 @@
                                     Hapus Foto
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 6: NERACA PENGELOLAAN LIMBAH B3 & KETAATAN WAKTU PENYIMPANAN -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold text-sm flex items-center justify-center shrink-0">6</span>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-800">Neraca Pengelolaan Limbah B3 & Ketaatan Waktu Penyimpanan</h2>
+                                <p class="text-xs text-slate-500">Perhitungan otomatis neraca per nama perusahaan beserta evaluasi masa simpan TPS (PP No. 22 Tahun 2021)</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="syncLb3HistoryForCompany()"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 text-xs font-bold shadow-xs cursor-pointer shrink-0">
+                            <span>🔄 Tarik Riwayat Perusahaan dari Server</span>
+                        </button>
+                    </div>
+
+                    <div class="p-6 space-y-5">
+                        <!-- Parameter Periode, Saldo Awal & Ketentuan Masa Simpan -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-4 border-b border-slate-200">
+                            <div>
+                                <label for="lb3_bidangUsaha" class="block text-xs font-bold text-slate-700 mb-1">
+                                    Bidang Usaha / Kegiatan
+                                </label>
+                                <input type="text" id="lb3_bidangUsaha" oninput="recalculateLb3Neraca()"
+                                    placeholder="Contoh: Crumb Rubber / Perkebunan Kelapa Sawit / Fasyankes"
+                                    class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-emerald-600 outline-none text-xs">
+                            </div>
+
+                            <div>
+                                <label for="lb3_neracaSemester" class="block text-xs font-bold text-slate-700 mb-1">
+                                    Periode Neraca Semester
+                                </label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <select id="lb3_neracaSemester" onchange="recalculateLb3Neraca()"
+                                        class="px-3 py-2 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 outline-none text-xs font-semibold">
+                                        <option value="1">Semester I (Jan–Jun)</option>
+                                        <option value="2">Semester II (Jul–Des)</option>
+                                    </select>
+                                    <input type="number" id="lb3_neracaTahun" value="2026" min="2020" max="2099" oninput="recalculateLb3Neraca()"
+                                        class="px-3 py-2 rounded-xl border border-slate-300 focus:border-emerald-600 outline-none text-xs font-semibold text-center">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="lb3_saldoSebelumnya" class="block text-xs font-bold text-slate-700 mb-1">
+                                    Saldo Periode Sebelumnya (Ton)
+                                </label>
+                                <input type="number" step="0.0001" min="0" id="lb3_saldoSebelumnya" value="0" oninput="recalculateLb3Neraca()"
+                                    placeholder="0.000"
+                                    class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold text-right">
+                            </div>
+
+                            <div>
+                                <label for="lb3_batasSimpanHari" class="block text-xs font-bold text-slate-700 mb-1">
+                                    Batas Waktu Penyimpanan TPS (PP 22/2021)
+                                </label>
+                                <select id="lb3_batasSimpanHari" onchange="recalculateLb3Neraca()"
+                                    class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 outline-none text-xs font-semibold">
+                                    <option value="90">90 Hari (≥ 50 kg/hari atau Kategori 1)</option>
+                                    <option value="180">180 Hari (< 50 kg/hari Sumber Tidak Spesifik)</option>
+                                    <option value="365">365 Hari (< 50 kg/hari Kategori 2 Spesifik)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Kotak Status Ketaatan Waktu Penyimpanan -->
+                        <div id="lb3_ketaatanBox" class="p-4 rounded-xl border border-slate-300 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                            <div>
+                                <p class="font-bold text-slate-900 uppercase tracking-wide">Evaluasi Ketaatan Waktu Penyimpanan Limbah B3 di TPS</p>
+                                <p id="lb3_ketaatanDetail" class="text-slate-600 mt-0.5">Masukkan tanggal limbah dihasilkan pada Bagian 3 untuk menghitung lama masa simpan otomatis.</p>
+                            </div>
+                            <span id="lb3_ketaatanBadge" class="px-3 py-1.5 rounded-lg border border-slate-400 text-slate-900 font-extrabold text-xs shrink-0 text-center">
+                                MENUNGGU DATA TANGGAL
+                            </span>
+                        </div>
+
+                        <!-- Tabel Neraca Pengelolaan Limbah B3 (Tanpa Warna / Monokrom Bersih Sesuai Format Excel) -->
+                        <div class="border border-slate-900 overflow-x-auto bg-white">
+                            <div class="p-3 border-b border-slate-900 text-xs space-y-1 text-slate-900">
+                                <p class="font-bold">CATATAN PENTING : KOLOM ATAU SEL DISIMPAN DI TPS PADA MASING-MASING BULAN TERHITUNG OTOMATIS BERDASARKAN RUMUS NERACA (DALAM SATUAN TON)</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 pt-1 font-bold">
+                                    <p>NERACA PENGELOLAAN LIMBAH B3</p>
+                                    <p>PERIODE : <span id="lb3_tblPeriodeLabel">SEMESTER I TAHUN 2026</span></p>
+                                    <p>NAMA PERUSAHAAN : <span id="lb3_tblNamaPerusahaan">-</span></p>
+                                    <p>BIDANG USAHA : <span id="lb3_tblBidangUsaha">-</span></p>
+                                </div>
+                            </div>
+
+                            <table class="min-w-[1450px] w-full border-collapse text-[11px] text-slate-900 bg-white">
+                                <thead>
+                                    <tr class="border-b border-slate-900 text-center font-bold bg-white">
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2 w-8">NO.</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2.5 min-w-[150px]">JENIS LIMBAH B3</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2.5 min-w-[130px]">SUMBER</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2 w-14">SATUAN</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2.5 min-w-[175px]">PERLAKUAN</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2 w-24">Periode Sebelumnya (SALDO)</th>
+                                        <th colspan="6" id="lb3_tblTahunHeader" class="border-r border-slate-900 py-1.5 px-2">2026</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2 w-24">LIMBAH DIHASILKAN</th>
+                                        <th colspan="5" class="border-r border-slate-900 py-1.5 px-2">LIMBAH DIKELOLA</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2 w-24">LIMBAH TIDAK DIKELOLA</th>
+                                        <th rowspan="2" class="border-r border-slate-900 py-2 px-2 min-w-[140px]">KETERANGAN</th>
+                                        <th rowspan="2" class="py-2 px-2 min-w-[110px]">KODE MANIFEST</th>
+                                    </tr>
+                                    <tr id="lb3_tblBulanHeaderRow" class="border-b border-slate-900 text-center font-bold bg-white">
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-16">Januari</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-16">Februari</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-16">Maret</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-16">April</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-16">Mei</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-16">Juni</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-20">DISIMPAN DI TPS</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-24">DIMANFAATKAN SENDIRI</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-20">DIOLAH SENDIRI</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-24">LANDFILL SENDIRI</th>
+                                        <th class="border-r border-slate-900 py-1.5 px-1.5 w-28">DISERAHKAN PIHAK KETIGA BERIZIN</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lb3_neracaTableBody" class="bg-white">
+                                    <!-- Diisi otomatis oleh JavaScript -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -575,52 +688,54 @@
                     </div>
                 </div>
 
-                <!-- BAGIAN 2: SOP ATAU SK MENGENAI PENGELOLAAN SAMPAH -->
+                <!-- BAGIAN 2: SOP ATAU SK MENGENAI PENGELOLAAN SAMPAH & KERJA SAMA -->
                 <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                     <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-3">
                         <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">2</span>
                         <div>
-                            <h2 class="text-base sm:text-lg font-bold text-slate-800">SOP atau SK Mengenai Pengelolaan Sampah</h2>
-                            <p class="text-xs text-slate-500">Standar Operasional Prosedur (SOP) atau Surat Keputusan (SK) Tim/Kebijakan Pengelolaan Sampah Internal</p>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-800">SOP atau SK Mengenai Pengelolaan Sampah & Kerja Sama</h2>
+                            <p class="text-xs text-slate-500">Standar Operasional Prosedur (SOP) / SK Pengelolaan Sampah serta Kerja Sama Pihak Pengelola Sampah</p>
                         </div>
                     </div>
 
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
-                        <div>
-                            <label for="s_nomorSopSk" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Nomor SOP / SK Pengelolaan Sampah <span class="text-rose-600">*</span>
-                            </label>
-                            <input type="text" id="s_nomorSopSk" required placeholder="Contoh: SK/014/HSE-BGO/2025"
-                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none text-sm">
-                        </div>
+                    <div class="p-6 space-y-6">
+                        <!-- 2A. SOP atau SK Internal -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 items-end pb-5 border-b border-slate-200">
+                            <div>
+                                <label for="s_nomorSopSk" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Nomor SOP / SK Pengelolaan Sampah <span class="text-rose-600">*</span>
+                                </label>
+                                <input type="text" id="s_nomorSopSk" required placeholder="Contoh: SK/014/HSE-BGO/2025"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none text-sm">
+                            </div>
 
-                        <div>
-                            <label for="s_tglSopSk" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Tanggal Penetapan SOP / SK <span class="text-rose-600">*</span>
-                            </label>
-                            <input type="date" id="s_tglSopSk" required
-                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none text-sm">
-                        </div>
+                            <div>
+                                <label for="s_tglSopSk" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Tanggal Penetapan SOP / SK <span class="text-rose-600">*</span>
+                                </label>
+                                <input type="date" id="s_tglSopSk" required
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none text-sm">
+                            </div>
 
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Lampiran Dokumen SOP / SK (PDF / JPG, Maks. 5 MB)
-                            </label>
-                            <input type="file" id="s_sopSkFileInput" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleSampahDocUpload(event, 'sopSk')">
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="document.getElementById('s_sopSkFileInput').click()"
-                                    class="flex-1 py-2.5 px-3.5 rounded-xl border border-dashed border-slate-400 hover:border-teal-600 hover:bg-teal-50 text-slate-700 text-xs font-bold transition-all cursor-pointer truncate">
-                                    <span id="s_sopSkFileName">📎 Pilih File SOP / SK</span>
-                                </button>
-                                <button type="button" id="s_sopSkPreviewBtn" onclick="previewSampahDoc('sopSk')"
-                                    class="hidden py-2.5 px-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold cursor-pointer">
-                                    Lihat
-                                </button>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Lampiran Dokumen SOP / SK (PDF / JPG, Maks. 5 MB)
+                                </label>
+                                <input type="file" id="s_sopSkFileInput" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleSampahDocUpload(event, 'sopSk')">
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="document.getElementById('s_sopSkFileInput').click()"
+                                        class="flex-1 py-2.5 px-3.5 rounded-xl border border-dashed border-slate-400 hover:border-teal-600 hover:bg-teal-50 text-slate-700 text-xs font-bold transition-all cursor-pointer truncate">
+                                        <span id="s_sopSkFileName">📎 Pilih File SOP / SK</span>
+                                    </button>
+                                    <button type="button" id="s_sopSkPreviewBtn" onclick="previewSampahDoc('sopSk')"
+                                        class="hidden py-2.5 px-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold cursor-pointer">
+                                        Lihat
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- 2B. Kerja Sama Pengelolaan Sampah (Dinamis, Bisa Tambah Banyak Pihak Pengelola) -->
+
+                        <!-- 2B. Kerja Sama Pengelolaan Sampah -->
                         <div class="space-y-4">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <div>
@@ -695,48 +810,51 @@
 
                     <div class="p-6 space-y-6">
                         <!-- 4A. Fasilitas Pengumpulan Sampah -->
-                        <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
+                        <div class="space-y-3 pb-5 border-b border-slate-200">
                             <label class="block text-sm font-bold text-slate-800">
                                 A. Fasilitas Pengumpulan Sampah yang Tersedia <span class="text-rose-600">*</span>
                             </label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                                    <input type="checkbox" name="s_fasilitas" value="Tempat Sampah Terpilah 5 Jenis" class="w-4 h-4 rounded text-teal-700">
-                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">Tempat Sampah Terpilah 5 Jenis</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-teal-50/50 cursor-pointer text-xs font-semibold">
+                                    <input type="checkbox" name="s_fasilitas" value="Tempat Sampah 5 Jenis" class="w-4 h-4 rounded text-teal-700">
+                                    <span>Tempat Sampah 5 Jenis</span>
                                 </label>
-                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                                    <input type="checkbox" name="s_fasilitas" value="TPS3R (Tempat Pengolahan Sampah 3R)" class="w-4 h-4 rounded text-teal-700">
-                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">TPS3R</span>
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-teal-50/50 cursor-pointer text-xs font-semibold">
+                                    <input type="checkbox" name="s_fasilitas" value="TPS3R" class="w-4 h-4 rounded text-teal-700">
+                                    <span>TPS3R</span>
                                 </label>
-                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                                    <input type="checkbox" name="s_fasilitas" value="TPS (Tempat Penampungan Sementara)" class="w-4 h-4 rounded text-teal-700">
-                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">TPS</span>
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-teal-50/50 cursor-pointer text-xs font-semibold">
+                                    <input type="checkbox" name="s_fasilitas" value="TPS" class="w-4 h-4 rounded text-teal-700">
+                                    <span>TPS</span>
                                 </label>
-                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                                    <input type="checkbox" name="s_fasilitas" value="Bak Kontainer Sampah" class="w-4 h-4 rounded text-teal-700">
-                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">Bak Kontainer</span>
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-teal-50/50 cursor-pointer text-xs font-semibold">
+                                    <input type="checkbox" name="s_fasilitas" value="Bak Kontainer" class="w-4 h-4 rounded text-teal-700">
+                                    <span>Bak Kontainer</span>
                                 </label>
-                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 sm:col-span-2">
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-teal-50/50 cursor-pointer text-xs font-semibold">
                                     <input type="checkbox" id="s_fasilitasLainCheck" name="s_fasilitas" value="Lainnya" onchange="toggleFasilitasLainInput()" class="w-4 h-4 rounded text-teal-700">
-                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">Lainnya (Isi Keterangan Fasilitas)</span>
+                                    <span>Lainnya</span>
                                 </label>
                             </div>
-                            <div id="s_fasilitasLainWrapper" class="pt-1">
-                                <input type="text" id="s_fasilitasKeterangan" placeholder="Keterangan tambahan fasilitas pengumpulan (contoh: 12 unit tempat sampah 5 warna di kantor & pabrik, 1 unit bak kontainer 6 m3)"
-                                    class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-teal-600 outline-none text-xs sm:text-sm">
+                            <div>
+                                <label for="s_fasilitasKeterangan" class="block text-xs font-semibold text-slate-600 mb-1">
+                                    Keterangan Fasilitas Pengumpulan (Kapasitas / Jumlah Unit / Fasilitas Lainnya)
+                                </label>
+                                <input type="text" id="s_fasilitasKeterangan" placeholder="Contoh: 12 set tempat sampah terpilah 5 warna & 1 unit Bak Kontainer 6 m3"
+                                    class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-sm">
                             </div>
                         </div>
 
-                        <!-- 4B. Besaran Sampah Terkumpul Terpilah per Sumber -->
+                        <!-- 4B. Besaran Sampah Terkumpul Terpilah -->
                         <div class="space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <div>
-                                    <h3 class="text-sm font-bold text-slate-800">B. Besaran Sampah yang Terkumpul Sesuai Jenis Sampah Terpilah</h3>
-                                    <p class="text-xs text-slate-500">Pilih satuan input (<strong>Ton</strong> atau <strong>Kg</strong>) — sistem otomatis mengonversi ke <strong>Ton</strong> untuk tabel neraca.</p>
+                                    <h3 class="text-sm font-bold text-slate-800">B. Besaran Sampah Terkumpul Sesuai Jenis Sampah Terpilah</h3>
+                                    <p class="text-xs text-slate-500">Isi berat/volume sampah terkumpul per sumber berdasarkan 9 kategori jenis sampah terpilah</p>
                                 </div>
-                                <div class="flex items-center gap-2 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-xl text-xs">
-                                    <span class="font-semibold text-teal-900">Satuan Input Komposisi:</span>
-                                    <select id="s_satuanInputKomposisi" onchange="recalculateSampahBalance()" class="bg-white border border-teal-300 rounded-lg px-2 py-1 font-bold text-teal-950 outline-none cursor-pointer">
+                                <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-300 text-xs">
+                                    <span class="font-bold text-slate-700">Satuan Input:</span>
+                                    <select id="s_satuanInputKomposisi" onchange="recalculateSampahBalance()" class="bg-white border border-slate-300 rounded-lg px-2 py-1 font-bold text-teal-900 outline-none">
                                         <option value="Ton">Ton</option>
                                         <option value="Kg">Kg (Otomatis ÷ 1.000 ke Ton)</option>
                                     </select>
@@ -744,7 +862,7 @@
                             </div>
 
                             <div id="s_terkumpulCardsContainer" class="space-y-4">
-                                <!-- Diisi dinamis sesuai sumber sampah pada Bagian 3 -->
+                                <!-- Diisi dinamis lewat JS -->
                             </div>
                         </div>
                     </div>
@@ -871,31 +989,30 @@
                     </div>
 
                     <div class="p-6 space-y-6">
-                        <!-- Lampiran Bukti Neraca / Logbook (Opsional) -->
-                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                            <div>
-                                <p class="text-sm font-bold text-slate-800">Lampiran Bukti Logbook / Neraca Sampah / Manifest TPA (PDF / Excel / JPG)</p>
-                                <p class="text-xs text-slate-500">Opsional — unggah bukti timbangan TPA, catatan bank sampah, atau logbook harian</p>
-                            </div>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <input type="file" id="s_neracaDocFileInput" accept=".pdf,.xlsx,.xls,.jpg,.jpeg,.png" class="hidden" onchange="handleSampahDocUpload(event, 'neracaDoc')">
-                                <button type="button" onclick="document.getElementById('s_neracaDocFileInput').click()"
-                                    class="py-2 px-4 rounded-xl bg-white border border-slate-300 hover:border-teal-600 text-slate-700 text-xs font-bold shadow-sm cursor-pointer">
-                                    <span id="s_neracaDocFileName">📎 Unggah Bukti Neraca</span>
-                                </button>
-                                <button type="button" id="s_neracaDocPreviewBtn" onclick="previewSampahDoc('neracaDoc')"
-                                    class="hidden py-2 px-3 rounded-xl bg-teal-700 text-white text-xs font-bold cursor-pointer">
-                                    Lihat
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Foto Kegiatan & Geotagging GPS -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                             <div class="space-y-4">
+                                <!-- Unggah Bukti Laporan Neraca -->
                                 <div>
-                                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-                                        Unggah Foto Kegiatan Pengelolaan Sampah (JPG / PNG / WEBP, Maks. 5 MB) <span class="text-rose-600">*</span>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        1. Bukti Laporan Neraca / Logbook Sampah (PDF / Excel / JPG, Opsional)
+                                    </label>
+                                    <input type="file" id="s_neracaDocInput" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png" class="hidden" onchange="handleSampahDocUpload(event, 'neracaDoc')">
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" onclick="document.getElementById('s_neracaDocInput').click()"
+                                            class="flex-1 py-2.5 px-3.5 rounded-xl border border-dashed border-slate-400 hover:border-teal-600 hover:bg-teal-50 text-slate-700 text-xs font-bold transition-all cursor-pointer truncate">
+                                            <span id="s_neracaDocFileName">📎 Unggah Bukti Neraca</span>
+                                        </button>
+                                        <button type="button" id="s_neracaDocPreviewBtn" onclick="previewSampahDoc('neracaDoc')"
+                                            class="hidden py-2.5 px-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold cursor-pointer">
+                                            Lihat
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Unggah Foto Kegiatan -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        2. Unggah Foto Kegiatan Pengelolaan Sampah (JPG / PNG, Maks. 5 MB) <span class="text-rose-600">*</span>
                                     </label>
                                     <div id="s_fotoDropzone" onclick="document.getElementById('s_buktiFotoInput').click()"
                                         class="border-2 border-dashed border-slate-300 hover:border-teal-600 bg-slate-50 hover:bg-teal-50/40 rounded-2xl p-6 text-center cursor-pointer transition-all">
@@ -1235,11 +1352,27 @@
                         </div>
                     </div>
 
-                    <!-- C2. Rincian Tabel Neraca Sampah (Khusus Laporan Sampah SSRT) -->
-                    <div id="recSampahSection" class="hidden">
-                        <h4 class="font-bold bg-teal-50 px-3 py-1.5 border-l-4 border-teal-700 text-teal-950 uppercase text-xs mb-2">
-                            B. Rincian Neraca Pengelolaan Sampah Sejenis Sampah Rumah Tangga
+                    <!-- C1. Neraca Pengelolaan Limbah B3 & Ketaatan Waktu Penyimpanan (Khusus Limbah B3) -->
+                    <div id="recLb3NeracaSection" class="hidden space-y-2">
+                        <h4 class="font-bold bg-slate-100 px-3 py-1.5 border-l-4 border-slate-800 text-slate-900 uppercase text-xs">
+                            D. Neraca Pengelolaan Limbah B3 & Ketaatan Waktu Penyimpanan TPS
                         </h4>
+                        <div id="recLb3KetaatanSummary" class="p-2.5 border border-slate-400 text-xs text-slate-900 bg-white">
+                            <!-- Diisi lewat JS -->
+                        </div>
+                        <div id="recLb3NeracaTableWrapper" class="overflow-x-auto border border-slate-900 bg-white">
+                            <!-- Diisi lewat JS -->
+                        </div>
+                    </div>
+
+                    <!-- C2. Rincian Tabel Neraca Sampah (Khusus Laporan Sampah SSRT) -->
+                    <div id="recSampahSection" class="hidden space-y-4">
+                        <h4 class="font-bold bg-teal-50 px-3 py-1.5 border-l-4 border-teal-700 text-teal-950 uppercase text-xs mb-2">
+                            B. Rincian Kelengkapan Administrasi, Pengangkutan TPA, Kegiatan Pengolahan & Neraca Sampah
+                        </h4>
+                        <div id="recSampahDetailsBox" class="space-y-3 text-xs">
+                            <!-- Diisi lewat JS -->
+                        </div>
                         <div id="recSampahSummaryTable" class="overflow-x-auto text-xs">
                             <!-- Diisi lewat JS -->
                         </div>
@@ -1323,12 +1456,14 @@
         let uploadedFotoBase64 = '';
         let uploadedFotoFile = null;
         let selectedPihakLanjutan = {};
+        let companyLb3ServerHistory = [];
 
         // State khusus Formulir Sampah Sejenis Sampah Rumah Tangga
         const SUPABASE_SAMPAH_TABLE = 'laporan_sampah_ssrt';
         let uploadedSampahFotoBase64 = '';
         let uploadedSampahFotoFile = null;
         let sampahDocsState = { sopSk: null, neracaDoc: null };
+        let sampahKerjasamaList = [];
         let sampahSourcesData = [];
         let sampahTpaList = [];
         let sampahPengolahanList = [];
@@ -1370,6 +1505,16 @@
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('headerDate').textContent = now.toLocaleDateString('id-ID', options);
+
+            // Pasang listener otomatis untuk update Neraca Limbah B3 saat input utama berubah
+            ['namaUsaha', 'kodeLimbah', 'jenisLimbah', 'sumberLimbah', 'tanggalDihasilkan', 'beratLimbah', 'satuanBerat', 'tanggalPenyerahan', 'nomorFestronik'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', recalculateLb3Neraca);
+                    el.addEventListener('change', recalculateLb3Neraca);
+                }
+            });
+            recalculateLb3Neraca();
 
             // Inisialisasi baris awal tabel Pengelolaan Sampah SSRT (Perumahan Karyawan, Kantor, Area Pabrik)
             initDefaultSampahRows();
@@ -1479,6 +1624,7 @@
                 tglPenyerahan.required = false;
                 noFestronik.required = false;
             }
+            recalculateLb3Neraca();
         }
 
         // --- HANDLE CHECKBOX PIHAK LANJUTAN ---
@@ -1597,6 +1743,7 @@
         function updatePihakNama(kategoriId, val) {
             if (selectedPihakLanjutan[kategoriId]) {
                 selectedPihakLanjutan[kategoriId].namaBadanUsaha = val;
+                recalculateLb3Neraca();
             }
         }
 
@@ -1840,6 +1987,7 @@
                 }
 
                 // D. Susun objek untuk pratinjau tanda terima cetak PDF & simpan riwayat perangkat ini
+                const lb3NeracaSnapshot = buildLb3NeracaData();
                 const localReceiptObj = {
                     regNo: dbPayload.reg_no,
                     waktuInput: dbPayload.waktu_input,
@@ -1852,6 +2000,7 @@
                     tanggalTerbitIzin: dbPayload.tanggal_terbit_izin,
                     jenisLimbah: dbPayload.jenis_limbah,
                     kodeLimbah: dbPayload.kode_limbah,
+                    sumberLimbah: document.getElementById('sumberLimbah')?.value.trim() || '-',
                     tanggalDihasilkan: dbPayload.tanggal_dihasilkan,
                     beratLimbah: dbPayload.berat_limbah,
                     satuanBerat: dbPayload.satuan_berat,
@@ -1859,6 +2008,7 @@
                     tanggalPenyerahan: dbPayload.tanggal_penyerahan,
                     nomorFestronik: dbPayload.nomor_festronik,
                     pihakLanjutan: pihakLanjutanArray,
+                    neracaLb3Snapshot: lb3NeracaSnapshot,
                     fotoBase64: uploadedFotoBase64 || fotoPublicUrl,
                     keteranganFoto: dbPayload.keterangan_foto
                 };
@@ -2171,6 +2321,25 @@
                 pihakSection.classList.add('hidden');
             }
 
+            // Tampilkan Neraca Pengelolaan Limbah B3 & Ketaatan Waktu Penyimpanan pada Tanda Terima
+            const neracaSec = document.getElementById('recLb3NeracaSection');
+            const neracaSnap = data.neracaLb3Snapshot || buildLb3NeracaDataFromSingleReport(data);
+            if (neracaSec && neracaSnap) {
+                neracaSec.classList.remove('hidden');
+                document.getElementById('recLb3KetaatanSummary').innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <p class="font-bold">Periode Neraca: ${escapeHtml(neracaSnap.periodeTitle)} • Bidang Usaha: ${escapeHtml(neracaSnap.bidangUsaha || '-')}</p>
+                            <p class="mt-0.5">${escapeHtml(neracaSnap.ketaatan.detailText)}</p>
+                        </div>
+                        <span class="px-2.5 py-1 border border-slate-900 font-extrabold uppercase">${escapeHtml(neracaSnap.ketaatan.statusLabel)}</span>
+                    </div>
+                `;
+                document.getElementById('recLb3NeracaTableWrapper').innerHTML = renderPlainLb3NeracaTableHtml(neracaSnap);
+            } else if (neracaSec) {
+                neracaSec.classList.add('hidden');
+            }
+
             const recFotoImg = document.getElementById('recFotoImg');
             if (data.fotoBase64 && data.fotoBase64 !== '-') {
                 recFotoImg.src = data.fotoBase64;
@@ -2194,9 +2363,11 @@
             document.getElementById('limbahForm').reset();
             removeFoto();
             selectedPihakLanjutan = {};
+            companyLb3ServerHistory = [];
             document.querySelectorAll('.pihak-checkbox').forEach(cb => cb.checked = false);
             renderPihakLanjutanCards();
             togglePenyerahanFields();
+            recalculateLb3Neraca();
             showToast('Formulir telah dibersihkan.');
         }
 
@@ -2431,6 +2602,449 @@
             showToast(`File Excel (${Object.keys(groupedByCompany).length} sheet perusahaan) berhasil diunduh!`);
         }
 
+        // =========================================================================
+        // PERHITUNGAN NERACA PENGELOLAAN LIMBAH B3 & KETAATAN WAKTU PENYIMPANAN (BAGIAN 6)
+        // =========================================================================
+        function convertBeratToTon(berat, satuan) {
+            const val = parseFloat(berat) || 0;
+            if (!satuan) return val / 1000;
+            const s = satuan.toLowerCase();
+            if (s === 'ton') return val;
+            if (s === 'kg') return val / 1000;
+            if (s === 'liter') return val / 1000; // asumsi densitas ~1 kg/liter -> ton
+            return val / 1000;
+        }
+
+        function evaluateLb3StorageCompliance(tglDihasilkanStr, tglPenyerahanStr, statusPenyerahan, batasHari) {
+            if (!tglDihasilkanStr) {
+                return {
+                    daysStored: null,
+                    batasHari,
+                    statusLabel: 'MENUNGGU DATA TANGGAL',
+                    detailText: 'Masukkan tanggal limbah dihasilkan pada Bagian 3 untuk menghitung lama masa simpan otomatis.'
+                };
+            }
+            const start = new Date(tglDihasilkanStr);
+            const end = (statusPenyerahan === 'Sudah Diserahkan ke Pihak Berizin' && tglPenyerahanStr && tglPenyerahanStr !== '-')
+                ? new Date(tglPenyerahanStr)
+                : new Date();
+
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                return {
+                    daysStored: 0,
+                    batasHari,
+                    statusLabel: 'DATA TANGGAL TIDAK VALID',
+                    detailText: 'Periksa format tanggal dihasilkan / penyerahan.'
+                };
+            }
+
+            const diffMs = Math.max(0, end.getTime() - start.getTime());
+            const daysStored = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const sisaHari = batasHari - daysStored;
+
+            if (statusPenyerahan === 'Sudah Diserahkan ke Pihak Berizin') {
+                if (daysStored <= batasHari) {
+                    return {
+                        daysStored,
+                        batasHari,
+                        statusLabel: `TAAT (${daysStored} / ${batasHari} HARI)`,
+                        detailText: `Diserahkan setelah disimpan ${daysStored} hari di TPS (memenuhi batas maksimal ${batasHari} hari PP 22/2021).`
+                    };
+                }
+                return {
+                    daysStored,
+                    batasHari,
+                    statusLabel: `MELEBIHI BATAS (${daysStored} / ${batasHari} HARI)`,
+                    detailText: `Penyerahan terlambat ${Math.abs(sisaHari)} hari dari batas penyimpanan maksimal ${batasHari} hari.`
+                };
+            }
+
+            if (daysStored <= batasHari) {
+                return {
+                    daysStored,
+                    batasHari,
+                    statusLabel: `TAAT — SISA ${sisaHari} HARI (${daysStored}/${batasHari} HR)`,
+                    detailText: `Disimpan di TPS selama ${daysStored} hari sejak ${formatTanggalIndo(tglDihasilkanStr)}. Sisa masa simpan legal: ${sisaHari} hari.`
+                };
+            }
+            return {
+                daysStored,
+                batasHari,
+                statusLabel: `TERLAMBAT ${Math.abs(sisaHari)} HARI (${daysStored}/${batasHari} HR)`,
+                detailText: `Limbah di TPS sudah tersimpan ${daysStored} hari dan melampaui batas maksimal ${batasHari} hari PP 22/2021!`
+            };
+        }
+
+        async function syncLb3HistoryForCompany() {
+            const namaUsaha = document.getElementById('namaUsaha')?.value.trim();
+            if (!namaUsaha) {
+                showToast('Isi Nama Perusahaan terlebih dahulu pada Bagian 1.', 'error');
+                document.getElementById('namaUsaha')?.focus();
+                return;
+            }
+            if (!supabaseClient) {
+                showToast('Konfigurasi Supabase belum aktif.', 'error');
+                return;
+            }
+
+            showToast(`⏳ Mencari riwayat pelaporan "${namaUsaha}"...`);
+            try {
+                const { data, error } = await supabaseClient
+                    .from(SUPABASE_TABLE)
+                    .select('*')
+                    .ilike('nama_perusahaan', namaUsaha)
+                    .neq('kode_limbah', 'SSRT')
+                    .order('tanggal_dihasilkan', { ascending: true });
+
+                if (error) throw error;
+                companyLb3ServerHistory = data || [];
+                recalculateLb3Neraca();
+                showToast(`✅ Ditemukan ${companyLb3ServerHistory.length} catatan historis untuk "${namaUsaha}".`, 'success');
+            } catch (err) {
+                showToast(`Gagal menarik riwayat: ${err.message}`, 'error');
+            }
+        }
+
+        function buildLb3NeracaData() {
+            const namaUsaha = document.getElementById('namaUsaha')?.value.trim() || '-';
+            const bidangUsaha = document.getElementById('lb3_bidangUsaha')?.value.trim() || '-';
+            const semester = document.getElementById('lb3_neracaSemester')?.value || '1';
+            const tahun = parseInt(document.getElementById('lb3_neracaTahun')?.value, 10) || new Date().getFullYear();
+            const saldoSebelumnya = parseFloat(document.getElementById('lb3_saldoSebelumnya')?.value) || 0;
+            const batasHari = parseInt(document.getElementById('lb3_batasSimpanHari')?.value, 10) || 90;
+
+            const monthNames = semester === '1'
+                ? ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni']
+                : ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const startMonthIdx = semester === '1' ? 0 : 6;
+
+            // Gabungkan riwayat perusahaan (lokal sesi + server bila ditarik) + input form aktif saat ini
+            const combinedRecords = [];
+
+            // 1. Riwayat dari server (jika ditarik untuk nama perusahaan yang sama)
+            companyLb3ServerHistory.forEach(r => {
+                if ((r.nama_perusahaan || '').trim().toLowerCase() === namaUsaha.toLowerCase()) {
+                    combinedRecords.push({
+                        kodeLimbah: r.kode_limbah || '-',
+                        jenisLimbah: r.jenis_limbah || '-',
+                        sumberLimbah: r.sumber_limbah || 'Sesuai Lampiran IX PP 22/2021',
+                        tanggalDihasilkan: r.tanggal_dihasilkan,
+                        beratTon: convertBeratToTon(r.berat_limbah, r.satuan_berat),
+                        statusPenyerahan: r.status_penyerahan,
+                        tanggalPenyerahan: r.tanggal_penyerahan,
+                        nomorFestronik: r.nomor_festronik || '-',
+                        pihakText: Array.isArray(r.pihak_lanjutan) && r.pihak_lanjutan.length
+                            ? r.pihak_lanjutan.map(p => `${p.kategoriLabel}: ${p.namaBadanUsaha}`).join('; ')
+                            : ''
+                    });
+                }
+            });
+
+            // 2. Input aktif pada formulir saat ini
+            const activeJenis = document.getElementById('jenisLimbah')?.value.trim() || '';
+            const activeKode = document.getElementById('kodeLimbah')?.value.trim().toUpperCase() || '';
+            const activeSumber = document.getElementById('sumberLimbah')?.value.trim() || '';
+            const activeTgl = document.getElementById('tanggalDihasilkan')?.value || '';
+            const activeBerat = parseFloat(document.getElementById('beratLimbah')?.value) || 0;
+            const activeSatuan = document.getElementById('satuanBerat')?.value || 'Kg';
+            const activeStatus = document.querySelector('input[name="statusPenyerahan"]:checked')?.value || 'Disimpan di TPS Limbah B3 (Belum Diserahkan)';
+            const activeTglSerah = document.getElementById('tanggalPenyerahan')?.value || '';
+            const activeFestronik = document.getElementById('nomorFestronik')?.value.trim().toUpperCase() || '-';
+            const activePihakArr = Object.values(selectedPihakLanjutan || {});
+            const activePihakText = activePihakArr.length
+                ? activePihakArr.map(p => `${p.label}: ${p.namaBadanUsaha || '-'}`).join('; ')
+                : '';
+
+            if (activeJenis || activeKode || activeBerat > 0) {
+                combinedRecords.push({
+                    kodeLimbah: activeKode || '-',
+                    jenisLimbah: activeJenis || 'Limbah B3 Dilaporkan',
+                    sumberLimbah: activeSumber || '-',
+                    tanggalDihasilkan: activeTgl,
+                    beratTon: convertBeratToTon(activeBerat, activeSatuan),
+                    statusPenyerahan: activeStatus,
+                    tanggalPenyerahan: activeTglSerah,
+                    nomorFestronik: activeFestronik || '-',
+                    pihakText: activePihakText
+                });
+            }
+
+            // Kelompokkan per Jenis & Kode Limbah B3
+            const groupedMap = new Map();
+            combinedRecords.forEach((rec, idx) => {
+                const key = `${rec.kodeLimbah}__${rec.jenisLimbah}`.toLowerCase();
+                if (!groupedMap.has(key)) {
+                    groupedMap.set(key, {
+                        kodeLimbah: rec.kodeLimbah,
+                        jenisLimbah: rec.jenisLimbah,
+                        sumberLimbah: rec.sumberLimbah,
+                        saldoAwal: idx === 0 ? saldoSebelumnya : 0,
+                        dihasilkanBulan: [0, 0, 0, 0, 0, 0],
+                        disimpanBulan: [0, 0, 0, 0, 0, 0],
+                        dimanfaatkanBulan: [0, 0, 0, 0, 0, 0],
+                        diolahBulan: [0, 0, 0, 0, 0, 0],
+                        landfillBulan: [0, 0, 0, 0, 0, 0],
+                        diserahkanBulan: [0, 0, 0, 0, 0, 0],
+                        tidakDikelolaBulan: [0, 0, 0, 0, 0, 0],
+                        manifests: new Set(),
+                        keteranganSet: new Set()
+                    });
+                }
+
+                const entry = groupedMap.get(key);
+                let genMonthSlot = 0;
+                if (rec.tanggalDihasilkan) {
+                    const d = new Date(rec.tanggalDihasilkan);
+                    if (!isNaN(d.getTime()) && d.getFullYear() === tahun) {
+                        const m = d.getMonth();
+                        if (m >= startMonthIdx && m < startMonthIdx + 6) {
+                            genMonthSlot = m - startMonthIdx;
+                        }
+                    }
+                }
+                entry.dihasilkanBulan[genMonthSlot] += rec.beratTon;
+
+                if (rec.statusPenyerahan === 'Sudah Diserahkan ke Pihak Berizin') {
+                    let serahSlot = genMonthSlot;
+                    if (rec.tanggalPenyerahan && rec.tanggalPenyerahan !== '-') {
+                        const ds = new Date(rec.tanggalPenyerahan);
+                        if (!isNaN(ds.getTime()) && ds.getFullYear() === tahun) {
+                            const ms = ds.getMonth();
+                            if (ms >= startMonthIdx && ms < startMonthIdx + 6) {
+                                serahSlot = ms - startMonthIdx;
+                            }
+                        }
+                    }
+                    entry.diserahkanBulan[serahSlot] += rec.beratTon;
+                    if (rec.nomorFestronik && rec.nomorFestronik !== '-') entry.manifests.add(rec.nomorFestronik);
+                    if (rec.pihakText) entry.keteranganSet.add(rec.pihakText);
+                } else {
+                    entry.keteranganSet.add('Disimpan di TPS LB3');
+                }
+            });
+
+            // Jika belum ada data sama sekali, tampilkan 1 baris kerangka kosong
+            if (groupedMap.size === 0) {
+                groupedMap.set('empty', {
+                    kodeLimbah: '-',
+                    jenisLimbah: '-',
+                    sumberLimbah: '-',
+                    saldoAwal: saldoSebelumnya,
+                    dihasilkanBulan: [0, 0, 0, 0, 0, 0],
+                    disimpanBulan: [0, 0, 0, 0, 0, 0],
+                    dimanfaatkanBulan: [0, 0, 0, 0, 0, 0],
+                    diolahBulan: [0, 0, 0, 0, 0, 0],
+                    landfillBulan: [0, 0, 0, 0, 0, 0],
+                    diserahkanBulan: [0, 0, 0, 0, 0, 0],
+                    tidakDikelolaBulan: [0, 0, 0, 0, 0, 0],
+                    manifests: new Set(),
+                    keteranganSet: new Set()
+                });
+            }
+
+            // Hitung rumus berjalan (running balance) Disimpan di TPS per bulan
+            const items = Array.from(groupedMap.values()).map(item => {
+                let runningSaldo = item.saldoAwal;
+                for (let i = 0; i < 6; i++) {
+                    const keluar = item.dimanfaatkanBulan[i] + item.diolahBulan[i] + item.landfillBulan[i] + item.diserahkanBulan[i] + item.tidakDikelolaBulan[i];
+                    runningSaldo = Math.max(0, runningSaldo + item.dihasilkanBulan[i] - keluar);
+                    item.disimpanBulan[i] = runningSaldo;
+                }
+
+                const totalDihasilkan = item.dihasilkanBulan.reduce((a, b) => a + b, 0);
+                const totalDisimpanTps = runningSaldo;
+                const totalDimanfaatkan = item.dimanfaatkanBulan.reduce((a, b) => a + b, 0);
+                const totalDiolah = item.diolahBulan.reduce((a, b) => a + b, 0);
+                const totalLandfill = item.landfillBulan.reduce((a, b) => a + b, 0);
+                const totalDiserahkan = item.diserahkanBulan.reduce((a, b) => a + b, 0);
+                const totalTidakDikelola = item.tidakDikelolaBulan.reduce((a, b) => a + b, 0);
+
+                return {
+                    ...item,
+                    totalDihasilkan,
+                    totalDisimpanTps,
+                    totalDimanfaatkan,
+                    totalDiolah,
+                    totalLandfill,
+                    totalDiserahkan,
+                    totalTidakDikelola,
+                    keteranganText: item.keteranganSet.size ? Array.from(item.keteranganSet).join(' | ') : '-',
+                    manifestText: item.manifests.size ? Array.from(item.manifests).join(', ') : '-'
+                };
+            });
+
+            const ketaatan = evaluateLb3StorageCompliance(activeTgl, activeTglSerah, activeStatus, batasHari);
+
+            return {
+                namaUsaha,
+                bidangUsaha,
+                semester,
+                tahun,
+                periodeTitle: `SEMESTER ${semester === '1' ? 'I' : 'II'} TAHUN ${tahun}`,
+                monthNames,
+                items,
+                ketaatan
+            };
+        }
+
+        function buildLb3NeracaDataFromSingleReport(r) {
+            const snap = buildLb3NeracaData();
+            snap.namaUsaha = r.namaUsaha || '-';
+            return snap;
+        }
+
+        function renderPlainLb3NeracaRowsHtml(neracaData) {
+            const fmt = (n) => (Number(n) || 0).toFixed(3);
+            const fmtBulan = (n) => (Number(n) > 0 ? Number(n).toFixed(3) : '');
+
+            return neracaData.items.map((item, idx) => {
+                const labelJenis = item.kodeLimbah && item.kodeLimbah !== '-'
+                    ? `${item.jenisLimbah} (${item.kodeLimbah})`
+                    : item.jenisLimbah;
+
+                return `
+                    <!-- Baris 1: DIHASILKAN -->
+                    <tr class="border-b border-slate-400">
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-2 px-2 text-center font-bold align-middle">${idx + 1}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-2 px-2.5 font-bold align-middle">${escapeHtml(labelJenis)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-2 px-2.5 align-middle">${escapeHtml(item.sumberLimbah)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-2 px-2 text-center font-bold align-middle">TON</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2.5 font-semibold">DIHASILKAN</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right font-semibold">${fmt(item.saldoAwal)}</td>
+                        ${item.dihasilkanBulan.map(v => `<td class="border-r border-slate-900 py-1.5 px-1.5 text-right">${fmtBulan(v)}</td>`).join('')}
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right font-bold">${fmt(item.totalDihasilkan)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-1.5 px-2 text-right font-bold align-middle">${fmt(item.totalDisimpanTps)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-1.5 px-2 text-right font-bold align-middle">${fmt(item.totalDimanfaatkan)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-1.5 px-2 text-right font-bold align-middle">${fmt(item.totalDiolah)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-1.5 px-2 text-right font-bold align-middle">${fmt(item.totalLandfill)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-1.5 px-2 text-right font-bold align-middle">${fmt(item.totalDiserahkan)}</td>
+                        <td rowspan="7" class="border-r border-b-2 border-slate-900 py-1.5 px-2 text-right font-bold align-middle">${fmt(item.totalTidakDikelola)}</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-center">-</td>
+                        <td class="py-1.5 px-2 text-center">-</td>
+                    </tr>
+                    <!-- Baris 2: DISIMPAN DI TPS -->
+                    <tr class="border-b border-slate-400">
+                        <td class="border-r border-slate-900 py-1.5 px-2.5 font-semibold">DISIMPAN DI TPS</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">${fmt(item.saldoAwal)}</td>
+                        ${item.disimpanBulan.map(v => `<td class="border-r border-slate-900 py-1.5 px-1.5 text-right">${fmtBulan(v)}</td>`).join('')}
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-center">${item.totalDisimpanTps > 0 ? 'Disimpan di TPS LB3' : '-'}</td>
+                        <td class="py-1.5 px-2 text-center">-</td>
+                    </tr>
+                    <!-- Baris 3: DIMANFAATKAN SENDIRI -->
+                    <tr class="border-b border-slate-400">
+                        <td class="border-r border-slate-900 py-1.5 px-2.5 font-semibold">DIMANFAATKAN SENDIRI</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        ${item.dimanfaatkanBulan.map(v => `<td class="border-r border-slate-900 py-1.5 px-1.5 text-right">${fmtBulan(v)}</td>`).join('')}
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-center">-</td>
+                        <td class="py-1.5 px-2 text-center">-</td>
+                    </tr>
+                    <!-- Baris 4: DIOLAH SENDIRI -->
+                    <tr class="border-b border-slate-400">
+                        <td class="border-r border-slate-900 py-1.5 px-2.5 font-semibold">DIOLAH SENDIRI</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        ${item.diolahBulan.map(v => `<td class="border-r border-slate-900 py-1.5 px-1.5 text-right">${fmtBulan(v)}</td>`).join('')}
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-center">-</td>
+                        <td class="py-1.5 px-2 text-center">-</td>
+                    </tr>
+                    <!-- Baris 5: LANDFILL SENDIRI -->
+                    <tr class="border-b border-slate-400">
+                        <td class="border-r border-slate-900 py-1.5 px-2.5 font-semibold">LANDFILL SENDIRI</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        ${item.landfillBulan.map(v => `<td class="border-r border-slate-900 py-1.5 px-1.5 text-right">${fmtBulan(v)}</td>`).join('')}
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-center">-</td>
+                        <td class="py-1.5 px-2 text-center">-</td>
+                    </tr>
+                    <!-- Baris 6: DISERAHKAN KEPIHAK KETIGA BERIZIN -->
+                    <tr class="border-b border-slate-400">
+                        <td class="border-r border-slate-900 py-1.5 px-2.5 font-semibold">DISERAHKAN KEPIHAK KETIGA BERIZIN</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        ${item.diserahkanBulan.map(v => `<td class="border-r border-slate-900 py-1.5 px-1.5 text-right">${fmtBulan(v)}</td>`).join('')}
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-left">${escapeHtml(item.keteranganText)}</td>
+                        <td class="py-1.5 px-2 text-center font-mono">${escapeHtml(item.manifestText)}</td>
+                    </tr>
+                    <!-- Baris 7: TIDAK DIKELOLA -->
+                    <tr class="border-b-2 border-slate-900">
+                        <td class="border-r border-slate-900 py-1.5 px-2.5 font-semibold">TIDAK DIKELOLA</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        ${item.tidakDikelolaBulan.map(v => `<td class="border-r border-slate-900 py-1.5 px-1.5 text-right">${fmtBulan(v)}</td>`).join('')}
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-right">-</td>
+                        <td class="border-r border-slate-900 py-1.5 px-2 text-center">-</td>
+                        <td class="py-1.5 px-2 text-center">-</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderPlainLb3NeracaTableHtml(neracaData) {
+            return `
+                <table class="min-w-[1200px] w-full border-collapse text-[10px] text-slate-900 bg-white">
+                    <thead>
+                        <tr class="border-b border-slate-900 text-center font-bold bg-white">
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-1.5">NO.</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-2">JENIS LIMBAH B3</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-2">SUMBER</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-1.5">SATUAN</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-2">PERLAKUAN</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-1.5">Periode Sebelumnya (SALDO)</th>
+                            <th colspan="6" class="border-r border-slate-900 py-1 px-1.5">${neracaData.tahun}</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-1.5">LIMBAH DIHASILKAN</th>
+                            <th colspan="5" class="border-r border-slate-900 py-1 px-1.5">LIMBAH DIKELOLA</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-1.5">LIMBAH TIDAK DIKELOLA</th>
+                            <th rowspan="2" class="border-r border-slate-900 py-1.5 px-2">KETERANGAN</th>
+                            <th rowspan="2" class="py-1.5 px-1.5">KODE MANIFEST</th>
+                        </tr>
+                        <tr class="border-b border-slate-900 text-center font-bold bg-white">
+                            ${neracaData.monthNames.map(m => `<th class="border-r border-slate-900 py-1 px-1">${m}</th>`).join('')}
+                            <th class="border-r border-slate-900 py-1 px-1">DISIMPAN DI TPS</th>
+                            <th class="border-r border-slate-900 py-1 px-1">DIMANFAATKAN SENDIRI</th>
+                            <th class="border-r border-slate-900 py-1 px-1">DIOLAH SENDIRI</th>
+                            <th class="border-r border-slate-900 py-1 px-1">LANDFILL SENDIRI</th>
+                            <th class="border-r border-slate-900 py-1 px-1">DISERAHKAN PIHAK KETIGA BERIZIN</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">${renderPlainLb3NeracaRowsHtml(neracaData)}</tbody>
+                </table>
+            `;
+        }
+
+        function recalculateLb3Neraca() {
+            const neracaData = buildLb3NeracaData();
+
+            const namaEl = document.getElementById('lb3_tblNamaPerusahaan');
+            if (namaEl) namaEl.textContent = neracaData.namaUsaha;
+            const bidangEl = document.getElementById('lb3_tblBidangUsaha');
+            if (bidangEl) bidangEl.textContent = neracaData.bidangUsaha;
+            const periodeEl = document.getElementById('lb3_tblPeriodeLabel');
+            if (periodeEl) periodeEl.textContent = neracaData.periodeTitle;
+            const tahunHdr = document.getElementById('lb3_tblTahunHeader');
+            if (tahunHdr) tahunHdr.textContent = neracaData.tahun;
+
+            const bulanHdrRow = document.getElementById('lb3_tblBulanHeaderRow');
+            if (bulanHdrRow) {
+                bulanHdrRow.innerHTML = `
+                    ${neracaData.monthNames.map(m => `<th class="border-r border-slate-900 py-1.5 px-1.5 w-16">${m}</th>`).join('')}
+                    <th class="border-r border-slate-900 py-1.5 px-1.5 w-20">DISIMPAN DI TPS</th>
+                    <th class="border-r border-slate-900 py-1.5 px-1.5 w-24">DIMANFAATKAN SENDIRI</th>
+                    <th class="border-r border-slate-900 py-1.5 px-1.5 w-20">DIOLAH SENDIRI</th>
+                    <th class="border-r border-slate-900 py-1.5 px-1.5 w-24">LANDFILL SENDIRI</th>
+                    <th class="border-r border-slate-900 py-1.5 px-1.5 w-28">DISERAHKAN PIHAK KETIGA BERIZIN</th>
+                `;
+            }
+
+            const ketaatanDetail = document.getElementById('lb3_ketaatanDetail');
+            if (ketaatanDetail) ketaatanDetail.textContent = neracaData.ketaatan.detailText;
+            const ketaatanBadge = document.getElementById('lb3_ketaatanBadge');
+            if (ketaatanBadge) ketaatanBadge.textContent = neracaData.ketaatan.statusLabel;
+
+            const tbody = document.getElementById('lb3_neracaTableBody');
+            if (tbody) tbody.innerHTML = renderPlainLb3NeracaRowsHtml(neracaData);
+        }
+
         // --- HELPER FORMAT TANGGAL & ESCAPE HTML ---
         function formatTanggalIndo(dateStr) {
             if (!dateStr || dateStr === '-') return '-';
@@ -2475,12 +3089,32 @@
                 createEmptySampahSource('Area Pabrik')
             ];
             sampahTpaList = [
-                { tanggal: '', berat: 0, satuan: 'Ton', jenisArmada: '' }
+                {
+                    tanggal: '',
+                    berat: 0,
+                    satuan: 'Ton',
+                    jenisArmada: '',
+                    nopolKendaraan: '',
+                    kapasitasAngkut: '',
+                    kepemilikanKendaraan: 'Milik Sendiri',
+                    kerjasamaPengangkutan: '',
+                    buktiRetribusiFiles: []
+                }
             ];
             sampahPengolahanList = [
                 { jenisKegiatan: 'Pengomposan / Rumah Kompos', sumberTerkait: 0, waktu: '', jenisSampah: 'Sisa Makanan & Ranting/Daun', beratSampah: 0, beratResidu: 0, satuan: 'Ton' }
             ];
             sampahDocsState = { sopSk: null, neracaDoc: null };
+            sampahKerjasamaList = [
+                {
+                    nomorPerjanjian: '',
+                    namaPihakPengelola: '',
+                    jenisPengelolaan: '',
+                    jenisFasilitas: '',
+                    fileDoc: null
+                }
+            ];
+            renderSampahKerjasamaRows();
 
             const sopLabel = document.getElementById('s_sopSkFileName');
             if (sopLabel) sopLabel.textContent = '📎 Pilih File SOP / SK';
@@ -2491,6 +3125,152 @@
             document.getElementById('s_neracaDocPreviewBtn')?.classList.add('hidden');
 
             renderAllSampahSections();
+        }
+
+        // --- Handler Kerja Sama Pengelolaan Sampah pada Bagian 2 ---
+        function addSampahKerjasamaRow() {
+            sampahKerjasamaList.push({
+                nomorPerjanjian: '',
+                namaPihakPengelola: '',
+                jenisPengelolaan: '',
+                jenisFasilitas: '',
+                fileDoc: null
+            });
+            renderSampahKerjasamaRows();
+        }
+
+        function removeSampahKerjasamaRow(idx) {
+            if (sampahKerjasamaList.length <= 1) {
+                sampahKerjasamaList[0] = {
+                    nomorPerjanjian: '',
+                    namaPihakPengelola: '',
+                    jenisPengelolaan: '',
+                    jenisFasilitas: '',
+                    fileDoc: null
+                };
+            } else {
+                sampahKerjasamaList.splice(idx, 1);
+            }
+            renderSampahKerjasamaRows();
+        }
+
+        function updateSampahKerjasamaField(idx, field, val) {
+            if (sampahKerjasamaList[idx]) {
+                sampahKerjasamaList[idx][field] = val;
+            }
+        }
+
+        function handleSampahKerjasamaFileUpload(event, idx) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Ukuran dokumen perjanjian maksimal 5 MB.', 'error');
+                event.target.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (sampahKerjasamaList[idx]) {
+                    sampahKerjasamaList[idx].fileDoc = {
+                        name: file.name,
+                        type: file.type,
+                        fileObj: file,
+                        dataUrl: e.target.result
+                    };
+                    renderSampahKerjasamaRows();
+                    showToast(`Dokumen perjanjian "${file.name}" berhasil dilampirkan.`);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewSampahKerjasamaDoc(idx) {
+            const doc = sampahKerjasamaList[idx]?.fileDoc;
+            if (!doc) return;
+            openDocViewer(doc.name, doc.dataUrl || doc.publicUrl, doc.type);
+        }
+
+        function renderSampahKerjasamaRows() {
+            const container = document.getElementById('s_kerjasamaListContainer');
+            if (!container) return;
+
+            container.innerHTML = sampahKerjasamaList.map((item, idx) => {
+                const inputId = `s_kerjasama_file_${idx}`;
+                return `
+                    <div class="p-4 rounded-xl border border-teal-200 bg-teal-50/40 space-y-3">
+                        <div class="flex items-center justify-between gap-2 border-b border-teal-200 pb-2">
+                            <span class="text-xs font-extrabold text-teal-950 uppercase">Pihak Pengelolaan Sampah #${idx + 1}</span>
+                            <button type="button" onclick="removeSampahKerjasamaRow(${idx})"
+                                class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer">
+                                Hapus Pihak ✕
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 mb-1">Nomor Perjanjian</label>
+                                <input type="text" value="${escapeHtml(item.nomorPerjanjian)}"
+                                    oninput="updateSampahKerjasamaField(${idx}, 'nomorPerjanjian', this.value)"
+                                    placeholder="Contoh: 012/PKS-SMP/2026"
+                                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-teal-600 outline-none text-xs">
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Pihak Pengelola</label>
+                                <input type="text" value="${escapeHtml(item.namaPihakPengelola)}"
+                                    oninput="updateSampahKerjasamaField(${idx}, 'namaPihakPengelola', this.value)"
+                                    placeholder="Contoh: Bank Sampah Melati / UPTD DLH"
+                                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-teal-600 outline-none text-xs">
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Pengelolaan Sampah</label>
+                                <select onchange="updateSampahKerjasamaField(${idx}, 'jenisPengelolaan', this.value)"
+                                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold">
+                                    <option value="" ${!item.jenisPengelolaan ? 'selected' : ''}>-- Pilih Jenis Pengelolaan --</option>
+                                    <option value="Pengangkutan Sampah" ${item.jenisPengelolaan === 'Pengangkutan Sampah' ? 'selected' : ''}>Pengangkutan Sampah</option>
+                                    <option value="Pengolahan Sampah Organik / Kompos" ${item.jenisPengelolaan === 'Pengolahan Sampah Organik / Kompos' ? 'selected' : ''}>Pengolahan Sampah Organik / Kompos</option>
+                                    <option value="Daur Ulang & Pemilahan Anorganik" ${item.jenisPengelolaan === 'Daur Ulang & Pemilahan Anorganik' ? 'selected' : ''}>Daur Ulang & Pemilahan Anorganik</option>
+                                    <option value="Pengelolaan Terpadu (3R)" ${item.jenisPengelolaan === 'Pengelolaan Terpadu (3R)' ? 'selected' : ''}>Pengelolaan Terpadu (3R)</option>
+                                    <option value="Pemrosesan Akhir (TPA)" ${item.jenisPengelolaan === 'Pemrosesan Akhir (TPA)' ? 'selected' : ''}>Pemrosesan Akhir (TPA)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Fasilitas Pengelolaan Sampah</label>
+                                <select onchange="updateSampahKerjasamaField(${idx}, 'jenisFasilitas', this.value)"
+                                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold">
+                                    <option value="" ${!item.jenisFasilitas ? 'selected' : ''}>-- Pilih Jenis Fasilitas --</option>
+                                    <option value="Bank Sampah" ${item.jenisFasilitas === 'Bank Sampah' ? 'selected' : ''}>Bank Sampah</option>
+                                    <option value="TPS3R" ${item.jenisFasilitas === 'TPS3R' ? 'selected' : ''}>TPS3R</option>
+                                    <option value="Rumah Kompos / Biodigester" ${item.jenisFasilitas === 'Rumah Kompos / Biodigester' ? 'selected' : ''}>Rumah Kompos / Biodigester</option>
+                                    <option value="Pengolah Sampah Berizin / Pengepul" ${item.jenisFasilitas === 'Pengolah Sampah Berizin / Pengepul' ? 'selected' : ''}>Pengolah Sampah Berizin / Pengepul</option>
+                                    <option value="TPA (Tempat Pemrosesan Akhir)" ${item.jenisFasilitas === 'TPA (Tempat Pemrosesan Akhir)' ? 'selected' : ''}>TPA (Tempat Pemrosesan Akhir)</option>
+                                    <option value="Armada Pengangkutan Sampah" ${item.jenisFasilitas === 'Armada Pengangkutan Sampah' ? 'selected' : ''}>Armada Pengangkutan Sampah</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="pt-1 flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-[11px] text-slate-600 font-medium">Dokumen Surat Perjanjian Kerjasama (PDF / JPG, Opsional):</span>
+                            <div class="flex items-center gap-2">
+                                <input type="file" id="${inputId}" accept=".pdf,.jpg,.jpeg,.png" class="hidden"
+                                    onchange="handleSampahKerjasamaFileUpload(event, ${idx})">
+                                <button type="button" onclick="document.getElementById('${inputId}').click()"
+                                    class="py-1.5 px-3 rounded-lg bg-white border border-dashed border-slate-400 hover:border-teal-600 text-[11px] font-bold text-slate-700 cursor-pointer">
+                                    ${item.fileDoc ? `✅ ${escapeHtml(item.fileDoc.name)}` : '📎 Unggah Dokumen Perjanjian'}
+                                </button>
+                                ${item.fileDoc ? `
+                                    <button type="button" onclick="previewSampahKerjasamaDoc(${idx})"
+                                        class="py-1.5 px-2.5 rounded-lg bg-teal-700 text-white text-[11px] font-bold cursor-pointer">
+                                        Lihat
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function renderAllSampahSections() {
@@ -2611,14 +3391,34 @@
 
         // --- Bagian 5: Pengangkutan Sampah ke TPA ---
         function addTpaTransportRow() {
-            sampahTpaList.push({ tanggal: '', berat: 0, satuan: 'Ton', jenisArmada: '' });
+            sampahTpaList.push({
+                tanggal: '',
+                berat: 0,
+                satuan: 'Ton',
+                jenisArmada: '',
+                nopolKendaraan: '',
+                kapasitasAngkut: '',
+                kepemilikanKendaraan: 'Milik Sendiri',
+                kerjasamaPengangkutan: '',
+                buktiRetribusiFiles: []
+            });
             renderTpaTransportRows();
             recalculateSampahBalance();
         }
 
         function removeTpaTransportRow(idx) {
             if (sampahTpaList.length <= 1) {
-                sampahTpaList[0] = { tanggal: '', berat: 0, satuan: 'Ton', jenisArmada: '' };
+                sampahTpaList[0] = {
+                    tanggal: '',
+                    berat: 0,
+                    satuan: 'Ton',
+                    jenisArmada: '',
+                    nopolKendaraan: '',
+                    kapasitasAngkut: '',
+                    kepemilikanKendaraan: 'Milik Sendiri',
+                    kerjasamaPengangkutan: '',
+                    buktiRetribusiFiles: []
+                };
             } else {
                 sampahTpaList.splice(idx, 1);
             }
@@ -2632,42 +3432,152 @@
             recalculateSampahBalance();
         }
 
+        function handleTpaRetribusiUpload(event, idx) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length || !sampahTpaList[idx]) return;
+
+            for (const file of files) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast(`File "${file.name}" melebihi batas 5 MB.`, 'error');
+                    continue;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    sampahTpaList[idx].buktiRetribusiFiles.push({
+                        name: file.name,
+                        type: file.type,
+                        fileObj: file,
+                        dataUrl: e.target.result
+                    });
+                    renderTpaTransportRows();
+                };
+                reader.readAsDataURL(file);
+            }
+            event.target.value = '';
+            showToast(`${files.length} file bukti pembayaran retribusi ditambahkan.`);
+        }
+
+        function removeTpaRetribusiFile(rowIdx, fileIdx) {
+            if (sampahTpaList[rowIdx]?.buktiRetribusiFiles) {
+                sampahTpaList[rowIdx].buktiRetribusiFiles.splice(fileIdx, 1);
+                renderTpaTransportRows();
+            }
+        }
+
+        function previewTpaRetribusiFile(rowIdx, fileIdx) {
+            const f = sampahTpaList[rowIdx]?.buktiRetribusiFiles?.[fileIdx];
+            if (!f) return;
+            openDocViewer(f.name, f.dataUrl || f.publicUrl, f.type);
+        }
+
         function renderTpaTransportRows() {
             const container = document.getElementById('s_tpaRowsContainer');
             if (!container) return;
 
             container.innerHTML = sampahTpaList.map((item, idx) => `
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end p-3.5 rounded-xl border border-amber-200/80 bg-amber-50/40">
-                    <div class="md:col-span-3">
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Tanggal Pengangkutan ke TPA</label>
-                        <input type="date" value="${escapeHtml(item.tanggal)}"
-                            onchange="updateTpaRow(${idx}, 'tanggal', this.value, true)"
-                            class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
+                <div class="p-4 rounded-xl border border-amber-300/90 bg-amber-50/40 space-y-3">
+                    <div class="flex items-center justify-between border-b border-amber-200 pb-2">
+                        <span class="text-xs font-extrabold text-amber-950 uppercase">Catatan Pengangkutan ke TPA #${idx + 1}</span>
+                        <button type="button" onclick="removeTpaTransportRow(${idx})" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer" title="Hapus baris">
+                            Hapus Baris ✕
+                        </button>
                     </div>
-                    <div class="md:col-span-4">
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Berat Sampah Diangkut ke TPA</label>
-                        <div class="flex">
-                            <input type="number" step="0.001" min="0" value="${item.berat || ''}" placeholder="0.000"
-                                oninput="updateTpaRow(${idx}, 'berat', this.value)"
-                                class="w-full px-3 py-2 rounded-l-lg bg-white border border-r-0 border-slate-300 focus:border-amber-600 outline-none text-xs font-bold text-right">
-                            <select onchange="updateTpaRow(${idx}, 'satuan', this.value, true)"
-                                class="px-2.5 py-2 rounded-r-lg border border-slate-300 bg-slate-100 text-xs font-bold outline-none">
-                                <option value="Ton" ${item.satuan === 'Ton' ? 'selected' : ''}>Ton</option>
-                                <option value="Kg" ${item.satuan === 'Kg' ? 'selected' : ''}>Kg</option>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Tanggal Pengangkutan ke TPA</label>
+                            <input type="date" value="${escapeHtml(item.tanggal)}"
+                                onchange="updateTpaRow(${idx}, 'tanggal', this.value, true)"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Berat Sampah Diangkut ke TPA</label>
+                            <div class="flex">
+                                <input type="number" step="0.001" min="0" value="${item.berat || ''}" placeholder="0.000"
+                                    oninput="updateTpaRow(${idx}, 'berat', this.value)"
+                                    class="w-full px-3 py-2 rounded-l-lg bg-white border border-r-0 border-slate-300 focus:border-amber-600 outline-none text-xs font-bold text-right">
+                                <select onchange="updateTpaRow(${idx}, 'satuan', this.value, true)"
+                                    class="px-2.5 py-2 rounded-r-lg border border-slate-300 bg-slate-100 text-xs font-bold outline-none">
+                                    <option value="Ton" ${item.satuan === 'Ton' ? 'selected' : ''}>Ton</option>
+                                    <option value="Kg" ${item.satuan === 'Kg' ? 'selected' : ''}>Kg</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Armada Pengangkut</label>
+                            <input type="text" value="${escapeHtml(item.jenisArmada)}"
+                                oninput="updateTpaRow(${idx}, 'jenisArmada', this.value, true)"
+                                placeholder="Contoh: Dump Truck / Arm Roll / Pick Up"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Nomor Polisi Kendaraan</label>
+                            <input type="text" value="${escapeHtml(item.nopolKendaraan)}"
+                                oninput="updateTpaRow(${idx}, 'nopolKendaraan', this.value.toUpperCase(), true)"
+                                placeholder="Contoh: BH 8123 KU"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs font-mono uppercase">
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Kapasitas Angkut Kendaraan</label>
+                            <input type="text" value="${escapeHtml(item.kapasitasAngkut)}"
+                                oninput="updateTpaRow(${idx}, 'kapasitasAngkut', this.value, true)"
+                                placeholder="Contoh: 6 m3 / 4 Ton"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Kepemilikan Kendaraan</label>
+                            <select onchange="updateTpaRow(${idx}, 'kepemilikanKendaraan', this.value, true)"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs font-semibold">
+                                <option value="Milik Sendiri" ${item.kepemilikanKendaraan === 'Milik Sendiri' ? 'selected' : ''}>Milik Sendiri Perusahaan</option>
+                                <option value="Sewa / Rental" ${item.kepemilikanKendaraan === 'Sewa / Rental' ? 'selected' : ''}>Sewa / Rental</option>
+                                <option value="Jasa Pengangkut Swasta" ${item.kepemilikanKendaraan === 'Jasa Pengangkut Swasta' ? 'selected' : ''}>Jasa Pengangkut Swasta (Pihak Ketiga)</option>
+                                <option value="Armada DLH Kab. Bungo" ${item.kepemilikanKendaraan === 'Armada DLH Kab. Bungo' ? 'selected' : ''}>Armada DLH Kab. Bungo</option>
                             </select>
                         </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Kerjasama Pengangkutan Sampah (Nomor PKS / Nama Pengangkut)</label>
+                            <input type="text" value="${escapeHtml(item.kerjasamaPengangkutan)}"
+                                oninput="updateTpaRow(${idx}, 'kerjasamaPengangkutan', this.value, true)"
+                                placeholder="Contoh: PKS No. 05/DLH-BGO/2026 dengan UPTD Pengelolaan Sampah / CV. Mitra Bersih"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
+                        </div>
                     </div>
-                    <div class="md:col-span-4">
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Armada Pengangkut</label>
-                        <input type="text" value="${escapeHtml(item.jenisArmada)}"
-                            oninput="updateTpaRow(${idx}, 'jenisArmada', this.value, true)"
-                            placeholder="Contoh: Dump Truck / Arm Roll / Pick Up"
-                            class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
-                    </div>
-                    <div class="md:col-span-1 flex justify-end">
-                        <button type="button" onclick="removeTpaTransportRow(${idx})" class="px-2.5 py-2 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer" title="Hapus baris">
-                            ✕
-                        </button>
+
+                    <!-- Bukti Pembayaran Retribusi (Bisa Lebih dari 1 File) -->
+                    <div class="pt-2 border-t border-amber-200/80 space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <label class="text-[11px] font-bold text-amber-950">
+                                🧾 Bukti Pembayaran Retribusi Pengangkutan / Pembuangan TPA (Bisa unggah lebih dari 1 file PDF/JPG)
+                            </label>
+                            <div>
+                                <input type="file" id="tpa_retribusi_input_${idx}" accept=".pdf,.jpg,.jpeg,.png" multiple class="hidden"
+                                    onchange="handleTpaRetribusiUpload(event, ${idx})">
+                                <button type="button" onclick="document.getElementById('tpa_retribusi_input_${idx}').click()"
+                                    class="px-3 py-1.5 rounded-lg bg-amber-700 hover:bg-amber-800 text-white text-[11px] font-bold cursor-pointer">
+                                    + Tambah Bukti Retribusi (${(item.buktiRetribusiFiles || []).length} file)
+                                </button>
+                            </div>
+                        </div>
+
+                        ${(item.buktiRetribusiFiles && item.buktiRetribusiFiles.length > 0) ? `
+                            <div class="flex flex-wrap gap-2">
+                                ${item.buktiRetribusiFiles.map((f, fIdx) => `
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-amber-300 text-[11px]">
+                                        <span class="font-semibold text-slate-700 max-w-[180px] truncate" title="${escapeHtml(f.name)}">📄 ${escapeHtml(f.name)}</span>
+                                        <button type="button" onclick="previewTpaRetribusiFile(${idx}, ${fIdx})" class="text-teal-700 hover:underline font-bold cursor-pointer">Lihat</button>
+                                        <button type="button" onclick="removeTpaRetribusiFile(${idx}, ${fIdx})" class="text-rose-600 hover:text-rose-800 font-bold cursor-pointer">✕</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <p class="text-[11px] text-slate-500 italic">Belum ada bukti pembayaran retribusi yang diunggah pada catatan ini.</p>
+                        `}
                     </div>
                 </div>
             `).join('');
@@ -2690,7 +3600,15 @@
 
         function removePengolahanActivityRow(idx) {
             if (sampahPengolahanList.length <= 1) {
-                sampahPengolahanList[0] = { jenisKegiatan: 'Pengomposan / Rumah Kompos', sumberTerkait: 0, waktu: '', jenisSampah: '', beratSampah: 0, beratResidu: 0, satuan: 'Ton' };
+                sampahPengolahanList[0] = {
+                    jenisKegiatan: 'Pengomposan / Rumah Kompos',
+                    sumberTerkait: 0,
+                    waktu: '',
+                    jenisSampah: '',
+                    beratSampah: 0,
+                    beratResidu: 0,
+                    satuan: 'Ton'
+                };
             } else {
                 sampahPengolahanList.splice(idx, 1);
             }
@@ -2700,11 +3618,7 @@
 
         function updatePengolahanRow(idx, field, val, isText = false) {
             if (!sampahPengolahanList[idx]) return;
-            if (field === 'sumberTerkait') {
-                sampahPengolahanList[idx][field] = parseInt(val, 10) || 0;
-            } else {
-                sampahPengolahanList[idx][field] = isText ? val : (parseFloat(val) || 0);
-            }
+            sampahPengolahanList[idx][field] = isText ? val : (parseFloat(val) || 0);
             recalculateSampahBalance();
         }
 
@@ -2723,269 +3637,75 @@
 
             container.innerHTML = sampahPengolahanList.map((act, idx) => `
                 <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 space-y-3">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
-                        <div class="lg:col-span-3">
+                    <div class="flex items-center justify-between border-b border-emerald-200 pb-2">
+                        <span class="text-xs font-extrabold text-emerald-950 uppercase">Kegiatan Pengolahan Sampah #${idx + 1}</span>
+                        <button type="button" onclick="removePengolahanActivityRow(${idx})" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer">
+                            Hapus ✕
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+                        <div class="lg:col-span-2">
                             <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Kegiatan Pengolahan</label>
                             <select onchange="updatePengolahanRow(${idx}, 'jenisKegiatan', this.value, true)"
-                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold">
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-semibold">
                                 ${kegiatanOptions.map(opt => `<option value="${opt}" ${act.jenisKegiatan === opt ? 'selected' : ''}>${opt}</option>`).join('')}
                             </select>
                         </div>
-
-                        <div class="lg:col-span-2">
+                        <div>
                             <label class="block text-[11px] font-bold text-slate-700 mb-1">Sumber Sampah</label>
-                            <select onchange="updatePengolahanRow(${idx}, 'sumberTerkait', this.value)"
-                                class="w-full px-2.5 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-semibold">
+                            <select onchange="updatePengolahanRow(${idx}, 'sumberTerkait', parseInt(this.value, 10) || 0)"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs">
                                 ${sampahSourcesData.map((s, sIdx) => `<option value="${sIdx}" ${Number(act.sumberTerkait) === sIdx ? 'selected' : ''}>${escapeHtml(s.sumber || 'Sumber #' + (sIdx + 1))}</option>`).join('')}
                             </select>
                         </div>
-
-                        <div class="lg:col-span-2">
-                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Waktu / Periode Kegiatan</label>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Waktu / Periode</label>
                             <input type="text" value="${escapeHtml(act.waktu)}"
                                 oninput="updatePengolahanRow(${idx}, 'waktu', this.value, true)"
                                 placeholder="Contoh: Jan-Jun 2026 / Mingguan"
                                 class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs">
                         </div>
-
                         <div class="lg:col-span-2">
                             <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Sampah Diolah</label>
                             <input type="text" value="${escapeHtml(act.jenisSampah)}"
                                 oninput="updatePengolahanRow(${idx}, 'jenisSampah', this.value, true)"
-                                placeholder="Organik / Plastik / Kertas"
+                                placeholder="Contoh: Sisa makanan, plastik botol, kardus"
                                 class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs">
                         </div>
-
                         <div class="lg:col-span-2">
-                            <label class="block text-[11px] font-bold text-emerald-900 mb-1">Berat/Vol Sampah & Residu</label>
-                            <div class="grid grid-cols-2 gap-1.5">
-                                <input type="number" step="0.001" min="0" value="${act.beratSampah || ''}" placeholder="Diolah"
-                                    oninput="updatePengolahanRow(${idx}, 'beratSampah', this.value)"
-                                    title="Berat/Volume Sampah Diolah"
-                                    class="w-full px-2 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold text-right">
-                                <input type="number" step="0.001" min="0" value="${act.beratResidu || ''}" placeholder="Residu"
-                                    oninput="updatePengolahanRow(${idx}, 'beratResidu', this.value)"
-                                    title="Berat/Volume Residu Pengolahan"
-                                    class="w-full px-2 py-2 rounded-lg bg-white border border-rose-300 focus:border-rose-500 outline-none text-xs font-bold text-right">
-                            </div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Berat / Volume Sampah Diolah</label>
+                            <input type="number" step="0.001" min="0" value="${act.beratSampah || ''}" placeholder="0.000"
+                                oninput="updatePengolahanRow(${idx}, 'beratSampah', this.value)"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold text-right">
                         </div>
-
-                        <div class="lg:col-span-1 flex items-center justify-end gap-1">
+                        <div class="lg:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Berat / Volume Residu Pengolahan</label>
+                            <input type="number" step="0.001" min="0" value="${act.beratResidu || ''}" placeholder="0.000"
+                                oninput="updatePengolahanRow(${idx}, 'beratResidu', this.value)"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold text-right">
+                        </div>
+                        <div class="lg:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Satuan Pengolahan</label>
                             <select onchange="updatePengolahanRow(${idx}, 'satuan', this.value, true)"
-                                class="px-1.5 py-2 rounded-lg border border-slate-300 bg-white text-[11px] font-bold outline-none">
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold">
                                 <option value="Ton" ${act.satuan === 'Ton' ? 'selected' : ''}>Ton</option>
-                                <option value="Kg" ${act.satuan === 'Kg' ? 'selected' : ''}>Kg</option>
+                                <option value="Kg" ${act.satuan === 'Kg' ? 'selected' : ''}>Kg (Otomatis ÷ 1.000 ke Ton)</option>
                             </select>
-                            <button type="button" onclick="removePengolahanActivityRow(${idx})" class="px-2 py-2 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer" title="Hapus">
-                                ✕
-                            </button>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // --- KALKULASI NERACA OTOMATIS (MENGHASILKAN FORMAT EXCEL CONTOH) ---
-        function computeDetailedSampahNeraca() {
-            const faktorKg = parseFloat(document.getElementById('s_faktorKg')?.value) || 0.33;
-            const jumlahHari = parseFloat(document.getElementById('s_jumlahHari')?.value) || 180;
-            const satuanKomp = document.getElementById('s_satuanInputKomposisi')?.value || 'Ton';
-            const divFactor = satuanKomp === 'Kg' ? 1000 : 1;
-
-            const rowsComputed = sampahSourcesData.map((src, idx) => {
-                const penghuni = Number(src.penghuni) || 0;
-                const timbulan = (penghuni * faktorKg * jumlahHari) / 1000;
-
-                const sisaMakanan = (Number(src.sisaMakanan) || 0) / divFactor;
-                const rantingDaun = (Number(src.rantingDaun) || 0) / divFactor;
-                const kaca = (Number(src.kaca) || 0) / divFactor;
-                const kain = (Number(src.kain) || 0) / divFactor;
-                const logam = (Number(src.logam) || 0) / divFactor;
-                const karet = (Number(src.karet) || 0) / divFactor;
-                const plastik = (Number(src.plastik) || 0) / divFactor;
-                const kertas = (Number(src.kertas) || 0) / divFactor;
-                const residu = (Number(src.residu) || 0) / divFactor;
-
-                const terkumpul = sisaMakanan + rantingDaun + kaca + kain + logam + karet + plastik + kertas + residu;
-
-                // Agregasi kegiatan pengolahan pada Bagian 6 yang terkait sumber ini
-                let daurUlang = 0, gunaUlang = 0, maggot = 0, tps3r = 0, bankSampah = 0, rumahKompos = 0, residuPengolahan = 0;
-                sampahPengolahanList.forEach(act => {
-                    const targetIdx = Math.min(Number(act.sumberTerkait) || 0, sampahSourcesData.length - 1);
-                    if (targetIdx === idx) {
-                        const actDiv = act.satuan === 'Kg' ? 1000 : 1;
-                        const valTon = (Number(act.beratSampah) || 0) / actDiv;
-                        const resTon = (Number(act.beratResidu) || 0) / actDiv;
-                        residuPengolahan += resTon;
-
-                        if (act.jenisKegiatan === 'Kegiatan Daur Ulang') daurUlang += valTon;
-                        else if (act.jenisKegiatan === 'Kegiatan Guna Ulang') gunaUlang += valTon;
-                        else if (act.jenisKegiatan === 'Ternak Maggot & Sejenisnya') maggot += valTon;
-                        else if (act.jenisKegiatan === 'TPS3R') tps3r += valTon;
-                        else if (act.jenisKegiatan === 'Bank Sampah') bankSampah += valTon;
-                        else rumahKompos += valTon;
-                    }
-                });
-
-                const totalKelolaKotor = daurUlang + gunaUlang + maggot + tps3r + bankSampah + rumahKompos;
-                const terkelolaBersih = Math.max(0, totalKelolaKotor - residuPengolahan);
-                const keTpa = Math.max(0, terkumpul - terkelolaBersih);
-                const tidakTerkelola = Math.max(0, timbulan - terkumpul);
-
-                const pctTerkelola = timbulan > 0 ? (terkelolaBersih / timbulan) * 100 : 0;
-                const pctKeTpa = timbulan > 0 ? (keTpa / timbulan) * 100 : 0;
-                const pctTidakTerkelola = timbulan > 0 ? (tidakTerkelola / timbulan) * 100 : 0;
-
-                const kontrolNeraca = timbulan > 0 ? (pctTerkelola + pctKeTpa + pctTidakTerkelola) : 0;
-                const selisihAlokasi = timbulan - (terkelolaBersih + keTpa + tidakTerkelola);
-                const isSeimbang = timbulan === 0
-                    ? (terkumpul === 0 && terkelolaBersih === 0)
-                    : (Math.abs(selisihAlokasi) < 0.001 && Math.abs(kontrolNeraca - 100) < 0.05 && terkumpul <= timbulan + 0.0005 && totalKelolaKotor <= terkumpul + 0.0005);
-
-                return {
-                    sumber: src.sumber || `Sumber #${idx + 1}`,
-                    penghuni,
-                    sisaMakanan, rantingDaun, kaca, kain, logam, karet, plastik, kertas, residu,
-                    daurUlang, gunaUlang, maggot, tps3r, bankSampah, rumahKompos, residuPengolahan,
-                    metrics: {
-                        penghuni,
-                        timbulan,
-                        terkumpul,
-                        terkelolaBersih,
-                        pctTerkelola,
-                        keTpa,
-                        pctKeTpa,
-                        tidakTerkelola,
-                        pctTidakTerkelola,
-                        kontrolNeraca,
-                        selisihAlokasi,
-                        statusValidasi: (timbulan === 0 && terkumpul === 0) ? '-' : (isSeimbang ? 'SEIMBANG' : 'TIDAK SEIMBANG')
-                    }
-                };
-            });
-
-            // Hitung Total Semester
-            const totals = {
-                penghuni: 0, timbulan: 0, terkumpul: 0, terkelolaBersih: 0, keTpa: 0, tidakTerkelola: 0
-            };
-            rowsComputed.forEach(r => {
-                totals.penghuni += r.metrics.penghuni;
-                totals.timbulan += r.metrics.timbulan;
-                totals.terkumpul += r.metrics.terkumpul;
-                totals.terkelolaBersih += r.metrics.terkelolaBersih;
-                totals.keTpa += r.metrics.keTpa;
-                totals.tidakTerkelola += r.metrics.tidakTerkelola;
-            });
-
-            const pctTerkelola = totals.timbulan > 0 ? (totals.terkelolaBersih / totals.timbulan) * 100 : 0;
-            const pctKeTpa = totals.timbulan > 0 ? (totals.keTpa / totals.timbulan) * 100 : 0;
-            const pctTidakTerkelola = totals.timbulan > 0 ? (totals.tidakTerkelola / totals.timbulan) * 100 : 0;
-            const kontrolNeraca = totals.timbulan > 0 ? (pctTerkelola + pctKeTpa + pctTidakTerkelola) : 0;
-            const selisihAlokasi = totals.timbulan - (totals.terkelolaBersih + totals.keTpa + totals.tidakTerkelola);
-            const isAllSeimbang = totals.timbulan > 0 && Math.abs(selisihAlokasi) < 0.001 && Math.abs(kontrolNeraca - 100) < 0.05 && totals.terkumpul <= totals.timbulan + 0.0005;
-
-            // Total pengangkutan TPA yang diinput manual di Bagian 5
-            const totalTpaInputTon = sampahTpaList.reduce((acc, item) => {
-                const d = item.satuan === 'Kg' ? 1000 : 1;
-                return acc + ((Number(item.berat) || 0) / d);
-            }, 0);
-
-            return {
-                rows: rowsComputed,
-                totals: {
-                    ...totals,
-                    pctTerkelola,
-                    pctKeTpa,
-                    pctTidakTerkelola,
-                    kontrolNeraca,
-                    selisihAlokasi,
-                    totalTpaInputTon,
-                    statusValidasi: totals.timbulan === 0 ? '-' : (isAllSeimbang ? 'SEIMBANG' : 'TIDAK SEIMBANG')
-                }
-            };
+        // --- Handler Dokumen & Foto Bagian 2 & Bagian 7 ---
+        function applyLimbahPreset(val) {
+            if (!val) return;
+            const [kode, jenis, sumber] = val.split('|');
+            if (kode) document.getElementById('kodeLimbah').value = kode;
+            if (jenis) document.getElementById('jenisLimbah').value = jenis;
+            if (sumber) document.getElementById('sumberLimbah').value = sumber;
         }
 
-        function computeRowMetrics(row) {
-            if (row && row.metrics) return row.metrics;
-            return {
-                penghuni: Number(row?.penghuni) || 0,
-                timbulan: 0, terkumpul: 0, terkelolaBersih: 0, pctTerkelola: 0,
-                keTpa: 0, pctKeTpa: 0, tidakTerkelola: 0, pctTidakTerkelola: 0,
-                kontrolNeraca: 0, selisihAlokasi: 0, statusValidasi: '-'
-            };
-        }
-
-        function recalculateSampahBalance() {
-            const { rows, totals } = computeDetailedSampahNeraca();
-
-            rows.forEach((r, idx) => {
-                const estEl = document.getElementById(`s_est_val_${idx}`);
-                if (estEl) estEl.textContent = `${r.metrics.timbulan.toFixed(3)} Ton`;
-
-                const subEl = document.getElementById(`s_terkumpul_sub_${idx}`);
-                if (subEl) subEl.textContent = `Total Terkumpul: ${r.metrics.terkumpul.toFixed(3)} Ton`;
-            });
-
-            const tpaDisp = document.getElementById('s_totalTpaInputDisplay');
-            if (tpaDisp) tpaDisp.textContent = `${totals.totalTpaInputTon.toFixed(3)} Ton`;
-
-            const setTxt = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-            setTxt('card_timbulan', `${totals.timbulan.toFixed(3)} Ton`);
-            setTxt('card_terkelola', `${totals.terkelolaBersih.toFixed(3)} Ton (${totals.pctTerkelola.toFixed(2)}%)`);
-            setTxt('card_ketpa', `${totals.keTpa.toFixed(3)} Ton (${totals.pctKeTpa.toFixed(2)}%)`);
-            setTxt('card_tidakterkelola', `${totals.tidakTerkelola.toFixed(3)} Ton (${totals.pctTidakTerkelola.toFixed(2)}%)`);
-
-            const badge = document.getElementById('s_neracaBadgeStatus');
-            if (badge) {
-                badge.textContent = `STATUS NERACA: ${totals.statusValidasi}`;
-                badge.className = `px-3 py-1 rounded-full text-xs font-extrabold ${totals.statusValidasi === 'SEIMBANG' ? 'bg-emerald-400 text-teal-950' : 'bg-amber-300 text-slate-950'}`;
-            }
-
-            const tbody = document.getElementById('s_liveNeracaPreviewBody');
-            if (tbody) {
-                tbody.innerHTML = rows.map((r, i) => {
-                    const m = r.metrics;
-                    return `
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-2 px-2.5 text-center font-bold border-r border-slate-200">${i + 1}</td>
-                            <td class="py-2 px-3 font-semibold border-r border-slate-200">${escapeHtml(r.sumber)}</td>
-                            <td class="py-2 px-2.5 text-right border-r border-slate-200">${m.penghuni}</td>
-                            <td class="py-2 px-2.5 text-right font-semibold border-r border-slate-200">${m.timbulan.toFixed(3)}</td>
-                            <td class="py-2 px-2.5 text-right font-semibold border-r border-slate-200">${m.terkumpul.toFixed(3)}</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-yellow-50 border-r border-slate-200">${m.terkelolaBersih.toFixed(3)}</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-rose-50 text-rose-900 border-r border-slate-200">${m.pctTerkelola.toFixed(2)}%</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-yellow-50 border-r border-slate-200">${m.keTpa.toFixed(3)}</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-rose-50 text-rose-900 border-r border-slate-200">${m.pctKeTpa.toFixed(2)}%</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-yellow-50 border-r border-slate-200">${m.tidakTerkelola.toFixed(3)}</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-rose-50 text-rose-900 border-r border-slate-200">${m.pctTidakTerkelola.toFixed(2)}%</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-lime-50 border-r border-slate-200">${m.timbulan > 0 ? m.kontrolNeraca.toFixed(2) + '%' : '-'}</td>
-                            <td class="py-2 px-2.5 text-right font-bold bg-lime-50 border-r border-slate-200">${m.timbulan > 0 ? m.selisihAlokasi.toFixed(3) : '-'}</td>
-                            <td class="py-2 px-2.5 text-center font-extrabold ${m.statusValidasi === 'SEIMBANG' ? 'text-emerald-800 bg-emerald-50' : 'text-rose-800 bg-rose-50'}">${m.statusValidasi}</td>
-                        </tr>
-                    `;
-                }).join('') + `
-                    <tr class="bg-emerald-800 text-white font-extrabold">
-                        <td colspan="2" class="py-2.5 px-3 border-r border-emerald-700">Total Semester (Ton)</td>
-                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.penghuni}</td>
-                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.timbulan.toFixed(3)}</td>
-                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.terkumpul.toFixed(3)}</td>
-                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.terkelolaBersih.toFixed(3)}</td>
-                        <td class="py-2.5 px-2.5 text-right bg-rose-700 border-r border-emerald-700">${totals.pctTerkelola.toFixed(2)}%</td>
-                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.keTpa.toFixed(3)}</td>
-                        <td class="py-2.5 px-2.5 text-right bg-rose-700 border-r border-emerald-700">${totals.pctKeTpa.toFixed(2)}%</td>
-                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.tidakTerkelola.toFixed(3)}</td>
-                        <td class="py-2.5 px-2.5 text-right bg-rose-700 border-r border-emerald-700">${totals.pctTidakTerkelola.toFixed(2)}%</td>
-                        <td class="py-2.5 px-2.5 text-right bg-lime-600 text-slate-950 border-r border-emerald-700">${totals.kontrolNeraca.toFixed(2)}%</td>
-                        <td class="py-2.5 px-2.5 text-right bg-lime-600 text-slate-950 border-r border-emerald-700">${totals.selisihAlokasi.toFixed(3)}</td>
-                        <td class="py-2.5 px-2.5 text-center bg-rose-700">${totals.statusValidasi}</td>
-                    </tr>
-                `;
-            }
-
-            return { rows, totals };
-        }
-
-        // --- Upload Dokumen SOP/SK & Bukti Neraca ---
         function handleSampahDocUpload(event, docKey) {
             const file = event.target.files[0];
             if (!file) return;
@@ -3004,10 +3724,10 @@
                 };
                 if (docKey === 'sopSk') {
                     document.getElementById('s_sopSkFileName').textContent = `✅ ${file.name}`;
-                    document.getElementById('s_sopSkPreviewBtn').classList.remove('hidden');
-                } else {
+                    document.getElementById('s_sopSkPreviewBtn')?.classList.remove('hidden');
+                } else if (docKey === 'neracaDoc') {
                     document.getElementById('s_neracaDocFileName').textContent = `✅ ${file.name}`;
-                    document.getElementById('s_neracaDocPreviewBtn').classList.remove('hidden');
+                    document.getElementById('s_neracaDocPreviewBtn')?.classList.remove('hidden');
                 }
                 showToast(`Dokumen "${file.name}" berhasil dilampirkan.`);
             };
@@ -3015,49 +3735,9 @@
         }
 
         function previewSampahDoc(docKey) {
-            const d = sampahDocsState[docKey];
-            if (!d) return;
-            openDocViewer(d.name, d.dataUrl, d.type);
-        }
-
-        // --- Geotagging GPS Otomatis ---
-        function captureSampahGeotag() {
-            const btn = document.getElementById('s_getGpsBtn');
-            const input = document.getElementById('s_geotagCoords');
-            if (!navigator.geolocation) {
-                showToast('Perangkat/browser tidak mendukung GPS otomatis. Silakan ketik koordinat secara manual.', 'error');
-                return;
-            }
-            btn.disabled = true;
-            btn.textContent = '⏳ Mendeteksi GPS...';
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const lat = pos.coords.latitude.toFixed(6);
-                    const lng = pos.coords.longitude.toFixed(6);
-                    const acc = Math.round(pos.coords.accuracy);
-                    const coordText = `${lat}, ${lng} (Akurasi ±${acc}m)`;
-                    input.value = coordText;
-                    updateGeoOverlayText();
-                    btn.disabled = false;
-                    btn.textContent = '📡 Ambil Lokasi GPS';
-                    showToast('📍 Koordinat GPS berhasil dikunci!', 'success');
-                },
-                (err) => {
-                    btn.disabled = false;
-                    btn.textContent = '📡 Ambil Lokasi GPS';
-                    showToast(`Gagal mendeteksi GPS (${err.message}). Silakan ketik koordinat manual.`, 'error');
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
-        }
-
-        function updateGeoOverlayText() {
-            const coords = document.getElementById('s_geotagCoords')?.value.trim();
-            const overlay = document.getElementById('s_geoOverlayBadge');
-            if (overlay && uploadedSampahFotoBase64) {
-                overlay.textContent = `📍 Geotagging: ${coords || 'Menunggu koordinat GPS'}`;
-                overlay.classList.remove('hidden');
-            }
+            const doc = sampahDocsState[docKey];
+            if (!doc) return;
+            openDocViewer(doc.name, doc.dataUrl, doc.type);
         }
 
         function handleSampahFotoUpload(event) {
@@ -3072,12 +3752,16 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 uploadedSampahFotoBase64 = e.target.result;
-                document.getElementById('s_fotoPreviewImg').src = uploadedSampahFotoBase64;
-                document.getElementById('s_fotoPreviewImg').classList.remove('hidden');
+                const img = document.getElementById('s_fotoPreviewImg');
+                img.src = uploadedSampahFotoBase64;
+                img.classList.remove('hidden');
                 document.getElementById('s_fotoPlaceholderText').classList.add('hidden');
                 document.getElementById('s_removeFotoBtn').classList.remove('hidden');
-                updateGeoOverlayText();
-                showToast('Bukti foto kegiatan pengelolaan sampah dilampirkan.');
+                const coords = document.getElementById('s_geotagCoords').value.trim();
+                const badge = document.getElementById('s_geoOverlayBadge');
+                badge.textContent = `📍 GPS: ${coords || 'Belum diambil'}`;
+                badge.classList.remove('hidden');
+                showToast('Foto kegiatan pengelolaan sampah berhasil dilampirkan.');
             };
             reader.readAsDataURL(file);
         }
@@ -3085,62 +3769,300 @@
         function removeSampahFoto() {
             uploadedSampahFotoBase64 = '';
             uploadedSampahFotoFile = null;
-            document.getElementById('s_buktiFotoInput').value = '';
-            document.getElementById('s_fotoPreviewImg').src = '';
-            document.getElementById('s_fotoPreviewImg').classList.add('hidden');
-            document.getElementById('s_fotoPlaceholderText').classList.remove('hidden');
-            document.getElementById('s_removeFotoBtn').classList.add('hidden');
+            const inp = document.getElementById('s_buktiFotoInput');
+            if (inp) inp.value = '';
+            document.getElementById('s_fotoPreviewImg')?.classList.add('hidden');
+            document.getElementById('s_fotoPlaceholderText')?.classList.remove('hidden');
+            document.getElementById('s_removeFotoBtn')?.classList.add('hidden');
             document.getElementById('s_geoOverlayBadge')?.classList.add('hidden');
+        }
+
+        function captureSampahGeotag() {
+            const btn = document.getElementById('s_getGpsBtn');
+            const input = document.getElementById('s_geotagCoords');
+            if (!navigator.geolocation) {
+                showToast('Browser tidak mendukung GPS otomatis. Silakan ketik koordinat manual.', 'error');
+                return;
+            }
+            const orig = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Mencari GPS...';
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude.toFixed(6);
+                    const lng = pos.coords.longitude.toFixed(6);
+                    const coordStr = `${lat}, ${lng}`;
+                    input.value = coordStr;
+                    const badge = document.getElementById('s_geoOverlayBadge');
+                    if (badge && !badge.classList.contains('hidden')) {
+                        badge.textContent = `📍 GPS: ${coordStr}`;
+                    }
+                    btn.disabled = false;
+                    btn.textContent = orig;
+                    showToast(`📍 Koordinat GPS berhasil didapatkan: ${coordStr}`, 'success');
+                },
+                (err) => {
+                    btn.disabled = false;
+                    btn.textContent = orig;
+                    showToast(`Gagal mengambil GPS (${err.message}). Silakan ketik koordinat secara manual.`, 'error');
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // --- Perhitungan Neraca Sampah Otomatis ---
+        function computeRowMetrics(src, faktorKg = 0.33, jumlahHari = 180, faktorSatuan = 1) {
+            const penghuni = Number(src.penghuni) || 0;
+            const timbulan = (penghuni * faktorKg * jumlahHari) / 1000;
+
+            const sisaMakanan = (Number(src.sisaMakanan) || 0) * faktorSatuan;
+            const rantingDaun = (Number(src.rantingDaun) || 0) * faktorSatuan;
+            const kaca = (Number(src.kaca) || 0) * faktorSatuan;
+            const kain = (Number(src.kain) || 0) * faktorSatuan;
+            const logam = (Number(src.logam) || 0) * faktorSatuan;
+            const karet = (Number(src.karet) || 0) * faktorSatuan;
+            const plastik = (Number(src.plastik) || 0) * faktorSatuan;
+            const kertas = (Number(src.kertas) || 0) * faktorSatuan;
+            const residu = (Number(src.residu) || 0) * faktorSatuan;
+
+            const terkumpul = sisaMakanan + rantingDaun + kaca + kain + logam + karet + plastik + kertas + residu;
+
+            const daurUlang = Number(src.daurUlang) || 0;
+            const gunaUlang = Number(src.gunaUlang) || 0;
+            const maggot = Number(src.maggot) || 0;
+            const tps3r = Number(src.tps3r) || 0;
+            const bankSampah = Number(src.bankSampah) || 0;
+            const rumahKompos = Number(src.rumahKompos) || 0;
+            const residuPengolahan = Number(src.residuPengolahan) || 0;
+
+            const terkelolaBersih = Math.max(0, (daurUlang + gunaUlang + maggot + tps3r + bankSampah + rumahKompos) - residuPengolahan);
+            const keTpa = Math.max(0, terkumpul - terkelolaBersih);
+            const tidakTerkelola = Math.max(0, timbulan - terkumpul);
+
+            const pctTerkelola = timbulan > 0 ? (terkelolaBersih / timbulan) * 100 : 0;
+            const pctKeTpa = timbulan > 0 ? (keTpa / timbulan) * 100 : 0;
+            const pctTidakTerkelola = timbulan > 0 ? (tidakTerkelola / timbulan) * 100 : 0;
+            const kontrolNeraca = timbulan > 0 ? pctTerkelola + pctKeTpa + pctTidakTerkelola : 0;
+            const selisihAlokasi = timbulan - (terkelolaBersih + keTpa + tidakTerkelola);
+            const statusValidasi = Math.abs(selisihAlokasi) < 0.005 ? 'SEIMBANG' : 'TIDAK SEIMBANG';
+
+            return {
+                penghuni,
+                timbulan,
+                terkumpul,
+                terkelolaBersih,
+                pctTerkelola,
+                keTpa,
+                pctKeTpa,
+                tidakTerkelola,
+                pctTidakTerkelola,
+                kontrolNeraca,
+                selisihAlokasi,
+                statusValidasi
+            };
+        }
+
+        function computeFullSampahNeraca() {
+            const faktorKg = parseFloat(document.getElementById('s_faktorKg')?.value) || 0.33;
+            const jumlahHari = parseInt(document.getElementById('s_jumlahHari')?.value, 10) || 180;
+            const satuanInput = document.getElementById('s_satuanInputKomposisi')?.value || 'Ton';
+            const faktorSatuan = satuanInput === 'Kg' ? 0.001 : 1;
+
+            // Reset agregat pengolahan per sumber
+            const clonedSources = sampahSourcesData.map(src => ({
+                ...src,
+                daurUlang: 0,
+                gunaUlang: 0,
+                maggot: 0,
+                tps3r: 0,
+                bankSampah: 0,
+                rumahKompos: 0,
+                residuPengolahan: 0
+            }));
+
+            // Distribusikan kegiatan pengolahan Bagian 6 ke masing-masing sumber
+            sampahPengolahanList.forEach(act => {
+                const targetIdx = Math.min(Math.max(Number(act.sumberTerkait) || 0, 0), clonedSources.length - 1);
+                const mult = act.satuan === 'Kg' ? 0.001 : 1;
+                const beratTon = (Number(act.beratSampah) || 0) * mult;
+                const residuTon = (Number(act.beratResidu) || 0) * mult;
+
+                const target = clonedSources[targetIdx];
+                if (!target) return;
+
+                if (act.jenisKegiatan.includes('Daur Ulang')) target.daurUlang += beratTon;
+                else if (act.jenisKegiatan.includes('Guna Ulang')) target.gunaUlang += beratTon;
+                else if (act.jenisKegiatan.includes('Maggot')) target.maggot += beratTon;
+                else if (act.jenisKegiatan.includes('TPS3R')) target.tps3r += beratTon;
+                else if (act.jenisKegiatan.includes('Bank Sampah')) target.bankSampah += beratTon;
+                else target.rumahKompos += beratTon;
+
+                target.residuPengolahan += residuTon;
+            });
+
+            const rows = clonedSources.map(src => {
+                const metrics = computeRowMetrics(src, faktorKg, jumlahHari, faktorSatuan);
+                return {
+                    ...src,
+                    sisaMakanan: (Number(src.sisaMakanan) || 0) * faktorSatuan,
+                    rantingDaun: (Number(src.rantingDaun) || 0) * faktorSatuan,
+                    kaca: (Number(src.kaca) || 0) * faktorSatuan,
+                    kain: (Number(src.kain) || 0) * faktorSatuan,
+                    logam: (Number(src.logam) || 0) * faktorSatuan,
+                    karet: (Number(src.karet) || 0) * faktorSatuan,
+                    plastik: (Number(src.plastik) || 0) * faktorSatuan,
+                    kertas: (Number(src.kertas) || 0) * faktorSatuan,
+                    residu: (Number(src.residu) || 0) * faktorSatuan,
+                    metrics
+                };
+            });
+
+            const totals = rows.reduce((acc, r) => {
+                acc.penghuni += r.metrics.penghuni;
+                acc.timbulan += r.metrics.timbulan;
+                acc.terkumpul += r.metrics.terkumpul;
+                acc.terkelolaBersih += r.metrics.terkelolaBersih;
+                acc.keTpa += r.metrics.keTpa;
+                acc.tidakTerkelola += r.metrics.tidakTerkelola;
+                return acc;
+            }, { penghuni: 0, timbulan: 0, terkumpul: 0, terkelolaBersih: 0, keTpa: 0, tidakTerkelola: 0 });
+
+            totals.pctTerkelola = totals.timbulan > 0 ? (totals.terkelolaBersih / totals.timbulan) * 100 : 0;
+            totals.pctKeTpa = totals.timbulan > 0 ? (totals.keTpa / totals.timbulan) * 100 : 0;
+            totals.pctTidakTerkelola = totals.timbulan > 0 ? (totals.tidakTerkelola / totals.timbulan) * 100 : 0;
+            totals.kontrolNeraca = totals.timbulan > 0 ? totals.pctTerkelola + totals.pctKeTpa + totals.pctTidakTerkelola : 0;
+            totals.selisihAlokasi = totals.timbulan - (totals.terkelolaBersih + totals.keTpa + totals.tidakTerkelola);
+            totals.statusValidasi = Math.abs(totals.selisihAlokasi) < 0.005 ? 'SEIMBANG' : 'TIDAK SEIMBANG';
+
+            return { rows, totals };
+        }
+
+        function recalculateSampahBalance() {
+            const { rows, totals } = computeFullSampahNeraca();
+
+            // Update display per kartu sumber
+            rows.forEach((r, idx) => {
+                const estEl = document.getElementById(`s_est_val_${idx}`);
+                if (estEl) estEl.textContent = `${r.metrics.timbulan.toFixed(3)} Ton`;
+                const subEl = document.getElementById(`s_terkumpul_sub_${idx}`);
+                if (subEl) subEl.textContent = `Total Terkumpul: ${r.metrics.terkumpul.toFixed(3)} Ton`;
+            });
+
+            // Update total TPA tercatat Bagian 5
+            const totalTpaTercatat = sampahTpaList.reduce((sum, item) => {
+                const mult = item.satuan === 'Kg' ? 0.001 : 1;
+                return sum + ((Number(item.berat) || 0) * mult);
+            }, 0);
+            const tpaDisp = document.getElementById('s_totalTpaInputDisplay');
+            if (tpaDisp) tpaDisp.textContent = `${totalTpaTercatat.toFixed(3)} Ton`;
+
+            // Update 4 Kartu Ringkasan
+            const cardTimbulan = document.getElementById('card_timbulan');
+            if (cardTimbulan) cardTimbulan.textContent = `${totals.timbulan.toFixed(3)} Ton`;
+            const cardTerkelola = document.getElementById('card_terkelola');
+            if (cardTerkelola) cardTerkelola.textContent = `${totals.terkelolaBersih.toFixed(3)} Ton (${totals.pctTerkelola.toFixed(2)}%)`;
+            const cardKeTpa = document.getElementById('card_ketpa');
+            if (cardKeTpa) cardKeTpa.textContent = `${totals.keTpa.toFixed(3)} Ton (${totals.pctKeTpa.toFixed(2)}%)`;
+            const cardTidak = document.getElementById('card_tidakterkelola');
+            if (cardTidak) cardTidak.textContent = `${totals.tidakTerkelola.toFixed(3)} Ton (${totals.pctTidakTerkelola.toFixed(2)}%)`;
+
+            const badge = document.getElementById('s_neracaBadgeStatus');
+            if (badge) badge.textContent = `STATUS: ${totals.statusValidasi}`;
+
+            // Render Tabel Pratinjau Neraca Lengkap
+            const tbody = document.getElementById('s_liveNeracaPreviewBody');
+            if (tbody) {
+                const bodyRows = rows.map((r, idx) => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-2 px-2.5 text-center border-r border-slate-200">${idx + 1}</td>
+                        <td class="py-2 px-3 font-semibold border-r border-slate-200">${escapeHtml(r.sumber || '-')}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200">${r.metrics.penghuni}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 font-semibold">${r.metrics.timbulan.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200">${r.metrics.terkumpul.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-yellow-50 font-bold">${r.metrics.terkelolaBersih.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-rose-50 font-bold text-rose-900">${r.metrics.pctTerkelola.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-yellow-50">${r.metrics.keTpa.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-rose-50 text-rose-900">${r.metrics.pctKeTpa.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-yellow-50">${r.metrics.tidakTerkelola.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-rose-50 text-rose-900">${r.metrics.pctTidakTerkelola.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-lime-100 font-bold">${r.metrics.kontrolNeraca.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-slate-200 bg-lime-100">${Math.abs(r.metrics.selisihAlokasi).toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-center font-extrabold text-emerald-800">${r.metrics.statusValidasi}</td>
+                    </tr>
+                `).join('');
+
+                const footerRow = `
+                    <tr class="bg-emerald-900 text-white font-extrabold">
+                        <td colspan="2" class="py-2 px-3 border-r border-emerald-700">TOTAL ${document.getElementById('s_periodeSemester')?.value || 'SEMESTER'} (TON)</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${totals.penghuni}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${totals.timbulan.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${totals.terkumpul.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${totals.terkelolaBersih.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700 bg-rose-700">${totals.pctTerkelola.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${totals.keTpa.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700 bg-rose-700">${totals.pctKeTpa.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${totals.tidakTerkelola.toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700 bg-rose-700">${totals.pctTidakTerkelola.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${totals.kontrolNeraca.toFixed(2)}%</td>
+                        <td class="py-2 px-2.5 text-right border-r border-emerald-700">${Math.abs(totals.selisihAlokasi).toFixed(3)}</td>
+                        <td class="py-2 px-2.5 text-center bg-rose-700">${totals.statusValidasi}</td>
+                    </tr>
+                `;
+                tbody.innerHTML = bodyRows + footerRow;
+            }
         }
 
         function resetSampahForm() {
             document.getElementById('sampahForm').reset();
             removeSampahFoto();
             initDefaultSampahRows();
-            showToast('Formulir pengelolaan sampah telah dibersihkan.');
+            showToast('Formulir pengelolaan sampah telah diatur ulang.');
         }
 
+        // --- Submit Formulir Pengelolaan Sampah ke Supabase ---
         async function handleSampahFormSubmit(event) {
             event.preventDefault();
+
             if (!supabaseClient) {
-                showToast('Konfigurasi SUPABASE_URL dan SUPABASE_ANON_KEY belum diisi!', 'error');
+                showToast('Konfigurasi Supabase belum diatur!', 'error');
+                return;
+            }
+
+            if (!uploadedSampahFotoFile) {
+                showToast('Harap unggah foto kegiatan pengelolaan sampah terlebih dahulu (Bagian 7).', 'error');
+                document.getElementById('s_fotoDropzone')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
             const selectedFasilitas = Array.from(document.querySelectorAll('input[name="s_fasilitas"]:checked')).map(cb => cb.value);
             if (selectedFasilitas.length === 0) {
-                showToast('Pilih minimal 1 Fasilitas Pengumpulan Sampah pada Bagian 4.', 'error');
+                showToast('Centang minimal 1 fasilitas pengumpulan sampah (Bagian 4A).', 'error');
                 return;
             }
-
-            if (!uploadedSampahFotoFile) {
-                showToast('Harap unggah Foto Kegiatan Pengelolaan Sampah pada Bagian 7.', 'error');
-                document.getElementById('s_fotoDropzone').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-
-            const { rows, totals } = computeDetailedSampahNeraca();
-            const now = new Date();
-            const regNo = `DLH-SMP-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${Math.floor(1000 + Math.random() * 9000)}`;
-            const waktuInput = now.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) + ' WIB';
-            const periodeLabel = `${document.getElementById('s_periodeSemester').value} Tahun ${document.getElementById('s_tahun').value}`;
-
-            const sopSkNomor = document.getElementById('s_nomorSopSk').value.trim();
-            const sopSkTanggal = document.getElementById('s_tglSopSk').value;
-            const fasilitasKet = document.getElementById('s_fasilitasKeterangan').value.trim();
-            const geotagCoords = document.getElementById('s_geotagCoords').value.trim();
-            const ketFotoRaw = document.getElementById('s_keteranganFoto').value.trim();
-            const fullKeteranganFoto = `${ketFotoRaw} | Geotagging: ${geotagCoords}`;
 
             const btn = document.getElementById('submitSampahBtn');
             const origHtml = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-teal-950 border-t-transparent rounded-full"></span><span>Mengunggah Berkas & Menyimpan...</span>`;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-teal-950 border-t-transparent rounded-full"></span><span>Menyimpan Laporan Sampah...</span>`;
 
             try {
-                // 1. Unggah Foto Kegiatan
+                const now = new Date();
+                const regNo = `DLH-SMP-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${Math.floor(1000 + Math.random() * 9000)}`;
+                const waktuInput = now.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) + ' WIB';
+                const periodeLabel = `${document.getElementById('s_periodeSemester').value} Tahun ${document.getElementById('s_tahun').value}`;
+
+                const sopSkNomor = document.getElementById('s_nomorSopSk').value.trim();
+                const sopSkTanggal = document.getElementById('s_tglSopSk').value;
+                const fasilitasKet = document.getElementById('s_fasilitasKeterangan').value.trim();
+                const geotagCoords = document.getElementById('s_geotagCoords').value.trim();
+                const ketFoto = document.getElementById('s_keteranganFoto').value.trim();
+                const fullKeteranganFoto = `${ketFoto} [Geotagging GPS: ${geotagCoords}]`;
+
+                const { rows, totals } = computeFullSampahNeraca();
+
+                // 1. Unggah Foto Kegiatan ke Supabase Storage
                 const safeExt = uploadedSampahFotoFile.name.split('.').pop() || 'jpg';
-                const fotoUrl = await uploadFileToSupabaseStorage(uploadedSampahFotoFile, `${regNo}/bukti-sampah.${safeExt}`);
+                const fotoUrl = await uploadFileToSupabaseStorage(uploadedSampahFotoFile, `${regNo}/foto-kegiatan.${safeExt}`);
 
                 // 2. Unggah Dokumen SOP/SK & Bukti Neraca (jika dilampirkan)
                 let sopSkUrl = null;
@@ -3155,14 +4077,74 @@
                     neracaDocUrl = await uploadFileToSupabaseStorage(sampahDocsState.neracaDoc.fileObj, `${regNo}/bukti_neraca_${cleanNeracaName}`);
                 }
 
+                // 3. Unggah Semua Dokumen Kerja Sama Pengelolaan Sampah (Bagian 2B)
+                const pksListUploaded = [];
+                for (let kIdx = 0; kIdx < sampahKerjasamaList.length; kIdx++) {
+                    const ksItem = sampahKerjasamaList[kIdx];
+                    const hasData = ksItem.nomorPerjanjian || ksItem.namaPihakPengelola || ksItem.jenisPengelolaan || ksItem.jenisFasilitas || ksItem.fileDoc;
+                    if (!hasData) continue;
+
+                    let pksPublicUrl = null;
+                    if (ksItem.fileDoc?.fileObj) {
+                        const cleanPksName = ksItem.fileDoc.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                        pksPublicUrl = await uploadFileToSupabaseStorage(ksItem.fileDoc.fileObj, `${regNo}/kerjasama_${kIdx + 1}_${cleanPksName}`);
+                    }
+                    pksListUploaded.push({
+                        nomorPerjanjian: ksItem.nomorPerjanjian || '-',
+                        namaPihakPengelola: ksItem.namaPihakPengelola || '-',
+                        jenisPengelolaan: ksItem.jenisPengelolaan || '-',
+                        jenisFasilitas: ksItem.jenisFasilitas || '-',
+                        fileName: ksItem.fileDoc?.name || '-',
+                        fileUrl: pksPublicUrl
+                    });
+                }
+
+                // 4. Unggah Semua Bukti Pembayaran Retribusi TPA (Bagian 5 - Multi-file per baris)
+                const tpaListUploaded = [];
+                for (let tIdx = 0; tIdx < sampahTpaList.length; tIdx++) {
+                    const tItem = sampahTpaList[tIdx];
+                    const hasData = tItem.tanggal || Number(tItem.berat) > 0 || tItem.jenisArmada || tItem.nopolKendaraan || (tItem.buktiRetribusiFiles && tItem.buktiRetribusiFiles.length > 0);
+                    if (!hasData) continue;
+
+                    const uploadedRetribusi = [];
+                    for (let fIdx = 0; fIdx < (tItem.buktiRetribusiFiles || []).length; fIdx++) {
+                        const rf = tItem.buktiRetribusiFiles[fIdx];
+                        let rfUrl = rf.publicUrl || null;
+                        if (rf.fileObj) {
+                            const cleanRfName = rf.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                            rfUrl = await uploadFileToSupabaseStorage(rf.fileObj, `${regNo}/retribusi_tpa_${tIdx + 1}/${fIdx + 1}_${cleanRfName}`);
+                        }
+                        uploadedRetribusi.push({
+                            name: rf.name,
+                            type: rf.type,
+                            publicUrl: rfUrl
+                        });
+                    }
+
+                    tpaListUploaded.push({
+                        tanggal: tItem.tanggal || '-',
+                        berat: Number(tItem.berat) || 0,
+                        satuan: tItem.satuan || 'Ton',
+                        jenisArmada: tItem.jenisArmada || '-',
+                        nopolKendaraan: tItem.nopolKendaraan || '-',
+                        kapasitasAngkut: tItem.kapasitasAngkut || '-',
+                        kepemilikanKendaraan: tItem.kepemilikanKendaraan || '-',
+                        kerjasamaPengangkutan: tItem.kerjasamaPengangkutan || '-',
+                        buktiRetribusi: uploadedRetribusi
+                    });
+                }
+
                 const metadataPaket = {
                     sopSk: { nomor: sopSkNomor, tanggal: sopSkTanggal, url: sopSkUrl },
+                    pksKerjasama: pksListUploaded,
                     fasilitas: { daftar: selectedFasilitas, keterangan: fasilitasKet },
-                    pengangkutanTpa: sampahTpaList.filter(t => t.tanggal || Number(t.berat) > 0 || t.jenisArmada),
+                    pengangkutanTpa: tpaListUploaded,
                     kegiatanPengolahan: sampahPengolahanList.filter(a => Number(a.beratSampah) > 0 || a.jenisSampah),
                     buktiNeracaUrl: neracaDocUrl,
                     geotagging: geotagCoords
                 };
+
+                const rowsWithMeta = rows.map((r, i) => i === 0 ? { ...r, meta: metadataPaket } : r);
 
                 const sampahPayload = {
                     reg_no: regNo,
@@ -3186,7 +4168,7 @@
                     total_tidak_terkelola_ton: Number(totals.tidakTerkelola.toFixed(3)),
                     persentase_tidak_terkelola: Number(totals.pctTidakTerkelola.toFixed(2)),
                     status_validasi: totals.statusValidasi,
-                    rincian_sumber: rows,
+                    rincian_sumber: rowsWithMeta,
                     foto_url: fotoUrl || '-',
                     keterangan_foto: fullKeteranganFoto
                 };
@@ -3214,7 +4196,7 @@
                         status_penyerahan: `Terkelola ${sampahPayload.persentase_terkelola}% | TPA ${sampahPayload.persentase_ke_tpa}%`,
                         tanggal_penyerahan: '-',
                         nomor_festronik: sampahPayload.status_validasi,
-                        pihak_lanjutan: rows.map(r => ({ ...r, meta: metadataPaket })),
+                        pihak_lanjutan: rowsWithMeta,
                         foto_url: sampahPayload.foto_url,
                         keterangan_foto: fullKeteranganFoto
                     };
@@ -3233,9 +4215,13 @@
                     noTelepon: sampahPayload.no_telepon,
                     alamatUsaha: sampahPayload.alamat_usaha,
                     sopSkInfo: `${sopSkNomor} (Tgl: ${formatTanggalIndo(sopSkTanggal)})`,
+                    sopSkUrl,
+                    pksKerjasama: pksListUploaded,
                     fasilitasInfo: `${selectedFasilitas.join(', ')}${fasilitasKet ? ' — ' + fasilitasKet : ''}`,
-                    pengangkutanTpa: metadataPaket.pengangkutanTpa,
+                    pengangkutanTpa: tpaListUploaded,
                     kegiatanPengolahan: metadataPaket.kegiatanPengolahan,
+                    buktiNeracaUrl: neracaDocUrl,
+                    geotagging: geotagCoords,
                     totalPenghuni: totals.penghuni,
                     totalTimbulan: totals.timbulan,
                     totalTerkumpul: totals.terkumpul,
@@ -3246,7 +4232,7 @@
                     totalTidakTerkelola: totals.tidakTerkelola,
                     pctTidakTerkelola: totals.pctTidakTerkelola,
                     statusValidasi: totals.statusValidasi,
-                    rincianSumber: rows,
+                    rincianSumber: rowsWithMeta,
                     fotoBase64: uploadedSampahFotoBase64 || fotoUrl,
                     keteranganFoto: fullKeteranganFoto
                 };
@@ -3264,25 +4250,110 @@
         }
 
         function openSampahReceiptModal(data) {
+            const meta = (Array.isArray(data.rincianSumber) && data.rincianSumber[0]?.meta) ? data.rincianSumber[0].meta : {};
+            const pksList = data.pksKerjasama || meta.pksKerjasama || [];
+            const tpaList = data.pengangkutanTpa || meta.pengangkutanTpa || [];
+            const kegiatanList = data.kegiatanPengolahan || meta.kegiatanPengolahan || [];
+            const fasilitasText = data.fasilitasInfo || (meta.fasilitas ? `${(meta.fasilitas.daftar || []).join(', ')}${meta.fasilitas.keterangan ? ' — ' + meta.fasilitas.keterangan : ''}` : '-');
+            const sopSkText = data.sopSkInfo || (meta.sopSk ? `${meta.sopSk.nomor} (Tgl: ${formatTanggalIndo(meta.sopSk.tanggal)})` : `Pelaporan Neraca Sampah SSRT (${data.periodeLabel || ''})`);
+
             document.getElementById('recNoBadge').textContent = `REG: ${data.regNo}`;
             document.getElementById('recTimestamp').textContent = `Waktu Pelaporan: ${data.waktuInput} • ${data.periodeLabel || ''}`;
             document.getElementById('recNamaUsaha').textContent = data.namaUsaha;
             document.getElementById('recPengisiJabatan').textContent = `${data.namaPengisi} — ${data.jabatan}`;
             document.getElementById('recTelepon').textContent = data.noTelepon;
-            document.getElementById('recAlamat').textContent = data.alamatUsaha;
-            document.getElementById('recIzin').textContent = data.sopSkInfo ? `SOP/SK: ${data.sopSkInfo}` : `Pelaporan Neraca Sampah SSRT (${data.periodeLabel || ''})`;
+            // Tampilkan detail Kerja Sama Pengelolaan Sampah & Pengangkutan ke TPA
+            let detailHtml = '';
+            if (pksList.length > 0) {
+                detailHtml += `
+                    <div class="border border-slate-300 rounded-lg p-2.5 bg-slate-50">
+                        <p class="font-bold text-slate-800 mb-1">1. Kerja Sama Pengelolaan Sampah:</p>
+                        <table class="w-full border border-slate-300 text-[10px] bg-white">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-300 font-bold">
+                                    <th class="py-1 px-1.5 text-left">Nomor Perjanjian</th>
+                                    <th class="py-1 px-1.5 text-left">Nama Pihak Pengelola</th>
+                                    <th class="py-1 px-1.5 text-left">Jenis Pengelolaan</th>
+                                    <th class="py-1 px-1.5 text-left">Jenis Fasilitas</th>
+                                    <th class="py-1 px-1.5 text-left">Dokumen</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                ${pksList.map(p => `
+                                    <tr>
+                                        <td class="py-1 px-1.5 font-mono">${escapeHtml(p.nomorPerjanjian || p.nomorPks || '-')}</td>
+                                        <td class="py-1 px-1.5 font-bold">${escapeHtml(p.namaPihakPengelola || p.namaMitra || '-')}</td>
+                                        <td class="py-1 px-1.5">${escapeHtml(p.jenisPengelolaan || p.label || '-')}</td>
+                                        <td class="py-1 px-1.5">${escapeHtml(p.jenisFasilitas || '-')}</td>
+                                        <td class="py-1 px-1.5">
+                                            ${p.fileUrl ? `<button type="button" onclick="openDocViewer('${escapeHtml(p.fileName || 'Perjanjian')}', '${p.fileUrl}', '')" class="no-print underline text-blue-700 font-bold cursor-pointer">[Buka]</button>` : escapeHtml(p.fileName || '-')}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
 
-            document.getElementById('recJenisKode').textContent = `Sampah Sejenis Sampah Rumah Tangga (${data.totalPenghuni || 0} Penghuni)`;
-            document.getElementById('recTglDihasilkan').textContent = data.fasilitasInfo || data.periodeLabel || '-';
-            document.getElementById('recBerat').textContent = `Timbulan: ${Number(data.totalTimbulan || 0).toFixed(3)} Ton | Terkumpul: ${Number(data.totalTerkumpul || 0).toFixed(3)} Ton`;
-            document.getElementById('recStatusPenyerahan').textContent = `Terkelola Bersih: ${Number(data.totalTerkelolaBersih || 0).toFixed(3)} Ton (${Number(data.pctTerkelola || 0).toFixed(2)}%) | Ke TPA: ${Number(data.totalKeTpa || 0).toFixed(3)} Ton (${Number(data.pctKeTpa || 0).toFixed(2)}%) | Tidak Terkelola: ${Number(data.totalTidakTerkelola || 0).toFixed(3)} Ton (${Number(data.pctTidakTerkelola || 0).toFixed(2)}%)`;
+            if (tpaList.length > 0) {
+                detailHtml += `
+                    <div class="border border-slate-300 rounded-lg p-2.5 bg-amber-50/40">
+                        <p class="font-bold text-slate-800 mb-1">2. Rincian Pengangkutan Sampah ke TPA & Bukti Retribusi:</p>
+                        <table class="w-full border border-slate-300 text-[10px] bg-white">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-300 font-bold">
+                                    <th class="py-1 px-1.5 text-left">Tanggal</th>
+                                    <th class="py-1 px-1.5 text-right">Berat</th>
+                                    <th class="py-1 px-1.5 text-left">Armada & Nopol</th>
+                                    <th class="py-1 px-1.5 text-left">Kapasitas & Kepemilikan</th>
+                                    <th class="py-1 px-1.5 text-left">Kerjasama & Bukti Retribusi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                ${tpaList.map(t => `
+                                    <tr>
+                                        <td class="py-1 px-1.5">${formatTanggalIndo(t.tanggal)}</td>
+                                        <td class="py-1 px-1.5 text-right font-bold">${t.berat} ${escapeHtml(t.satuan || 'Ton')}</td>
+                                        <td class="py-1 px-1.5">${escapeHtml(t.jenisArmada || '-')} (<span class="font-mono font-bold">${escapeHtml(t.nopolKendaraan || '-')}</span>)</td>
+                                        <td class="py-1 px-1.5">${escapeHtml(t.kapasitasAngkut || '-')} • ${escapeHtml(t.kepemilikanKendaraan || '-')}</td>
+                                        <td class="py-1 px-1.5">
+                                            <div>${escapeHtml(t.kerjasamaPengangkutan || '-')}</div>
+                                            ${Array.isArray(t.buktiRetribusi) && t.buktiRetribusi.length > 0 ? `
+                                                <div class="mt-0.5 flex flex-wrap gap-1">
+                                                    ${t.buktiRetribusi.map((rf, rIdx) => `
+                                                        <span class="inline-block px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-semibold">
+                                                            Retribusi #${rIdx + 1}: ${escapeHtml(rf.name)}
+                                                            ${rf.publicUrl ? `<button type="button" onclick="openDocViewer('${escapeHtml(rf.name)}', '${rf.publicUrl}', '${rf.type || ''}')" class="no-print underline text-blue-700 ml-0.5 cursor-pointer">[Lihat]</button>` : ''}
+                                                        </span>
+                                                    `).join('')}
+                                                </div>
+                                            ` : ''}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
 
-            document.getElementById('recFestronikRow').classList.add('hidden');
-            document.getElementById('recPihakSection').classList.add('hidden');
+            if (kegiatanList.length > 0) {
+                detailHtml += `
+                    <div class="border border-slate-300 rounded-lg p-2.5 bg-emerald-50/40">
+                        <p class="font-bold text-slate-800 mb-1">3. Kegiatan Pengolahan & Pengurangan Sampah:</p>
+                        <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-slate-700">
+                            ${kegiatanList.map(k => `
+                                <li>
+                                    <strong>${escapeHtml(k.jenisKegiatan)}</strong> (${escapeHtml(k.waktu || '-')}) — Jenis: ${escapeHtml(k.jenisSampah || '-')} | Diolah: <strong>${k.beratSampah} ${escapeHtml(k.satuan || 'Ton')}</strong> | Residu: <strong>${k.beratResidu} ${escapeHtml(k.satuan || 'Ton')}</strong>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
 
-            const sampahSec = document.getElementById('recSampahSection');
-            const sampahTbl = document.getElementById('recSampahSummaryTable');
-            sampahSec.classList.remove('hidden');
+            detailsBox.innerHTML = detailHtml;
 
             const rows = Array.isArray(data.rincianSumber) ? data.rincianSumber : [];
             sampahTbl.innerHTML = `
@@ -3446,14 +4517,74 @@
                 const flat = [];
                 reportsList.forEach(rep => {
                     const sources = Array.isArray(rep.rincianSumber) && rep.rincianSumber.length ? rep.rincianSumber : [{}];
+                    const meta = sources[0]?.meta || {};
+
+                    const sopSkNomor = meta.sopSk?.nomor || '-';
+                    const sopSkTanggal = formatTanggalIndo(meta.sopSk?.tanggal);
+                    const sopSkUrl = meta.sopSk?.url || '-';
+
+                    const pksList = Array.isArray(meta.pksKerjasama) ? meta.pksKerjasama : [];
+                    const pksNomorStr = pksList.length ? pksList.map(p => p.nomorPerjanjian || p.nomorPks || '-').join(' | ') : '-';
+                    const pksNamaStr = pksList.length ? pksList.map(p => p.namaPihakPengelola || p.namaMitra || '-').join(' | ') : '-';
+                    const pksJenisPengelolaanStr = pksList.length ? pksList.map(p => p.jenisPengelolaan || p.label || '-').join(' | ') : '-';
+                    const pksJenisFasilitasStr = pksList.length ? pksList.map(p => p.jenisFasilitas || '-').join(' | ') : '-';
+                    const pksLinkStr = pksList.length ? pksList.map(p => p.fileUrl || p.fileName || '-').join(' | ') : '-';
+
+                    const fasilitasDaftarStr = meta.fasilitas?.daftar ? meta.fasilitas.daftar.join(', ') : '-';
+                    const fasilitasKetStr = meta.fasilitas?.keterangan || '-';
+
+                    const tpaList = Array.isArray(meta.pengangkutanTpa) ? meta.pengangkutanTpa : [];
+                    const tpaTanggalStr = tpaList.length ? tpaList.map(t => formatTanggalIndo(t.tanggal)).join(' | ') : '-';
+                    const tpaBeratStr = tpaList.length ? tpaList.map(t => `${t.berat} ${t.satuan}`).join(' | ') : '-';
+                    const tpaArmadaStr = tpaList.length ? tpaList.map(t => t.jenisArmada || '-').join(' | ') : '-';
+                    const tpaNopolStr = tpaList.length ? tpaList.map(t => t.nopolKendaraan || '-').join(' | ') : '-';
+                    const tpaKapasitasStr = tpaList.length ? tpaList.map(t => t.kapasitasAngkut || '-').join(' | ') : '-';
+                    const tpaKepemilikanStr = tpaList.length ? tpaList.map(t => t.kepemilikanKendaraan || '-').join(' | ') : '-';
+                    const tpaKerjasamaStr = tpaList.length ? tpaList.map(t => t.kerjasamaPengangkutan || '-').join(' | ') : '-';
+                    const tpaRetribusiStr = tpaList.length
+                        ? tpaList.map((t, idxT) => {
+                            const files = Array.isArray(t.buktiRetribusi) ? t.buktiRetribusi : [];
+                            if (!files.length) return `Angkutan #${idxT + 1}: Tidak ada`;
+                            return `Angkutan #${idxT + 1}: ` + files.map(f => f.publicUrl || f.name).join(', ');
+                        }).join(' || ')
+                        : '-';
+
+                    const kegiatanList = Array.isArray(meta.kegiatanPengolahan) ? meta.kegiatanPengolahan : [];
+                    const kegiatanRingkasanStr = kegiatanList.length
+                        ? kegiatanList.map(k => `${k.jenisKegiatan} (${k.waktu || '-'}): ${k.jenisSampah || '-'} | Diolah ${k.beratSampah} ${k.satuan}, Residu ${k.beratResidu} ${k.satuan}`).join(' || ')
+                        : '-';
+
                     sources.forEach((src, sIdx) => {
                         const m = src.metrics || computeRowMetrics(src);
                         flat.push({
                             'No': flat.length + 1,
                             'No. Registrasi': rep.regNo,
+                            'Waktu Input': rep.waktuInput || '-',
                             'Periode': rep.periodeLabel || '-',
                             'Nama Perusahaan': rep.namaUsaha,
-                            'Pelapor': `${rep.namaPengisi} (${rep.jabatan})`,
+                            'Nama Pelapor': rep.namaPengisi || '-',
+                            'Jabatan': rep.jabatan || '-',
+                            'No. Telepon / WA': String(rep.noTelepon || '-'),
+                            'Alamat Lengkap': rep.alamatUsaha || '-',
+                            'Nomor SOP / SK': sopSkNomor,
+                            'Tanggal SOP / SK': sopSkTanggal,
+                            'Link Dokumen SOP / SK': sopSkUrl,
+                            'Nomor Perjanjian Kerja Sama': pksNomorStr,
+                            'Nama Pihak Pengelola Sampah': pksNamaStr,
+                            'Jenis Pengelolaan Sampah (Kerja Sama)': pksJenisPengelolaanStr,
+                            'Jenis Fasilitas Pengelolaan Sampah': pksJenisFasilitasStr,
+                            'Link Dokumen Perjanjian': pksLinkStr,
+                            'Fasilitas Pengumpulan Sampah': fasilitasDaftarStr,
+                            'Keterangan Fasilitas': fasilitasKetStr,
+                            'Tanggal Pengangkutan ke TPA': tpaTanggalStr,
+                            'Berat Pengangkutan ke TPA': tpaBeratStr,
+                            'Jenis Armada Pengangkut': tpaArmadaStr,
+                            'Nomor Polisi Kendaraan': tpaNopolStr,
+                            'Kapasitas Angkut Kendaraan': tpaKapasitasStr,
+                            'Kepemilikan Kendaraan': tpaKepemilikanStr,
+                            'Kerjasama Pengangkutan Sampah': tpaKerjasamaStr,
+                            'Link Bukti Pembayaran Retribusi': tpaRetribusiStr,
+                            'Rincian Kegiatan Pengolahan & Residu': kegiatanRingkasanStr,
                             'No. Sumber': sIdx + 1,
                             'Sumber Sampah': src.sumber || '-',
                             'Jumlah Penghuni (orang)': Number(src.penghuni) || 0,
@@ -3484,7 +4615,9 @@
                             'Kontrol Neraca (%)': Number(m.kontrolNeraca.toFixed(2)),
                             'Selisih Alokasi (ton)': Number(m.selisihAlokasi.toFixed(3)),
                             'Status Validasi': m.statusValidasi,
-                            'Link Bukti Foto': (rep.fotoBase64 && rep.fotoBase64.startsWith('http')) ? rep.fotoBase64 : '-'
+                            'Link Bukti Neraca / Logbook': meta.buktiNeracaUrl || '-',
+                            'Link Bukti Foto': (rep.fotoBase64 && rep.fotoBase64.startsWith('http')) ? rep.fotoBase64 : '-',
+                            'Keterangan Foto & Geotagging': rep.keteranganFoto || '-'
                         });
                     });
                 });
