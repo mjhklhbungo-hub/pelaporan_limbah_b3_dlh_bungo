@@ -88,7 +88,7 @@
                         <span>Portal Pelaporan Elektronik</span>
                     </div>
                     <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight leading-snug">
-                        Penghasil Limbah B3 Binaan DLH Kabupaten Bungo
+                        Pelaporan Limbah B3 & Pengelolaan Sampah Binaan DLH Kab. Bungo
                     </h1>
                     <p class="text-xs sm:text-sm text-emerald-200/90 mt-0.5">
                         Dinas Lingkungan Hidup Kabupaten Bungo • Bidang Pengelolaan Sampah, Limbah B3 & Pengendalian Pencemaran
@@ -115,20 +115,23 @@
     <!-- Main Container -->
     <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
-        <!-- Navigation Tabs (Formulir vs Portal Data) -->
+        <!-- Navigation Tabs (Formulir Limbah B3 vs Formulir Sampah SSRT vs Portal Data) -->
         <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-            <div class="inline-flex p-1 bg-slate-200/80 rounded-xl border border-slate-300/70">
-                <button id="tabFormBtn" onclick="switchTab('form')" class="px-4 py-2 rounded-lg text-sm font-semibold bg-white text-emerald-900 shadow-sm transition-all cursor-pointer">
-                    📝 Formulir Pelaporan
+            <div class="inline-flex flex-wrap p-1 bg-slate-200/80 rounded-xl border border-slate-300/70 gap-1">
+                <button id="tabFormBtn" onclick="switchTab('form')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white text-emerald-900 shadow-sm transition-all cursor-pointer">
+                    ☣️ Formulir Limbah B3
                 </button>
-                <button id="tabHistoryBtn" onclick="switchTab('history')" class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer flex items-center gap-2">
+                <button id="tabSampahBtn" onclick="switchTab('sampah')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
+                    ♻️ Laporan Pengelolaan Sampah Sejenis Sampah Rumah Tangga
+                </button>
+                <button id="tabHistoryBtn" onclick="switchTab('history')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer flex items-center gap-2">
                     <span>🔒 Portal Tanda Terima & Admin DLH</span>
                     <span id="historyCountBadge" class="hidden px-2 py-0.5 text-xs rounded-full bg-emerald-700 text-white font-bold">0</span>
                 </button>
             </div>
 
             <div class="text-xs text-slate-500 flex items-center gap-1.5">
-                <span class="text-rose-600 font-bold">*</span> Wajib diisi sesuai dokumen perizinan & neraca limbah B3
+                <span class="text-rose-600 font-bold">*</span> Wajib diisi sesuai dokumen perizinan & neraca pengelolaan
             </div>
         </div>
 
@@ -495,7 +498,467 @@
             </form>
         </section>
 
-        <!-- ==================== TAB 2: PORTAL TANDA TERIMA PERUSAHAAN & ADMIN DLH ==================== -->
+        <!-- ==================== TAB 2: LAPORAN PENGELOLAAN SAMPAH SEJENIS SAMPAH RUMAH TANGGA ==================== -->
+        <section id="sampahSection" class="hidden">
+            <form id="sampahForm" onsubmit="handleSampahFormSubmit(event)" class="space-y-6">
+
+                <!-- BAGIAN 1: IDENTITAS PENGHASIL SAMPAH & PERIODE -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">1</span>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-800">Identitas Penghasil Sampah & Periode Pelaporan</h2>
+                            <p class="text-xs text-slate-500">Data penanggung jawab pelaporan pengelolaan Sampah Sejenis Sampah Rumah Tangga (SSRT)</p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="md:col-span-2">
+                            <label for="s_namaUsaha" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Nama Perusahaan / Usaha / Kawasan Kegiatan <span class="text-rose-600">*</span>
+                            </label>
+                            <input type="text" id="s_namaUsaha" required placeholder="Contoh: PT. Sawit Makmur Bungo"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none transition-all text-sm">
+                        </div>
+
+                        <div>
+                            <label for="s_namaPengisi" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Nama Lengkap Pengisi Laporan <span class="text-rose-600">*</span>
+                            </label>
+                            <input type="text" id="s_namaPengisi" required placeholder="Masukkan nama lengkap petugas pelapor"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none transition-all text-sm">
+                        </div>
+
+                        <div>
+                            <label for="s_jabatan" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Jabatan <span class="text-rose-600">*</span>
+                            </label>
+                            <input type="text" id="s_jabatan" required placeholder="Contoh: HSE Officer / Koordinator Kebersihan"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none transition-all text-sm">
+                        </div>
+
+                        <div>
+                            <label for="s_noTelepon" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                No. Telepon / WhatsApp Aktif <span class="text-rose-600">*</span>
+                            </label>
+                            <input type="tel" id="s_noTelepon" required placeholder="Contoh: 081234567890"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none transition-all text-sm">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label for="s_periodeSemester" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Periode Semester <span class="text-rose-600">*</span>
+                                </label>
+                                <select id="s_periodeSemester" required
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white focus:border-teal-600 outline-none text-sm font-semibold">
+                                    <option value="Semester I">Semester I (Jan - Jun)</option>
+                                    <option value="Semester II">Semester II (Jul - Des)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="s_tahun" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    Tahun <span class="text-rose-600">*</span>
+                                </label>
+                                <input type="number" id="s_tahun" value="2026" min="2020" max="2099" required
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-sm font-semibold">
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="s_alamatUsaha" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Alamat Lengkap Usaha / Lokasi Kegiatan (Kecamatan & Dusun/Kelurahan di Kab. Bungo) <span class="text-rose-600">*</span>
+                            </label>
+                            <textarea id="s_alamatUsaha" rows="2" required placeholder="Contoh: Jl. Lintas Sumatera Km. 12, Kec. Rimbo Tengah, Kab. Bungo, Jambi"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none transition-all text-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 2: SOP ATAU SK MENGENAI PENGELOLAAN SAMPAH -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">2</span>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-800">SOP atau SK Mengenai Pengelolaan Sampah</h2>
+                            <p class="text-xs text-slate-500">Standar Operasional Prosedur (SOP) atau Surat Keputusan (SK) Tim/Kebijakan Pengelolaan Sampah Internal</p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
+                        <div>
+                            <label for="s_nomorSopSk" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Nomor SOP / SK Pengelolaan Sampah <span class="text-rose-600">*</span>
+                            </label>
+                            <input type="text" id="s_nomorSopSk" required placeholder="Contoh: SK/014/HSE-BGO/2025"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none text-sm">
+                        </div>
+
+                        <div>
+                            <label for="s_tglSopSk" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Tanggal Penetapan SOP / SK <span class="text-rose-600">*</span>
+                            </label>
+                            <input type="date" id="s_tglSopSk" required
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10 outline-none text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                                Lampiran Dokumen SOP / SK (PDF / JPG, Maks. 5 MB)
+                            </label>
+                            <input type="file" id="s_sopSkFileInput" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleSampahDocUpload(event, 'sopSk')">
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="document.getElementById('s_sopSkFileInput').click()"
+                                    class="flex-1 py-2.5 px-3.5 rounded-xl border border-dashed border-slate-400 hover:border-teal-600 hover:bg-teal-50 text-slate-700 text-xs font-bold transition-all cursor-pointer truncate">
+                                    <span id="s_sopSkFileName">📎 Pilih File SOP / SK</span>
+                                </button>
+                                <button type="button" id="s_sopSkPreviewBtn" onclick="previewSampahDoc('sopSk')"
+                                    class="hidden py-2.5 px-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold cursor-pointer">
+                                    Lihat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 3: ESTIMASI TIMBULAN SAMPAH PER SUMBER -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">3</span>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-800">Estimasi Timbulan Sampah</h2>
+                                <p class="text-xs text-slate-500">Hitung otomatis estimasi timbulan berdasarkan sumber sampah dan jumlah penghuni/aktivitas</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addSampahSourceCard()"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold shadow-sm cursor-pointer shrink-0">
+                            <span>+ Tambah Sumber Sampah</span>
+                        </button>
+                    </div>
+
+                    <!-- Parameter Estimasi -->
+                    <div class="px-6 py-3 bg-amber-50/80 border-b border-amber-200/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <span class="font-bold text-amber-950">⚙️ Standar Estimasi:</span>
+                            <label class="inline-flex items-center gap-1.5 text-slate-700 font-medium">
+                                <span>Faktor Timbulan:</span>
+                                <input type="number" step="0.01" id="s_faktorKg" value="0.33" oninput="recalculateSampahBalance()"
+                                    class="w-20 px-2 py-1 rounded border border-amber-300 bg-white font-bold text-center text-slate-900">
+                                <span>kg/orang·hari</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1.5 text-slate-700 font-medium">
+                                <span>Durasi:</span>
+                                <input type="number" step="1" id="s_jumlahHari" value="180" oninput="recalculateSampahBalance()"
+                                    class="w-20 px-2 py-1 rounded border border-amber-300 bg-white font-bold text-center text-slate-900">
+                                <span>hari (1 Semester)</span>
+                            </label>
+                        </div>
+                        <span class="text-[11px] text-amber-900 font-medium">
+                            Rumus: <code>(Penghuni × 0,33 × 180) ÷ 1.000 = Ton/Semester</code>
+                        </span>
+                    </div>
+
+                    <div id="s_estimasiCardsContainer" class="p-6 space-y-3">
+                        <!-- Diisi dinamis lewat JS -->
+                    </div>
+                </div>
+
+                <!-- BAGIAN 4: FASILITAS PENGUMPULAN & BESARAN SAMPAH TERKUMPUL TERPILAH -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">4</span>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-800">Fasilitas Pengumpulan & Besaran Sampah Terkumpul Terpilah</h2>
+                            <p class="text-xs text-slate-500">Pilih fasilitas pewadahan/pengumpulan yang tersedia dan isi besaran sampah terkumpul sesuai jenis sampah terpilah</p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        <!-- 4A. Fasilitas Pengumpulan Sampah -->
+                        <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
+                            <label class="block text-sm font-bold text-slate-800">
+                                A. Fasilitas Pengumpulan Sampah yang Tersedia <span class="text-rose-600">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                                    <input type="checkbox" name="s_fasilitas" value="Tempat Sampah Terpilah 5 Jenis" class="w-4 h-4 rounded text-teal-700">
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">Tempat Sampah Terpilah 5 Jenis</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                                    <input type="checkbox" name="s_fasilitas" value="TPS3R (Tempat Pengolahan Sampah 3R)" class="w-4 h-4 rounded text-teal-700">
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">TPS3R</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                                    <input type="checkbox" name="s_fasilitas" value="TPS (Tempat Penampungan Sementara)" class="w-4 h-4 rounded text-teal-700">
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">TPS</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                                    <input type="checkbox" name="s_fasilitas" value="Bak Kontainer Sampah" class="w-4 h-4 rounded text-teal-700">
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">Bak Kontainer</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-300 bg-white hover:bg-teal-50/40 cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 sm:col-span-2">
+                                    <input type="checkbox" id="s_fasilitasLainCheck" name="s_fasilitas" value="Lainnya" onchange="toggleFasilitasLainInput()" class="w-4 h-4 rounded text-teal-700">
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-800">Lainnya (Isi Keterangan Fasilitas)</span>
+                                </label>
+                            </div>
+                            <div id="s_fasilitasLainWrapper" class="pt-1">
+                                <input type="text" id="s_fasilitasKeterangan" placeholder="Keterangan tambahan fasilitas pengumpulan (contoh: 12 unit tempat sampah 5 warna di kantor & pabrik, 1 unit bak kontainer 6 m3)"
+                                    class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-teal-600 outline-none text-xs sm:text-sm">
+                            </div>
+                        </div>
+
+                        <!-- 4B. Besaran Sampah Terkumpul Terpilah per Sumber -->
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-800">B. Besaran Sampah yang Terkumpul Sesuai Jenis Sampah Terpilah</h3>
+                                    <p class="text-xs text-slate-500">Pilih satuan input (<strong>Ton</strong> atau <strong>Kg</strong>) — sistem otomatis mengonversi ke <strong>Ton</strong> untuk tabel neraca.</p>
+                                </div>
+                                <div class="flex items-center gap-2 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-xl text-xs">
+                                    <span class="font-semibold text-teal-900">Satuan Input Komposisi:</span>
+                                    <select id="s_satuanInputKomposisi" onchange="recalculateSampahBalance()" class="bg-white border border-teal-300 rounded-lg px-2 py-1 font-bold text-teal-950 outline-none cursor-pointer">
+                                        <option value="Ton">Ton</option>
+                                        <option value="Kg">Kg (Otomatis ÷ 1.000 ke Ton)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="s_terkumpulCardsContainer" class="space-y-4">
+                                <!-- Diisi dinamis sesuai sumber sampah pada Bagian 3 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 5: PENGANGKUTAN SAMPAH KE TPA -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">5</span>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-800">Pengangkutan Sampah ke TPA</h2>
+                                <p class="text-xs text-slate-500">Catat pengiriman/pengangkutan sampah residu ke Tempat Pemrosesan Akhir (TPA)</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addTpaTransportRow()"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-sm cursor-pointer shrink-0">
+                            <span>+ Tambah Catatan Pengangkutan TPA</span>
+                        </button>
+                    </div>
+
+                    <div class="p-6 space-y-3">
+                        <div id="s_tpaRowsContainer" class="space-y-3">
+                            <!-- Diisi dinamis lewat JS -->
+                        </div>
+                        <div class="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs">
+                            <span class="font-semibold text-amber-950">Total Sampah Diangkut ke TPA (Tercatat):</span>
+                            <span id="s_totalTpaInputDisplay" class="font-extrabold text-amber-900 text-sm">0.000 Ton</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 6: KEGIATAN PENGOLAHAN & PENGURANGAN SAMPAH -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">6</span>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-800">Kegiatan Pengolahan & Pengurangan Sampah</h2>
+                                <p class="text-xs text-slate-500">Pengomposan, Bank Sampah, Ternak Maggot, TPS3R, Guna Ulang, & Daur Ulang beserta residunya</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addPengolahanActivityRow()"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-sm cursor-pointer shrink-0">
+                            <span>+ Tambah Kegiatan Pengolahan</span>
+                        </button>
+                    </div>
+
+                    <div class="p-6 space-y-3">
+                        <div id="s_pengolahanRowsContainer" class="space-y-3">
+                            <!-- Diisi dinamis lewat JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RINGKASAN OTOMATIS NERACA PENGELOLAAN SAMPAH (PREVIEW FORMAT EXCEL) -->
+                <div class="bg-white rounded-2xl border-2 border-teal-700/30 shadow-sm overflow-hidden">
+                    <div class="bg-teal-900 text-white px-6 py-4 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-sm sm:text-base font-extrabold uppercase tracking-wide">📊 Ringkasan Otomatis Neraca Pengelolaan Sampah (Format Excel)</h3>
+                            <p class="text-xs text-teal-200">Terhitung otomatis dari isian Bagian 3 s.d. Bagian 6 di atas</p>
+                        </div>
+                        <span id="s_neracaBadgeStatus" class="px-3 py-1 rounded-full bg-emerald-400 text-teal-950 text-xs font-extrabold">
+                            STATUS: -
+                        </span>
+                    </div>
+
+                    <!-- 4 Kartu Utama -->
+                    <div class="p-5 bg-slate-50 grid grid-cols-2 lg:grid-cols-4 gap-3.5 border-b border-slate-200">
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200">
+                            <p class="text-[11px] font-semibold text-slate-500">Total Timbulan Semester</p>
+                            <p id="card_timbulan" class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">0.000 Ton</p>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-xl border border-emerald-200">
+                            <p class="text-[11px] font-semibold text-emerald-700">Total Terkelola Bersih</p>
+                            <p id="card_terkelola" class="text-base sm:text-lg font-extrabold text-emerald-800 mt-0.5">0.000 Ton (0.00%)</p>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-xl border border-amber-200">
+                            <p class="text-[11px] font-semibold text-amber-700">Jumlah Sampah ke TPA</p>
+                            <p id="card_ketpa" class="text-base sm:text-lg font-extrabold text-amber-800 mt-0.5">0.000 Ton (0.00%)</p>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-xl border border-rose-200">
+                            <p class="text-[11px] font-semibold text-rose-700">Total Tidak Terkelola</p>
+                            <p id="card_tidakterkelola" class="text-base sm:text-lg font-extrabold text-rose-800 mt-0.5">0.000 Ton (0.00%)</p>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Pratinjau Neraca Lengkap -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-[1400px] w-full border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-200 text-slate-800 font-bold text-center border-b border-slate-300">
+                                    <th class="py-2 px-2.5 border-r border-slate-300">No</th>
+                                    <th class="py-2 px-3 border-r border-slate-300 text-left">Sumber Sampah</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300">Penghuni</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300">Timbulan (Ton)</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300">Terkumpul (Ton)</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-yellow-100">Terkelola Bersih (Ton)</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-rose-100 text-rose-950">% Terkelola</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-yellow-100">Ke TPA (Ton)</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-rose-100 text-rose-950">% Ke TPA</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-yellow-100">Tidak Terkelola (Ton)</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-rose-100 text-rose-950">% Tdk Terkelola</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-lime-200">Kontrol Neraca</th>
+                                    <th class="py-2 px-2.5 border-r border-slate-300 bg-lime-200">Selisih (Ton)</th>
+                                    <th class="py-2 px-2.5">Status Validasi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="s_liveNeracaPreviewBody" class="divide-y divide-slate-200">
+                                <!-- Diisi otomatis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 7: BUKTI LAPORAN NERACA & FOTO KEGIATAN DENGAN GEOTAGGING -->
+                <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-teal-800 text-white font-bold text-sm flex items-center justify-center shrink-0">7</span>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-800">Bukti Laporan Neraca & Foto Kegiatan (Geotagging)</h2>
+                            <p class="text-xs text-slate-500">Unggah dokumen pendukung neraca / logbook sampah serta foto lapangan dengan titik koordinat GPS</p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        <!-- Lampiran Bukti Neraca / Logbook (Opsional) -->
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">Lampiran Bukti Logbook / Neraca Sampah / Manifest TPA (PDF / Excel / JPG)</p>
+                                <p class="text-xs text-slate-500">Opsional — unggah bukti timbangan TPA, catatan bank sampah, atau logbook harian</p>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <input type="file" id="s_neracaDocFileInput" accept=".pdf,.xlsx,.xls,.jpg,.jpeg,.png" class="hidden" onchange="handleSampahDocUpload(event, 'neracaDoc')">
+                                <button type="button" onclick="document.getElementById('s_neracaDocFileInput').click()"
+                                    class="py-2 px-4 rounded-xl bg-white border border-slate-300 hover:border-teal-600 text-slate-700 text-xs font-bold shadow-sm cursor-pointer">
+                                    <span id="s_neracaDocFileName">📎 Unggah Bukti Neraca</span>
+                                </button>
+                                <button type="button" id="s_neracaDocPreviewBtn" onclick="previewSampahDoc('neracaDoc')"
+                                    class="hidden py-2 px-3 rounded-xl bg-teal-700 text-white text-xs font-bold cursor-pointer">
+                                    Lihat
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Foto Kegiatan & Geotagging GPS -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                                        Unggah Foto Kegiatan Pengelolaan Sampah (JPG / PNG / WEBP, Maks. 5 MB) <span class="text-rose-600">*</span>
+                                    </label>
+                                    <div id="s_fotoDropzone" onclick="document.getElementById('s_buktiFotoInput').click()"
+                                        class="border-2 border-dashed border-slate-300 hover:border-teal-600 bg-slate-50 hover:bg-teal-50/40 rounded-2xl p-6 text-center cursor-pointer transition-all">
+                                        <input type="file" id="s_buktiFotoInput" accept="image/*" class="hidden" onchange="handleSampahFotoUpload(event)">
+                                        <div class="w-12 h-12 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center mx-auto mb-3">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                                            </svg>
+                                        </div>
+                                        <p class="text-sm font-semibold text-slate-700">Klik untuk memilih atau mengambil foto kegiatan</p>
+                                        <p class="text-xs text-slate-500 mt-1">Foto fasilitas tempat sampah 5 jenis, TPS3R, rumah kompos, atau pengangkutan</p>
+                                    </div>
+                                </div>
+
+                                <!-- Koordinat Geotagging GPS -->
+                                <div class="p-3.5 rounded-xl bg-teal-50/70 border border-teal-200 space-y-2">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <label for="s_geotagCoords" class="text-xs font-bold text-teal-950">
+                                            📍 Tanda Geotagging / Koordinat GPS Lokasi Foto <span class="text-rose-600">*</span>
+                                        </label>
+                                        <button type="button" onclick="captureSampahGeotag()" id="s_getGpsBtn"
+                                            class="px-3 py-1 rounded-lg bg-teal-800 hover:bg-teal-900 text-white text-[11px] font-bold cursor-pointer">
+                                            📡 Ambil Lokasi GPS
+                                        </button>
+                                    </div>
+                                    <input type="text" id="s_geotagCoords" required placeholder="Contoh: -1.485210, 102.114520 (Klik Ambil Lokasi GPS atau ketik koordinat)"
+                                        class="w-full px-3.5 py-2 rounded-lg bg-white border border-teal-300 focus:border-teal-600 outline-none text-xs font-mono">
+                                </div>
+
+                                <!-- Keterangan Foto -->
+                                <div>
+                                    <label for="s_keteranganFoto" class="block text-xs font-semibold text-slate-700 mb-1">
+                                        Keterangan Foto Kegiatan <span class="text-rose-600">*</span>
+                                    </label>
+                                    <input type="text" id="s_keteranganFoto" required placeholder="Contoh: Pemilahan sampah organik & kegiatan pengomposan di Rumah Kompos"
+                                        class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="block text-sm font-semibold text-slate-700 mb-2">Pratinjau Foto & Stempel Geotagging</span>
+                                <div class="w-full h-64 rounded-2xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center overflow-hidden relative">
+                                    <span id="s_fotoPlaceholderText" class="text-xs text-slate-400 px-4 text-center">Belum ada foto yang diunggah</span>
+                                    <img id="s_fotoPreviewImg" src="" alt="Pratinjau Foto Sampah" class="hidden w-full h-full object-cover">
+                                    <div id="s_geoOverlayBadge" class="hidden absolute bottom-2.5 left-2.5 right-2.5 px-3 py-1.5 rounded-lg bg-slate-950/75 backdrop-blur-sm text-white text-[11px] font-mono">
+                                        📍 GPS: -
+                                    </div>
+                                    <button type="button" id="s_removeFotoBtn" onclick="removeSampahFoto()" class="hidden absolute top-2.5 right-2.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-md cursor-pointer">
+                                        Hapus Foto
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PERNYATAAN & TOMBOL SUBMIT SAMPAH -->
+                <div class="bg-teal-950 text-white rounded-2xl p-6 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <label class="flex items-start gap-3 cursor-pointer max-w-2xl">
+                        <input type="checkbox" id="s_pernyataanCheck" required class="mt-1 w-4 h-4 rounded text-amber-500 focus:ring-amber-400">
+                        <span class="text-xs sm:text-sm text-teal-100 leading-relaxed">
+                            Saya menyatakan bahwa data neraca timbulan, pengumpulan terpilah, pengangkutan ke TPA, serta kegiatan pengolahan <strong>Sampah Sejenis Sampah Rumah Tangga</strong> adalah benar dan sesuai pencatatan lapangan untuk disampaikan kepada <strong>Dinas Lingkungan Hidup Kabupaten Bungo</strong>.
+                        </span>
+                    </label>
+
+                    <div class="flex items-center gap-3 w-full md:w-auto justify-end shrink-0">
+                        <button type="button" onclick="resetSampahForm()" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-teal-100 text-sm font-semibold transition-all cursor-pointer">
+                            Reset
+                        </button>
+                        <button type="submit" id="submitSampahBtn" class="px-7 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-teal-950 font-extrabold text-sm shadow-lg shadow-amber-500/20 active:scale-95 transition-all cursor-pointer flex items-center gap-2">
+                            <span>Kirim Laporan Sampah & Pratinjau</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </section>
+
+        <!-- ==================== TAB 3: PORTAL TANDA TERIMA PERUSAHAAN & ADMIN DLH ==================== -->
         <section id="historySection" class="hidden space-y-6">
 
             <!-- 1. RIWAYAT PENGIRIMAN PERANGKAT INI SAJA (AMAN UNTUK PERUSAHAAN PENGISI) -->
@@ -580,21 +1043,50 @@
                     </div>
 
                     <!-- Tabel Rekap Semua Perusahaan (Khusus Admin) -->
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
-                        <table class="w-full text-left border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-600">
-                                    <th class="py-3.5 px-4 font-bold">No. Reg & Waktu</th>
-                                    <th class="py-3.5 px-4 font-bold">Perusahaan & Pelapor</th>
-                                    <th class="py-3.5 px-4 font-bold">Limbah B3 & Berat</th>
-                                    <th class="py-3.5 px-4 font-bold">Status Penyerahan</th>
-                                    <th class="py-3.5 px-4 font-bold text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportsTableBody" class="divide-y divide-slate-200">
-                                <!-- Diisi secara dinamis khusus Admin DLH -->
-                            </tbody>
-                        </table>
+                    <div class="space-y-2">
+                        <h4 class="text-sm font-bold text-slate-800">1. Rekapitulasi Laporan Penghasil Limbah B3</h4>
+                        <div class="overflow-x-auto rounded-xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-600">
+                                        <th class="py-3.5 px-4 font-bold">No. Reg & Waktu</th>
+                                        <th class="py-3.5 px-4 font-bold">Perusahaan & Pelapor</th>
+                                        <th class="py-3.5 px-4 font-bold">Limbah B3 & Berat</th>
+                                        <th class="py-3.5 px-4 font-bold">Status Penyerahan</th>
+                                        <th class="py-3.5 px-4 font-bold text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsTableBody" class="divide-y divide-slate-200">
+                                    <!-- Diisi secara dinamis khusus Admin DLH -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Rekap Pengelolaan Sampah Sejenis Sampah Rumah Tangga (Khusus Admin) -->
+                    <div class="space-y-2 pt-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h4 class="text-sm font-bold text-teal-900">2. Rekapitulasi Laporan Pengelolaan Sampah Sejenis Sampah Rumah Tangga</h4>
+                            <button type="button" onclick="exportSampahExcelMultiSheet()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow-sm cursor-pointer">
+                                <span>📊 Unduh Excel Neraca Sampah Per Perusahaan (.xlsx)</span>
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto rounded-xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-teal-50 border-b border-teal-200 text-xs uppercase tracking-wider text-teal-900">
+                                        <th class="py-3 px-4 font-bold">No. Reg & Periode</th>
+                                        <th class="py-3 px-4 font-bold">Perusahaan & Pelapor</th>
+                                        <th class="py-3 px-4 font-bold">Timbulan & Terkumpul</th>
+                                        <th class="py-3 px-4 font-bold">Terkelola / ke TPA / Tidak Terkelola</th>
+                                        <th class="py-3 px-4 font-bold text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sampahAdminTableBody" class="divide-y divide-slate-200">
+                                    <!-- Diisi secara dinamis khusus Admin DLH -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -724,6 +1216,16 @@
                         </div>
                     </div>
 
+                    <!-- C2. Rincian Tabel Neraca Sampah (Khusus Laporan Sampah SSRT) -->
+                    <div id="recSampahSection" class="hidden">
+                        <h4 class="font-bold bg-teal-50 px-3 py-1.5 border-l-4 border-teal-700 text-teal-950 uppercase text-xs mb-2">
+                            B. Rincian Neraca Pengelolaan Sampah Sejenis Sampah Rumah Tangga
+                        </h4>
+                        <div id="recSampahSummaryTable" class="overflow-x-auto text-xs">
+                            <!-- Diisi lewat JS -->
+                        </div>
+                    </div>
+
                     <!-- D. Dokumentasi Bukti Foto -->
                     <div>
                         <h4 class="font-bold bg-slate-100 px-3 py-1.5 border-l-4 border-emerald-700 text-slate-800 uppercase text-xs mb-2">
@@ -803,6 +1305,16 @@
         let uploadedFotoFile = null;
         let selectedPihakLanjutan = {};
 
+        // State khusus Formulir Sampah Sejenis Sampah Rumah Tangga
+        const SUPABASE_SAMPAH_TABLE = 'laporan_sampah_ssrt';
+        let uploadedSampahFotoBase64 = '';
+        let uploadedSampahFotoFile = null;
+        let sampahDocsState = { sopSk: null, neracaDoc: null };
+        let sampahSourcesData = [];
+        let sampahTpaList = [];
+        let sampahPengolahanList = [];
+        let cachedServerSampahReports = [];
+
         const DOKUMEN_LEGALITAS_TYPES = [
             {
                 key: 'izinLingkungan',
@@ -840,6 +1352,9 @@
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('headerDate').textContent = now.toLocaleDateString('id-ID', options);
 
+            // Inisialisasi baris awal tabel Pengelolaan Sampah SSRT (Perumahan Karyawan, Kantor, Area Pabrik)
+            initDefaultSampahRows();
+
             // Render riwayat tanda terima lokal milik perangkat pengisi ini saja
             renderLocalReceiptsTable();
         });
@@ -857,34 +1372,46 @@
             } else {
                 toast.classList.add('bg-slate-900', 'text-white', 'border-slate-700');
             }
-
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => {
                 toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'translate-y-3', 'pointer-events-none');
-            }, 3800);
+                toast.classList.add('opacity-0', 'translate-y-3');
+            }, 4000);
         }
 
-        // --- SWITCH TAB (FORMULIR VS PORTAL TANDA TERIMA & ADMIN) ---
+        // --- SWITCH TAB (FORMULIR LIMBAH B3 VS SAMPAH SSRT VS PORTAL TANDA TERIMA & ADMIN) ---
         function switchTab(tab) {
             const formSec = document.getElementById('formSection');
+            const sampahSec = document.getElementById('sampahSection');
             const histSec = document.getElementById('historySection');
             const tabFormBtn = document.getElementById('tabFormBtn');
+            const tabSampahBtn = document.getElementById('tabSampahBtn');
             const tabHistBtn = document.getElementById('tabHistoryBtn');
+
+            const activeClass = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white text-emerald-900 shadow-sm transition-all cursor-pointer';
+            const inactiveClass = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer';
+
+            formSec.classList.add('hidden');
+            sampahSec.classList.add('hidden');
+            histSec.classList.add('hidden');
+
+            tabFormBtn.className = inactiveClass;
+            tabSampahBtn.className = inactiveClass;
+            tabHistBtn.className = inactiveClass + ' flex items-center gap-2';
 
             if (tab === 'form') {
                 formSec.classList.remove('hidden');
-                histSec.classList.add('hidden');
-                tabFormBtn.className = 'px-4 py-2 rounded-lg text-sm font-semibold bg-white text-emerald-900 shadow-sm transition-all cursor-pointer';
-                tabHistBtn.className = 'px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer flex items-center gap-2';
+                tabFormBtn.className = activeClass;
+            } else if (tab === 'sampah') {
+                sampahSec.classList.remove('hidden');
+                tabSampahBtn.className = activeClass;
             } else {
-                formSec.classList.add('hidden');
                 histSec.classList.remove('hidden');
-                tabHistBtn.className = 'px-4 py-2 rounded-lg text-sm font-semibold bg-white text-emerald-900 shadow-sm transition-all cursor-pointer flex items-center gap-2';
-                tabFormBtn.className = 'px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer';
+                tabHistBtn.className = activeClass + ' flex items-center gap-2';
                 renderLocalReceiptsTable();
                 if (isAdminAuthenticated) {
                     loadReportsFromSupabase();
+                    loadSampahReportsFromSupabase();
                 }
             }
         }
@@ -901,6 +1428,7 @@
                 document.getElementById('adminLogoutBtn').classList.remove('hidden');
                 showToast('🔓 Akses Petugas DLH Kabupaten Bungo berhasil dibuka.', 'success');
                 loadReportsFromSupabase();
+                loadSampahReportsFromSupabase();
             } else {
                 showToast('❌ PIN Otorisasi Petugas DLH salah!', 'error');
                 pinInput.focus();
@@ -1379,14 +1907,25 @@
                         <span class="text-xs text-slate-500">${escapeHtml(r.namaPengisi)} (${escapeHtml(r.jabatan)})</span>
                     </td>
                     <td class="py-3.5 px-4 align-top">
-                        <span class="font-semibold text-slate-800 block">${escapeHtml(r.jenisLimbah)}</span>
-                        <span class="inline-block px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[11px] font-bold mt-0.5">${escapeHtml(r.kodeLimbah)}</span>
-                        <span class="text-xs font-bold text-emerald-700 ml-1">${r.beratLimbah} ${escapeHtml(r.satuanBerat)}</span>
+                        ${r.reportType === 'sampah' ? `
+                            <span class="inline-block px-2 py-0.5 rounded bg-teal-100 text-teal-900 text-[11px] font-bold">♻️ Sampah SSRT (${escapeHtml(r.periodeLabel || '')})</span>
+                            <span class="block text-xs font-bold text-slate-700 mt-0.5">Timbulan: ${Number(r.totalTimbulan || 0).toFixed(3)} Ton</span>
+                        ` : `
+                            <span class="font-semibold text-slate-800 block">${escapeHtml(r.jenisLimbah)}</span>
+                            <span class="inline-block px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[11px] font-bold mt-0.5">${escapeHtml(r.kodeLimbah)}</span>
+                            <span class="text-xs font-bold text-emerald-700 ml-1">${r.beratLimbah} ${escapeHtml(r.satuanBerat)}</span>
+                        `}
                     </td>
                     <td class="py-3.5 px-4 align-top">
-                        <span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${r.statusPenyerahan.includes('Sudah') ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-                            ${escapeHtml(r.statusPenyerahan)}
-                        </span>
+                        ${r.reportType === 'sampah' ? `
+                            <span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-100 text-teal-800">
+                                Terkelola: ${Number(r.pctTerkelola || 0).toFixed(2)}%
+                            </span>
+                        ` : `
+                            <span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold ${r.statusPenyerahan.includes('Sudah') ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                ${escapeHtml(r.statusPenyerahan)}
+                            </span>
+                        `}
                     </td>
                     <td class="py-3.5 px-4 align-top text-center">
                         <button type="button" onclick="viewLocalReceiptByIndex(${idx})"
@@ -1560,6 +2099,11 @@
 
         // --- MODAL PRATINJAU TANDA TERIMA ---
         function openReceiptModal(data) {
+            if (data.reportType === 'sampah') {
+                openSampahReceiptModal(data);
+                return;
+            }
+            document.getElementById('recSampahSection').classList.add('hidden');
             document.getElementById('recNoBadge').textContent = `REG: ${data.regNo}`;
             document.getElementById('recTimestamp').textContent = `Waktu Pelaporan: ${data.waktuInput}`;
             document.getElementById('recNamaUsaha').textContent = data.namaUsaha;
@@ -1884,6 +2428,1075 @@
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
+        }
+
+        // =========================================================================
+        // LOGIKA FORMULIR 2: PENGELOLAAN SAMPAH SEJENIS SAMPAH RUMAH TANGGA (INTERAKTIF)
+        // =========================================================================
+        function createEmptySampahSource(sumberDefault = '') {
+            return {
+                sumber: sumberDefault,
+                penghuni: 0,
+                sisaMakanan: 0,
+                rantingDaun: 0,
+                kaca: 0,
+                kain: 0,
+                logam: 0,
+                karet: 0,
+                plastik: 0,
+                kertas: 0,
+                residu: 0
+            };
+        }
+
+        function initDefaultSampahRows() {
+            sampahSourcesData = [
+                createEmptySampahSource('Perumahan Karyawan'),
+                createEmptySampahSource('Kantor'),
+                createEmptySampahSource('Area Pabrik')
+            ];
+            sampahTpaList = [
+                { tanggal: '', berat: 0, satuan: 'Ton', jenisArmada: '' }
+            ];
+            sampahPengolahanList = [
+                { jenisKegiatan: 'Pengomposan / Rumah Kompos', sumberTerkait: 0, waktu: '', jenisSampah: 'Sisa Makanan & Ranting/Daun', beratSampah: 0, beratResidu: 0, satuan: 'Ton' }
+            ];
+            sampahDocsState = { sopSk: null, neracaDoc: null };
+
+            const sopLabel = document.getElementById('s_sopSkFileName');
+            if (sopLabel) sopLabel.textContent = '📎 Pilih File SOP / SK';
+            document.getElementById('s_sopSkPreviewBtn')?.classList.add('hidden');
+
+            const neracaLabel = document.getElementById('s_neracaDocFileName');
+            if (neracaLabel) neracaLabel.textContent = '📎 Unggah Bukti Neraca';
+            document.getElementById('s_neracaDocPreviewBtn')?.classList.add('hidden');
+
+            renderAllSampahSections();
+        }
+
+        function renderAllSampahSections() {
+            renderEstimasiSourceCards();
+            renderTerkumpulSourceCards();
+            renderTpaTransportRows();
+            renderPengolahanActivityRows();
+            recalculateSampahBalance();
+        }
+
+        // --- Bagian 3: Kartu Estimasi Timbulan per Sumber ---
+        function addSampahSourceCard() {
+            sampahSourcesData.push(createEmptySampahSource(''));
+            renderAllSampahSections();
+        }
+
+        function removeSampahSourceCard(idx) {
+            if (sampahSourcesData.length <= 1) {
+                showToast('Minimal harus terdapat 1 sumber sampah.', 'error');
+                return;
+            }
+            sampahSourcesData.splice(idx, 1);
+            renderAllSampahSections();
+        }
+
+        function updateSampahSourceField(idx, field, val, isText = false) {
+            if (!sampahSourcesData[idx]) return;
+            sampahSourcesData[idx][field] = isText ? val : (parseFloat(val) || 0);
+            if (field === 'sumber') {
+                const titleEl = document.getElementById(`s_terkumpul_title_${idx}`);
+                if (titleEl) titleEl.textContent = `${idx + 1}. ${val.trim() || 'Sumber Sampah #' + (idx + 1)}`;
+                renderPengolahanActivityRows();
+            }
+            recalculateSampahBalance();
+        }
+
+        function renderEstimasiSourceCards() {
+            const container = document.getElementById('s_estimasiCardsContainer');
+            if (!container) return;
+
+            container.innerHTML = sampahSourcesData.map((src, idx) => `
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center p-3.5 rounded-xl border border-slate-200 bg-slate-50/70">
+                    <div class="md:col-span-5">
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">Sumber Sampah #${idx + 1}</label>
+                        <input type="text" value="${escapeHtml(src.sumber)}"
+                            oninput="updateSampahSourceField(${idx}, 'sumber', this.value, true)"
+                            placeholder="Contoh: Perumahan Karyawan / Kantor / Kantin"
+                            class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-teal-600 outline-none text-sm font-semibold">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">Jumlah Penghuni / Pekerja (Orang)</label>
+                        <input type="number" step="1" min="0" value="${src.penghuni || ''}" placeholder="0"
+                            oninput="updateSampahSourceField(${idx}, 'penghuni', this.value)"
+                            class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-teal-600 outline-none text-sm font-bold text-right">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-[11px] font-bold text-teal-800 mb-1">Estimasi Timbulan (Ton/Semester)</label>
+                        <div id="s_est_val_${idx}" class="px-3 py-2 rounded-lg bg-teal-100/80 border border-teal-300 text-teal-950 font-extrabold text-sm text-right">
+                            0.000 Ton
+                        </div>
+                    </div>
+                    <div class="md:col-span-1 flex justify-end md:pt-5">
+                        <button type="button" onclick="removeSampahSourceCard(${idx})" class="px-2.5 py-2 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer" title="Hapus sumber">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- Bagian 4B: Kartu Sampah Terkumpul Terpilah per Sumber ---
+        function renderTerkumpulSourceCards() {
+            const container = document.getElementById('s_terkumpulCardsContainer');
+            if (!container) return;
+
+            const komposisiFields = [
+                { key: 'sisaMakanan', label: 'Sisa Makanan (Organik)', group: 'Organik' },
+                { key: 'rantingDaun', label: 'Ranting, Daun & Sejenis', group: 'Organik' },
+                { key: 'kaca', label: 'Kaca (Anorganik)', group: 'Anorganik' },
+                { key: 'kain', label: 'Kain (Anorganik)', group: 'Anorganik' },
+                { key: 'logam', label: 'Logam / Seng (Anorganik)', group: 'Anorganik' },
+                { key: 'karet', label: 'Karet / Kulit (Anorganik)', group: 'Anorganik' },
+                { key: 'plastik', label: 'Plastik (Anorganik)', group: 'Anorganik' },
+                { key: 'kertas', label: 'Kertas (Anorganik)', group: 'Anorganik' },
+                { key: 'residu', label: 'Residu Terkumpul', group: 'Residu' }
+            ];
+
+            container.innerHTML = sampahSourcesData.map((src, idx) => `
+                <div class="rounded-2xl border border-slate-300 bg-white p-4 sm:p-5 space-y-3 shadow-xs">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2.5">
+                        <h4 id="s_terkumpul_title_${idx}" class="text-sm font-extrabold text-teal-950">
+                            ${idx + 1}. ${escapeHtml(src.sumber || 'Sumber Sampah #' + (idx + 1))}
+                        </h4>
+                        <span id="s_terkumpul_sub_${idx}" class="px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-900 text-xs font-bold">
+                            Total Terkumpul: 0.000 Ton
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                        ${komposisiFields.map(f => `
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">${f.label}</label>
+                                <input type="number" step="0.001" min="0" value="${src[f.key] || ''}" placeholder="0.000"
+                                    oninput="updateSampahSourceField(${idx}, '${f.key}', this.value)"
+                                    class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold text-right">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleFasilitasLainInput() {
+            const checked = document.getElementById('s_fasilitasLainCheck')?.checked;
+            const input = document.getElementById('s_fasilitasKeterangan');
+            if (input && checked) input.focus();
+        }
+
+        // --- Bagian 5: Pengangkutan Sampah ke TPA ---
+        function addTpaTransportRow() {
+            sampahTpaList.push({ tanggal: '', berat: 0, satuan: 'Ton', jenisArmada: '' });
+            renderTpaTransportRows();
+            recalculateSampahBalance();
+        }
+
+        function removeTpaTransportRow(idx) {
+            if (sampahTpaList.length <= 1) {
+                sampahTpaList[0] = { tanggal: '', berat: 0, satuan: 'Ton', jenisArmada: '' };
+            } else {
+                sampahTpaList.splice(idx, 1);
+            }
+            renderTpaTransportRows();
+            recalculateSampahBalance();
+        }
+
+        function updateTpaRow(idx, field, val, isText = false) {
+            if (!sampahTpaList[idx]) return;
+            sampahTpaList[idx][field] = isText ? val : (parseFloat(val) || 0);
+            recalculateSampahBalance();
+        }
+
+        function renderTpaTransportRows() {
+            const container = document.getElementById('s_tpaRowsContainer');
+            if (!container) return;
+
+            container.innerHTML = sampahTpaList.map((item, idx) => `
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end p-3.5 rounded-xl border border-amber-200/80 bg-amber-50/40">
+                    <div class="md:col-span-3">
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Tanggal Pengangkutan ke TPA</label>
+                        <input type="date" value="${escapeHtml(item.tanggal)}"
+                            onchange="updateTpaRow(${idx}, 'tanggal', this.value, true)"
+                            class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
+                    </div>
+                    <div class="md:col-span-4">
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Berat Sampah Diangkut ke TPA</label>
+                        <div class="flex">
+                            <input type="number" step="0.001" min="0" value="${item.berat || ''}" placeholder="0.000"
+                                oninput="updateTpaRow(${idx}, 'berat', this.value)"
+                                class="w-full px-3 py-2 rounded-l-lg bg-white border border-r-0 border-slate-300 focus:border-amber-600 outline-none text-xs font-bold text-right">
+                            <select onchange="updateTpaRow(${idx}, 'satuan', this.value, true)"
+                                class="px-2.5 py-2 rounded-r-lg border border-slate-300 bg-slate-100 text-xs font-bold outline-none">
+                                <option value="Ton" ${item.satuan === 'Ton' ? 'selected' : ''}>Ton</option>
+                                <option value="Kg" ${item.satuan === 'Kg' ? 'selected' : ''}>Kg</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="md:col-span-4">
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Armada Pengangkut</label>
+                        <input type="text" value="${escapeHtml(item.jenisArmada)}"
+                            oninput="updateTpaRow(${idx}, 'jenisArmada', this.value, true)"
+                            placeholder="Contoh: Dump Truck / Arm Roll / Pick Up"
+                            class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-amber-600 outline-none text-xs">
+                    </div>
+                    <div class="md:col-span-1 flex justify-end">
+                        <button type="button" onclick="removeTpaTransportRow(${idx})" class="px-2.5 py-2 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer" title="Hapus baris">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- Bagian 6: Kegiatan Pengolahan & Pengurangan Sampah ---
+        function addPengolahanActivityRow() {
+            sampahPengolahanList.push({
+                jenisKegiatan: 'Pengomposan / Rumah Kompos',
+                sumberTerkait: 0,
+                waktu: '',
+                jenisSampah: '',
+                beratSampah: 0,
+                beratResidu: 0,
+                satuan: 'Ton'
+            });
+            renderPengolahanActivityRows();
+            recalculateSampahBalance();
+        }
+
+        function removePengolahanActivityRow(idx) {
+            if (sampahPengolahanList.length <= 1) {
+                sampahPengolahanList[0] = { jenisKegiatan: 'Pengomposan / Rumah Kompos', sumberTerkait: 0, waktu: '', jenisSampah: '', beratSampah: 0, beratResidu: 0, satuan: 'Ton' };
+            } else {
+                sampahPengolahanList.splice(idx, 1);
+            }
+            renderPengolahanActivityRows();
+            recalculateSampahBalance();
+        }
+
+        function updatePengolahanRow(idx, field, val, isText = false) {
+            if (!sampahPengolahanList[idx]) return;
+            if (field === 'sumberTerkait') {
+                sampahPengolahanList[idx][field] = parseInt(val, 10) || 0;
+            } else {
+                sampahPengolahanList[idx][field] = isText ? val : (parseFloat(val) || 0);
+            }
+            recalculateSampahBalance();
+        }
+
+        function renderPengolahanActivityRows() {
+            const container = document.getElementById('s_pengolahanRowsContainer');
+            if (!container) return;
+
+            const kegiatanOptions = [
+                'Pengomposan / Rumah Kompos',
+                'Bank Sampah',
+                'Ternak Maggot & Sejenisnya',
+                'TPS3R',
+                'Kegiatan Guna Ulang',
+                'Kegiatan Daur Ulang'
+            ];
+
+            container.innerHTML = sampahPengolahanList.map((act, idx) => `
+                <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
+                        <div class="lg:col-span-3">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Kegiatan Pengolahan</label>
+                            <select onchange="updatePengolahanRow(${idx}, 'jenisKegiatan', this.value, true)"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold">
+                                ${kegiatanOptions.map(opt => `<option value="${opt}" ${act.jenisKegiatan === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Sumber Sampah</label>
+                            <select onchange="updatePengolahanRow(${idx}, 'sumberTerkait', this.value)"
+                                class="w-full px-2.5 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-semibold">
+                                ${sampahSourcesData.map((s, sIdx) => `<option value="${sIdx}" ${Number(act.sumberTerkait) === sIdx ? 'selected' : ''}>${escapeHtml(s.sumber || 'Sumber #' + (sIdx + 1))}</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Waktu / Periode Kegiatan</label>
+                            <input type="text" value="${escapeHtml(act.waktu)}"
+                                oninput="updatePengolahanRow(${idx}, 'waktu', this.value, true)"
+                                placeholder="Contoh: Jan-Jun 2026 / Mingguan"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs">
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Jenis Sampah Diolah</label>
+                            <input type="text" value="${escapeHtml(act.jenisSampah)}"
+                                oninput="updatePengolahanRow(${idx}, 'jenisSampah', this.value, true)"
+                                placeholder="Organik / Plastik / Kertas"
+                                class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs">
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-[11px] font-bold text-emerald-900 mb-1">Berat/Vol Sampah & Residu</label>
+                            <div class="grid grid-cols-2 gap-1.5">
+                                <input type="number" step="0.001" min="0" value="${act.beratSampah || ''}" placeholder="Diolah"
+                                    oninput="updatePengolahanRow(${idx}, 'beratSampah', this.value)"
+                                    title="Berat/Volume Sampah Diolah"
+                                    class="w-full px-2 py-2 rounded-lg bg-white border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold text-right">
+                                <input type="number" step="0.001" min="0" value="${act.beratResidu || ''}" placeholder="Residu"
+                                    oninput="updatePengolahanRow(${idx}, 'beratResidu', this.value)"
+                                    title="Berat/Volume Residu Pengolahan"
+                                    class="w-full px-2 py-2 rounded-lg bg-white border border-rose-300 focus:border-rose-500 outline-none text-xs font-bold text-right">
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-1 flex items-center justify-end gap-1">
+                            <select onchange="updatePengolahanRow(${idx}, 'satuan', this.value, true)"
+                                class="px-1.5 py-2 rounded-lg border border-slate-300 bg-white text-[11px] font-bold outline-none">
+                                <option value="Ton" ${act.satuan === 'Ton' ? 'selected' : ''}>Ton</option>
+                                <option value="Kg" ${act.satuan === 'Kg' ? 'selected' : ''}>Kg</option>
+                            </select>
+                            <button type="button" onclick="removePengolahanActivityRow(${idx})" class="px-2 py-2 rounded-lg text-rose-600 hover:bg-rose-100 text-xs font-bold cursor-pointer" title="Hapus">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- KALKULASI NERACA OTOMATIS (MENGHASILKAN FORMAT EXCEL CONTOH) ---
+        function computeDetailedSampahNeraca() {
+            const faktorKg = parseFloat(document.getElementById('s_faktorKg')?.value) || 0.33;
+            const jumlahHari = parseFloat(document.getElementById('s_jumlahHari')?.value) || 180;
+            const satuanKomp = document.getElementById('s_satuanInputKomposisi')?.value || 'Ton';
+            const divFactor = satuanKomp === 'Kg' ? 1000 : 1;
+
+            const rowsComputed = sampahSourcesData.map((src, idx) => {
+                const penghuni = Number(src.penghuni) || 0;
+                const timbulan = (penghuni * faktorKg * jumlahHari) / 1000;
+
+                const sisaMakanan = (Number(src.sisaMakanan) || 0) / divFactor;
+                const rantingDaun = (Number(src.rantingDaun) || 0) / divFactor;
+                const kaca = (Number(src.kaca) || 0) / divFactor;
+                const kain = (Number(src.kain) || 0) / divFactor;
+                const logam = (Number(src.logam) || 0) / divFactor;
+                const karet = (Number(src.karet) || 0) / divFactor;
+                const plastik = (Number(src.plastik) || 0) / divFactor;
+                const kertas = (Number(src.kertas) || 0) / divFactor;
+                const residu = (Number(src.residu) || 0) / divFactor;
+
+                const terkumpul = sisaMakanan + rantingDaun + kaca + kain + logam + karet + plastik + kertas + residu;
+
+                // Agregasi kegiatan pengolahan pada Bagian 6 yang terkait sumber ini
+                let daurUlang = 0, gunaUlang = 0, maggot = 0, tps3r = 0, bankSampah = 0, rumahKompos = 0, residuPengolahan = 0;
+                sampahPengolahanList.forEach(act => {
+                    const targetIdx = Math.min(Number(act.sumberTerkait) || 0, sampahSourcesData.length - 1);
+                    if (targetIdx === idx) {
+                        const actDiv = act.satuan === 'Kg' ? 1000 : 1;
+                        const valTon = (Number(act.beratSampah) || 0) / actDiv;
+                        const resTon = (Number(act.beratResidu) || 0) / actDiv;
+                        residuPengolahan += resTon;
+
+                        if (act.jenisKegiatan === 'Kegiatan Daur Ulang') daurUlang += valTon;
+                        else if (act.jenisKegiatan === 'Kegiatan Guna Ulang') gunaUlang += valTon;
+                        else if (act.jenisKegiatan === 'Ternak Maggot & Sejenisnya') maggot += valTon;
+                        else if (act.jenisKegiatan === 'TPS3R') tps3r += valTon;
+                        else if (act.jenisKegiatan === 'Bank Sampah') bankSampah += valTon;
+                        else rumahKompos += valTon;
+                    }
+                });
+
+                const totalKelolaKotor = daurUlang + gunaUlang + maggot + tps3r + bankSampah + rumahKompos;
+                const terkelolaBersih = Math.max(0, totalKelolaKotor - residuPengolahan);
+                const keTpa = Math.max(0, terkumpul - terkelolaBersih);
+                const tidakTerkelola = Math.max(0, timbulan - terkumpul);
+
+                const pctTerkelola = timbulan > 0 ? (terkelolaBersih / timbulan) * 100 : 0;
+                const pctKeTpa = timbulan > 0 ? (keTpa / timbulan) * 100 : 0;
+                const pctTidakTerkelola = timbulan > 0 ? (tidakTerkelola / timbulan) * 100 : 0;
+
+                const kontrolNeraca = timbulan > 0 ? (pctTerkelola + pctKeTpa + pctTidakTerkelola) : 0;
+                const selisihAlokasi = timbulan - (terkelolaBersih + keTpa + tidakTerkelola);
+                const isSeimbang = timbulan === 0
+                    ? (terkumpul === 0 && terkelolaBersih === 0)
+                    : (Math.abs(selisihAlokasi) < 0.001 && Math.abs(kontrolNeraca - 100) < 0.05 && terkumpul <= timbulan + 0.0005 && totalKelolaKotor <= terkumpul + 0.0005);
+
+                return {
+                    sumber: src.sumber || `Sumber #${idx + 1}`,
+                    penghuni,
+                    sisaMakanan, rantingDaun, kaca, kain, logam, karet, plastik, kertas, residu,
+                    daurUlang, gunaUlang, maggot, tps3r, bankSampah, rumahKompos, residuPengolahan,
+                    metrics: {
+                        penghuni,
+                        timbulan,
+                        terkumpul,
+                        terkelolaBersih,
+                        pctTerkelola,
+                        keTpa,
+                        pctKeTpa,
+                        tidakTerkelola,
+                        pctTidakTerkelola,
+                        kontrolNeraca,
+                        selisihAlokasi,
+                        statusValidasi: (timbulan === 0 && terkumpul === 0) ? '-' : (isSeimbang ? 'SEIMBANG' : 'TIDAK SEIMBANG')
+                    }
+                };
+            });
+
+            // Hitung Total Semester
+            const totals = {
+                penghuni: 0, timbulan: 0, terkumpul: 0, terkelolaBersih: 0, keTpa: 0, tidakTerkelola: 0
+            };
+            rowsComputed.forEach(r => {
+                totals.penghuni += r.metrics.penghuni;
+                totals.timbulan += r.metrics.timbulan;
+                totals.terkumpul += r.metrics.terkumpul;
+                totals.terkelolaBersih += r.metrics.terkelolaBersih;
+                totals.keTpa += r.metrics.keTpa;
+                totals.tidakTerkelola += r.metrics.tidakTerkelola;
+            });
+
+            const pctTerkelola = totals.timbulan > 0 ? (totals.terkelolaBersih / totals.timbulan) * 100 : 0;
+            const pctKeTpa = totals.timbulan > 0 ? (totals.keTpa / totals.timbulan) * 100 : 0;
+            const pctTidakTerkelola = totals.timbulan > 0 ? (totals.tidakTerkelola / totals.timbulan) * 100 : 0;
+            const kontrolNeraca = totals.timbulan > 0 ? (pctTerkelola + pctKeTpa + pctTidakTerkelola) : 0;
+            const selisihAlokasi = totals.timbulan - (totals.terkelolaBersih + totals.keTpa + totals.tidakTerkelola);
+            const isAllSeimbang = totals.timbulan > 0 && Math.abs(selisihAlokasi) < 0.001 && Math.abs(kontrolNeraca - 100) < 0.05 && totals.terkumpul <= totals.timbulan + 0.0005;
+
+            // Total pengangkutan TPA yang diinput manual di Bagian 5
+            const totalTpaInputTon = sampahTpaList.reduce((acc, item) => {
+                const d = item.satuan === 'Kg' ? 1000 : 1;
+                return acc + ((Number(item.berat) || 0) / d);
+            }, 0);
+
+            return {
+                rows: rowsComputed,
+                totals: {
+                    ...totals,
+                    pctTerkelola,
+                    pctKeTpa,
+                    pctTidakTerkelola,
+                    kontrolNeraca,
+                    selisihAlokasi,
+                    totalTpaInputTon,
+                    statusValidasi: totals.timbulan === 0 ? '-' : (isAllSeimbang ? 'SEIMBANG' : 'TIDAK SEIMBANG')
+                }
+            };
+        }
+
+        function computeRowMetrics(row) {
+            if (row && row.metrics) return row.metrics;
+            return {
+                penghuni: Number(row?.penghuni) || 0,
+                timbulan: 0, terkumpul: 0, terkelolaBersih: 0, pctTerkelola: 0,
+                keTpa: 0, pctKeTpa: 0, tidakTerkelola: 0, pctTidakTerkelola: 0,
+                kontrolNeraca: 0, selisihAlokasi: 0, statusValidasi: '-'
+            };
+        }
+
+        function recalculateSampahBalance() {
+            const { rows, totals } = computeDetailedSampahNeraca();
+
+            rows.forEach((r, idx) => {
+                const estEl = document.getElementById(`s_est_val_${idx}`);
+                if (estEl) estEl.textContent = `${r.metrics.timbulan.toFixed(3)} Ton`;
+
+                const subEl = document.getElementById(`s_terkumpul_sub_${idx}`);
+                if (subEl) subEl.textContent = `Total Terkumpul: ${r.metrics.terkumpul.toFixed(3)} Ton`;
+            });
+
+            const tpaDisp = document.getElementById('s_totalTpaInputDisplay');
+            if (tpaDisp) tpaDisp.textContent = `${totals.totalTpaInputTon.toFixed(3)} Ton`;
+
+            const setTxt = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+            setTxt('card_timbulan', `${totals.timbulan.toFixed(3)} Ton`);
+            setTxt('card_terkelola', `${totals.terkelolaBersih.toFixed(3)} Ton (${totals.pctTerkelola.toFixed(2)}%)`);
+            setTxt('card_ketpa', `${totals.keTpa.toFixed(3)} Ton (${totals.pctKeTpa.toFixed(2)}%)`);
+            setTxt('card_tidakterkelola', `${totals.tidakTerkelola.toFixed(3)} Ton (${totals.pctTidakTerkelola.toFixed(2)}%)`);
+
+            const badge = document.getElementById('s_neracaBadgeStatus');
+            if (badge) {
+                badge.textContent = `STATUS NERACA: ${totals.statusValidasi}`;
+                badge.className = `px-3 py-1 rounded-full text-xs font-extrabold ${totals.statusValidasi === 'SEIMBANG' ? 'bg-emerald-400 text-teal-950' : 'bg-amber-300 text-slate-950'}`;
+            }
+
+            const tbody = document.getElementById('s_liveNeracaPreviewBody');
+            if (tbody) {
+                tbody.innerHTML = rows.map((r, i) => {
+                    const m = r.metrics;
+                    return `
+                        <tr class="hover:bg-slate-50">
+                            <td class="py-2 px-2.5 text-center font-bold border-r border-slate-200">${i + 1}</td>
+                            <td class="py-2 px-3 font-semibold border-r border-slate-200">${escapeHtml(r.sumber)}</td>
+                            <td class="py-2 px-2.5 text-right border-r border-slate-200">${m.penghuni}</td>
+                            <td class="py-2 px-2.5 text-right font-semibold border-r border-slate-200">${m.timbulan.toFixed(3)}</td>
+                            <td class="py-2 px-2.5 text-right font-semibold border-r border-slate-200">${m.terkumpul.toFixed(3)}</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-yellow-50 border-r border-slate-200">${m.terkelolaBersih.toFixed(3)}</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-rose-50 text-rose-900 border-r border-slate-200">${m.pctTerkelola.toFixed(2)}%</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-yellow-50 border-r border-slate-200">${m.keTpa.toFixed(3)}</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-rose-50 text-rose-900 border-r border-slate-200">${m.pctKeTpa.toFixed(2)}%</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-yellow-50 border-r border-slate-200">${m.tidakTerkelola.toFixed(3)}</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-rose-50 text-rose-900 border-r border-slate-200">${m.pctTidakTerkelola.toFixed(2)}%</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-lime-50 border-r border-slate-200">${m.timbulan > 0 ? m.kontrolNeraca.toFixed(2) + '%' : '-'}</td>
+                            <td class="py-2 px-2.5 text-right font-bold bg-lime-50 border-r border-slate-200">${m.timbulan > 0 ? m.selisihAlokasi.toFixed(3) : '-'}</td>
+                            <td class="py-2 px-2.5 text-center font-extrabold ${m.statusValidasi === 'SEIMBANG' ? 'text-emerald-800 bg-emerald-50' : 'text-rose-800 bg-rose-50'}">${m.statusValidasi}</td>
+                        </tr>
+                    `;
+                }).join('') + `
+                    <tr class="bg-emerald-800 text-white font-extrabold">
+                        <td colspan="2" class="py-2.5 px-3 border-r border-emerald-700">Total Semester (Ton)</td>
+                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.penghuni}</td>
+                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.timbulan.toFixed(3)}</td>
+                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.terkumpul.toFixed(3)}</td>
+                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.terkelolaBersih.toFixed(3)}</td>
+                        <td class="py-2.5 px-2.5 text-right bg-rose-700 border-r border-emerald-700">${totals.pctTerkelola.toFixed(2)}%</td>
+                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.keTpa.toFixed(3)}</td>
+                        <td class="py-2.5 px-2.5 text-right bg-rose-700 border-r border-emerald-700">${totals.pctKeTpa.toFixed(2)}%</td>
+                        <td class="py-2.5 px-2.5 text-right border-r border-emerald-700">${totals.tidakTerkelola.toFixed(3)}</td>
+                        <td class="py-2.5 px-2.5 text-right bg-rose-700 border-r border-emerald-700">${totals.pctTidakTerkelola.toFixed(2)}%</td>
+                        <td class="py-2.5 px-2.5 text-right bg-lime-600 text-slate-950 border-r border-emerald-700">${totals.kontrolNeraca.toFixed(2)}%</td>
+                        <td class="py-2.5 px-2.5 text-right bg-lime-600 text-slate-950 border-r border-emerald-700">${totals.selisihAlokasi.toFixed(3)}</td>
+                        <td class="py-2.5 px-2.5 text-center bg-rose-700">${totals.statusValidasi}</td>
+                    </tr>
+                `;
+            }
+
+            return { rows, totals };
+        }
+
+        // --- Upload Dokumen SOP/SK & Bukti Neraca ---
+        function handleSampahDocUpload(event, docKey) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Ukuran dokumen maksimal 5 MB.', 'error');
+                event.target.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                sampahDocsState[docKey] = {
+                    name: file.name,
+                    type: file.type,
+                    fileObj: file,
+                    dataUrl: e.target.result
+                };
+                if (docKey === 'sopSk') {
+                    document.getElementById('s_sopSkFileName').textContent = `✅ ${file.name}`;
+                    document.getElementById('s_sopSkPreviewBtn').classList.remove('hidden');
+                } else {
+                    document.getElementById('s_neracaDocFileName').textContent = `✅ ${file.name}`;
+                    document.getElementById('s_neracaDocPreviewBtn').classList.remove('hidden');
+                }
+                showToast(`Dokumen "${file.name}" berhasil dilampirkan.`);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewSampahDoc(docKey) {
+            const d = sampahDocsState[docKey];
+            if (!d) return;
+            openDocViewer(d.name, d.dataUrl, d.type);
+        }
+
+        // --- Geotagging GPS Otomatis ---
+        function captureSampahGeotag() {
+            const btn = document.getElementById('s_getGpsBtn');
+            const input = document.getElementById('s_geotagCoords');
+            if (!navigator.geolocation) {
+                showToast('Perangkat/browser tidak mendukung GPS otomatis. Silakan ketik koordinat secara manual.', 'error');
+                return;
+            }
+            btn.disabled = true;
+            btn.textContent = '⏳ Mendeteksi GPS...';
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude.toFixed(6);
+                    const lng = pos.coords.longitude.toFixed(6);
+                    const acc = Math.round(pos.coords.accuracy);
+                    const coordText = `${lat}, ${lng} (Akurasi ±${acc}m)`;
+                    input.value = coordText;
+                    updateGeoOverlayText();
+                    btn.disabled = false;
+                    btn.textContent = '📡 Ambil Lokasi GPS';
+                    showToast('📍 Koordinat GPS berhasil dikunci!', 'success');
+                },
+                (err) => {
+                    btn.disabled = false;
+                    btn.textContent = '📡 Ambil Lokasi GPS';
+                    showToast(`Gagal mendeteksi GPS (${err.message}). Silakan ketik koordinat manual.`, 'error');
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        function updateGeoOverlayText() {
+            const coords = document.getElementById('s_geotagCoords')?.value.trim();
+            const overlay = document.getElementById('s_geoOverlayBadge');
+            if (overlay && uploadedSampahFotoBase64) {
+                overlay.textContent = `📍 Geotagging: ${coords || 'Menunggu koordinat GPS'}`;
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        function handleSampahFotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Ukuran foto maksimal 5 MB.', 'error');
+                event.target.value = '';
+                return;
+            }
+            uploadedSampahFotoFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedSampahFotoBase64 = e.target.result;
+                document.getElementById('s_fotoPreviewImg').src = uploadedSampahFotoBase64;
+                document.getElementById('s_fotoPreviewImg').classList.remove('hidden');
+                document.getElementById('s_fotoPlaceholderText').classList.add('hidden');
+                document.getElementById('s_removeFotoBtn').classList.remove('hidden');
+                updateGeoOverlayText();
+                showToast('Bukti foto kegiatan pengelolaan sampah dilampirkan.');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeSampahFoto() {
+            uploadedSampahFotoBase64 = '';
+            uploadedSampahFotoFile = null;
+            document.getElementById('s_buktiFotoInput').value = '';
+            document.getElementById('s_fotoPreviewImg').src = '';
+            document.getElementById('s_fotoPreviewImg').classList.add('hidden');
+            document.getElementById('s_fotoPlaceholderText').classList.remove('hidden');
+            document.getElementById('s_removeFotoBtn').classList.add('hidden');
+            document.getElementById('s_geoOverlayBadge')?.classList.add('hidden');
+        }
+
+        function resetSampahForm() {
+            document.getElementById('sampahForm').reset();
+            removeSampahFoto();
+            initDefaultSampahRows();
+            showToast('Formulir pengelolaan sampah telah dibersihkan.');
+        }
+
+        async function handleSampahFormSubmit(event) {
+            event.preventDefault();
+            if (!supabaseClient) {
+                showToast('Konfigurasi SUPABASE_URL dan SUPABASE_ANON_KEY belum diisi!', 'error');
+                return;
+            }
+
+            const selectedFasilitas = Array.from(document.querySelectorAll('input[name="s_fasilitas"]:checked')).map(cb => cb.value);
+            if (selectedFasilitas.length === 0) {
+                showToast('Pilih minimal 1 Fasilitas Pengumpulan Sampah pada Bagian 4.', 'error');
+                return;
+            }
+
+            if (!uploadedSampahFotoFile) {
+                showToast('Harap unggah Foto Kegiatan Pengelolaan Sampah pada Bagian 7.', 'error');
+                document.getElementById('s_fotoDropzone').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const { rows, totals } = computeDetailedSampahNeraca();
+            const now = new Date();
+            const regNo = `DLH-SMP-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${Math.floor(1000 + Math.random() * 9000)}`;
+            const waktuInput = now.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) + ' WIB';
+            const periodeLabel = `${document.getElementById('s_periodeSemester').value} Tahun ${document.getElementById('s_tahun').value}`;
+
+            const sopSkNomor = document.getElementById('s_nomorSopSk').value.trim();
+            const sopSkTanggal = document.getElementById('s_tglSopSk').value;
+            const fasilitasKet = document.getElementById('s_fasilitasKeterangan').value.trim();
+            const geotagCoords = document.getElementById('s_geotagCoords').value.trim();
+            const ketFotoRaw = document.getElementById('s_keteranganFoto').value.trim();
+            const fullKeteranganFoto = `${ketFotoRaw} | Geotagging: ${geotagCoords}`;
+
+            const btn = document.getElementById('submitSampahBtn');
+            const origHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-teal-950 border-t-transparent rounded-full"></span><span>Mengunggah Berkas & Menyimpan...</span>`;
+
+            try {
+                // 1. Unggah Foto Kegiatan
+                const safeExt = uploadedSampahFotoFile.name.split('.').pop() || 'jpg';
+                const fotoUrl = await uploadFileToSupabaseStorage(uploadedSampahFotoFile, `${regNo}/bukti-sampah.${safeExt}`);
+
+                // 2. Unggah Dokumen SOP/SK & Bukti Neraca (jika dilampirkan)
+                let sopSkUrl = null;
+                if (sampahDocsState.sopSk?.fileObj) {
+                    const cleanSopName = sampahDocsState.sopSk.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                    sopSkUrl = await uploadFileToSupabaseStorage(sampahDocsState.sopSk.fileObj, `${regNo}/sop_sk_${cleanSopName}`);
+                }
+
+                let neracaDocUrl = null;
+                if (sampahDocsState.neracaDoc?.fileObj) {
+                    const cleanNeracaName = sampahDocsState.neracaDoc.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                    neracaDocUrl = await uploadFileToSupabaseStorage(sampahDocsState.neracaDoc.fileObj, `${regNo}/bukti_neraca_${cleanNeracaName}`);
+                }
+
+                const metadataPaket = {
+                    sopSk: { nomor: sopSkNomor, tanggal: sopSkTanggal, url: sopSkUrl },
+                    fasilitas: { daftar: selectedFasilitas, keterangan: fasilitasKet },
+                    pengangkutanTpa: sampahTpaList.filter(t => t.tanggal || Number(t.berat) > 0 || t.jenisArmada),
+                    kegiatanPengolahan: sampahPengolahanList.filter(a => Number(a.beratSampah) > 0 || a.jenisSampah),
+                    buktiNeracaUrl: neracaDocUrl,
+                    geotagging: geotagCoords
+                };
+
+                const sampahPayload = {
+                    reg_no: regNo,
+                    waktu_input: waktuInput,
+                    nama_perusahaan: document.getElementById('s_namaUsaha').value.trim(),
+                    nama_pengisi: document.getElementById('s_namaPengisi').value.trim(),
+                    jabatan: document.getElementById('s_jabatan').value.trim(),
+                    no_telepon: document.getElementById('s_noTelepon').value.trim(),
+                    alamat_usaha: document.getElementById('s_alamatUsaha').value.trim(),
+                    periode_semester: document.getElementById('s_periodeSemester').value,
+                    tahun_laporan: parseInt(document.getElementById('s_tahun').value, 10),
+                    faktor_timbulan_kg: parseFloat(document.getElementById('s_faktorKg').value) || 0.33,
+                    jumlah_hari: parseInt(document.getElementById('s_jumlahHari').value, 10) || 180,
+                    total_penghuni: totals.penghuni,
+                    total_timbulan_ton: Number(totals.timbulan.toFixed(3)),
+                    total_terkumpul_ton: Number(totals.terkumpul.toFixed(3)),
+                    total_terkelola_bersih_ton: Number(totals.terkelolaBersih.toFixed(3)),
+                    persentase_terkelola: Number(totals.pctTerkelola.toFixed(2)),
+                    total_ke_tpa_ton: Number(totals.keTpa.toFixed(3)),
+                    persentase_ke_tpa: Number(totals.pctKeTpa.toFixed(2)),
+                    total_tidak_terkelola_ton: Number(totals.tidakTerkelola.toFixed(3)),
+                    persentase_tidak_terkelola: Number(totals.pctTidakTerkelola.toFixed(2)),
+                    status_validasi: totals.statusValidasi,
+                    rincian_sumber: rows,
+                    foto_url: fotoUrl || '-',
+                    keterangan_foto: fullKeteranganFoto
+                };
+
+                const { error: sampahErr } = await supabaseClient
+                    .from(SUPABASE_SAMPAH_TABLE)
+                    .insert([sampahPayload]);
+
+                if (sampahErr) {
+                    const fallbackPayload = {
+                        reg_no: regNo,
+                        waktu_input: waktuInput,
+                        nama_perusahaan: sampahPayload.nama_perusahaan,
+                        nama_pengisi: sampahPayload.nama_pengisi,
+                        jabatan: sampahPayload.jabatan,
+                        no_telepon: sampahPayload.no_telepon,
+                        alamat_usaha: sampahPayload.alamat_usaha,
+                        nomor_izin_tps: `SOP/SK: ${sopSkNomor} (${periodeLabel})`,
+                        tanggal_terbit_izin: sopSkTanggal || now.toISOString().split('T')[0],
+                        jenis_limbah: `Laporan Pengelolaan Sampah Sejenis Rumah Tangga (${periodeLabel})`,
+                        kode_limbah: 'SSRT',
+                        tanggal_dihasilkan: now.toISOString().split('T')[0],
+                        berat_limbah: sampahPayload.total_timbulan_ton,
+                        satuan_berat: 'Ton',
+                        status_penyerahan: `Terkelola ${sampahPayload.persentase_terkelola}% | TPA ${sampahPayload.persentase_ke_tpa}%`,
+                        tanggal_penyerahan: '-',
+                        nomor_festronik: sampahPayload.status_validasi,
+                        pihak_lanjutan: rows.map(r => ({ ...r, meta: metadataPaket })),
+                        foto_url: sampahPayload.foto_url,
+                        keterangan_foto: fullKeteranganFoto
+                    };
+                    const { error: fbErr } = await supabaseClient.from(SUPABASE_TABLE).insert([fallbackPayload]);
+                    if (fbErr) throw new Error(fbErr.message);
+                }
+
+                const receiptObj = {
+                    reportType: 'sampah',
+                    regNo,
+                    waktuInput,
+                    periodeLabel,
+                    namaUsaha: sampahPayload.nama_perusahaan,
+                    namaPengisi: sampahPayload.nama_pengisi,
+                    jabatan: sampahPayload.jabatan,
+                    noTelepon: sampahPayload.no_telepon,
+                    alamatUsaha: sampahPayload.alamat_usaha,
+                    sopSkInfo: `${sopSkNomor} (Tgl: ${formatTanggalIndo(sopSkTanggal)})`,
+                    fasilitasInfo: `${selectedFasilitas.join(', ')}${fasilitasKet ? ' — ' + fasilitasKet : ''}`,
+                    pengangkutanTpa: metadataPaket.pengangkutanTpa,
+                    kegiatanPengolahan: metadataPaket.kegiatanPengolahan,
+                    totalPenghuni: totals.penghuni,
+                    totalTimbulan: totals.timbulan,
+                    totalTerkumpul: totals.terkumpul,
+                    totalTerkelolaBersih: totals.terkelolaBersih,
+                    pctTerkelola: totals.pctTerkelola,
+                    totalKeTpa: totals.keTpa,
+                    pctKeTpa: totals.pctKeTpa,
+                    totalTidakTerkelola: totals.tidakTerkelola,
+                    pctTidakTerkelola: totals.pctTidakTerkelola,
+                    statusValidasi: totals.statusValidasi,
+                    rincianSumber: rows,
+                    fotoBase64: uploadedSampahFotoBase64 || fotoUrl,
+                    keteranganFoto: fullKeteranganFoto
+                };
+
+                saveLocalReceiptHistory(receiptObj);
+                showToast('✅ Laporan Pengelolaan Sampah Sejenis Rumah Tangga berhasil tersimpan!', 'success');
+                openSampahReceiptModal(receiptObj);
+            } catch (err) {
+                console.error(err);
+                showToast(`❌ Gagal menyimpan: ${err.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+            }
+        }
+
+        function openSampahReceiptModal(data) {
+            document.getElementById('recNoBadge').textContent = `REG: ${data.regNo}`;
+            document.getElementById('recTimestamp').textContent = `Waktu Pelaporan: ${data.waktuInput} • ${data.periodeLabel || ''}`;
+            document.getElementById('recNamaUsaha').textContent = data.namaUsaha;
+            document.getElementById('recPengisiJabatan').textContent = `${data.namaPengisi} — ${data.jabatan}`;
+            document.getElementById('recTelepon').textContent = data.noTelepon;
+            document.getElementById('recAlamat').textContent = data.alamatUsaha;
+            document.getElementById('recIzin').textContent = data.sopSkInfo ? `SOP/SK: ${data.sopSkInfo}` : `Pelaporan Neraca Sampah SSRT (${data.periodeLabel || ''})`;
+
+            document.getElementById('recJenisKode').textContent = `Sampah Sejenis Sampah Rumah Tangga (${data.totalPenghuni || 0} Penghuni)`;
+            document.getElementById('recTglDihasilkan').textContent = data.fasilitasInfo || data.periodeLabel || '-';
+            document.getElementById('recBerat').textContent = `Timbulan: ${Number(data.totalTimbulan || 0).toFixed(3)} Ton | Terkumpul: ${Number(data.totalTerkumpul || 0).toFixed(3)} Ton`;
+            document.getElementById('recStatusPenyerahan').textContent = `Terkelola Bersih: ${Number(data.totalTerkelolaBersih || 0).toFixed(3)} Ton (${Number(data.pctTerkelola || 0).toFixed(2)}%) | Ke TPA: ${Number(data.totalKeTpa || 0).toFixed(3)} Ton (${Number(data.pctKeTpa || 0).toFixed(2)}%) | Tidak Terkelola: ${Number(data.totalTidakTerkelola || 0).toFixed(3)} Ton (${Number(data.pctTidakTerkelola || 0).toFixed(2)}%)`;
+
+            document.getElementById('recFestronikRow').classList.add('hidden');
+            document.getElementById('recPihakSection').classList.add('hidden');
+
+            const sampahSec = document.getElementById('recSampahSection');
+            const sampahTbl = document.getElementById('recSampahSummaryTable');
+            sampahSec.classList.remove('hidden');
+
+            const rows = Array.isArray(data.rincianSumber) ? data.rincianSumber : [];
+            sampahTbl.innerHTML = `
+                <table class="w-full border border-slate-300 text-[11px]">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-300 font-bold text-slate-800">
+                            <th class="py-1.5 px-2 text-left">Sumber Sampah</th>
+                            <th class="py-1.5 px-2 text-right">Penghuni</th>
+                            <th class="py-1.5 px-2 text-right">Timbulan (Ton)</th>
+                            <th class="py-1.5 px-2 text-right">Terkumpul (Ton)</th>
+                            <th class="py-1.5 px-2 text-right">Terkelola (%)</th>
+                            <th class="py-1.5 px-2 text-right">Ke TPA (%)</th>
+                            <th class="py-1.5 px-2 text-right">Tdk Terkelola (%)</th>
+                            <th class="py-1.5 px-2 text-center">Validasi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        ${rows.map(r => {
+                            const m = r.metrics || computeRowMetrics(r);
+                            return `
+                                <tr>
+                                    <td class="py-1.5 px-2 font-semibold">${escapeHtml(r.sumber || '-')}</td>
+                                    <td class="py-1.5 px-2 text-right">${m.penghuni}</td>
+                                    <td class="py-1.5 px-2 text-right">${m.timbulan.toFixed(3)}</td>
+                                    <td class="py-1.5 px-2 text-right">${m.terkumpul.toFixed(3)}</td>
+                                    <td class="py-1.5 px-2 text-right font-bold text-emerald-800">${m.terkelolaBersih.toFixed(3)} (${m.pctTerkelola.toFixed(2)}%)</td>
+                                    <td class="py-1.5 px-2 text-right">${m.keTpa.toFixed(3)} (${m.pctKeTpa.toFixed(2)}%)</td>
+                                    <td class="py-1.5 px-2 text-right">${m.tidakTerkelola.toFixed(3)} (${m.pctTidakTerkelola.toFixed(2)}%)</td>
+                                    <td class="py-1.5 px-2 text-center font-bold">${m.statusValidasi}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            const recFotoImg = document.getElementById('recFotoImg');
+            if (data.fotoBase64 && data.fotoBase64 !== '-') {
+                recFotoImg.src = data.fotoBase64;
+                recFotoImg.classList.remove('hidden');
+            } else {
+                recFotoImg.classList.add('hidden');
+            }
+            document.getElementById('recFotoKeterangan').textContent = `Keterangan & Geotagging: ${data.keteranganFoto || '-'}`;
+            document.getElementById('recSignerName').textContent = data.namaPengisi;
+            document.getElementById('recSignerRole').textContent = `${data.jabatan} - ${data.namaUsaha}`;
+            document.getElementById('receiptModal').classList.remove('hidden');
+        }
+
+        async function loadSampahReportsFromSupabase() {
+            if (!isAdminAuthenticated || !supabaseClient) return;
+            const tbody = document.getElementById('sampahAdminTableBody');
+            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-500 text-xs">⏳ Memuat rekap pengelolaan sampah dari server...</td></tr>`;
+
+            try {
+                let rows = [];
+                const { data, error } = await supabaseClient
+                    .from(SUPABASE_SAMPAH_TABLE)
+                    .select('*')
+                    .order('id', { ascending: false })
+                    .limit(200);
+
+                if (!error && data) {
+                    rows = data.map(r => ({
+                        reportType: 'sampah',
+                        regNo: r.reg_no,
+                        waktuInput: r.waktu_input,
+                        periodeLabel: `${r.periode_semester} Tahun ${r.tahun_laporan}`,
+                        namaUsaha: r.nama_perusahaan,
+                        namaPengisi: r.nama_pengisi,
+                        jabatan: r.jabatan,
+                        noTelepon: r.no_telepon,
+                        alamatUsaha: r.alamat_usaha,
+                        totalPenghuni: r.total_penghuni,
+                        totalTimbulan: r.total_timbulan_ton,
+                        totalTerkumpul: r.total_terkumpul_ton,
+                        totalTerkelolaBersih: r.total_terkelola_bersih_ton,
+                        pctTerkelola: r.persentase_terkelola,
+                        totalKeTpa: r.total_ke_tpa_ton,
+                        pctKeTpa: r.persentase_ke_tpa,
+                        totalTidakTerkelola: r.total_tidak_terkelola_ton,
+                        pctTidakTerkelola: r.persentase_tidak_terkelola,
+                        statusValidasi: r.status_validasi,
+                        rincianSumber: Array.isArray(r.rincian_sumber) ? r.rincian_sumber : [],
+                        fotoBase64: r.foto_url,
+                        keteranganFoto: r.keterangan_foto
+                    }));
+                } else {
+                    // Fallback jika data tersimpan pada tabel utama dengan kode SSRT
+                    const { data: fbData } = await supabaseClient
+                        .from(SUPABASE_TABLE)
+                        .select('*')
+                        .eq('kode_limbah', 'SSRT')
+                        .order('id', { ascending: false });
+
+                    rows = (fbData || []).map(r => ({
+                        reportType: 'sampah',
+                        regNo: r.reg_no,
+                        waktuInput: r.waktu_input,
+                        periodeLabel: r.nomor_izin_tps,
+                        namaUsaha: r.nama_perusahaan,
+                        namaPengisi: r.nama_pengisi,
+                        jabatan: r.jabatan,
+                        noTelepon: r.no_telepon,
+                        alamatUsaha: r.alamat_usaha,
+                        totalTimbulan: r.berat_limbah,
+                        statusValidasi: r.nomor_festronik,
+                        rincianSumber: Array.isArray(r.pihak_lanjutan) ? r.pihak_lanjutan : [],
+                        fotoBase64: r.foto_url,
+                        keteranganFoto: r.keterangan_foto
+                    }));
+                }
+
+                cachedServerSampahReports = rows;
+                if (rows.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400 text-xs">Belum ada laporan pengelolaan sampah sejenis rumah tangga yang masuk.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = rows.map((r, i) => `
+                    <tr class="hover:bg-teal-50/40">
+                        <td class="py-3 px-4 align-top">
+                            <span class="font-mono font-bold text-xs text-teal-800 block">${escapeHtml(r.regNo)}</span>
+                            <span class="text-[11px] font-semibold text-slate-600 block">${escapeHtml(r.periodeLabel || '')}</span>
+                            <span class="text-[10px] text-slate-400">${escapeHtml(r.waktuInput)}</span>
+                        </td>
+                        <td class="py-3 px-4 align-top">
+                            <span class="font-bold text-slate-800 block">${escapeHtml(r.namaUsaha)}</span>
+                            <span class="text-xs text-slate-500">${escapeHtml(r.namaPengisi)} (${escapeHtml(r.jabatan)})</span>
+                        </td>
+                        <td class="py-3 px-4 align-top text-xs">
+                            <span class="block font-bold text-slate-800">Timbulan: ${Number(r.totalTimbulan || 0).toFixed(3)} Ton</span>
+                            <span class="block text-slate-600">Terkumpul: ${Number(r.totalTerkumpul || 0).toFixed(3)} Ton</span>
+                        </td>
+                        <td class="py-3 px-4 align-top text-xs">
+                            <span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 font-bold">Terkelola: ${Number(r.pctTerkelola || 0).toFixed(2)}%</span>
+                            <span class="inline-block px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-bold ml-1">TPA: ${Number(r.pctKeTpa || 0).toFixed(2)}%</span>
+                        </td>
+                        <td class="py-3 px-4 align-top text-center">
+                            <button type="button" onclick="openSampahReceiptModal(cachedServerSampahReports[${i}])"
+                                class="px-3 py-1.5 rounded-lg bg-teal-800 hover:bg-teal-900 text-white text-xs font-semibold cursor-pointer">
+                                Lihat & PDF
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-rose-600 text-xs">Gagal memuat data sampah: ${escapeHtml(err.message)}</td></tr>`;
+            }
+        }
+
+        function exportSampahExcelMultiSheet() {
+            if (!isAdminAuthenticated) return;
+            if (!cachedServerSampahReports.length) {
+                showToast('Tidak ada data laporan sampah untuk diekspor.', 'error');
+                return;
+            }
+            if (typeof XLSX === 'undefined') return;
+
+            const flattenReportRows = (reportsList) => {
+                const flat = [];
+                reportsList.forEach(rep => {
+                    const sources = Array.isArray(rep.rincianSumber) && rep.rincianSumber.length ? rep.rincianSumber : [{}];
+                    sources.forEach((src, sIdx) => {
+                        const m = src.metrics || computeRowMetrics(src);
+                        flat.push({
+                            'No': flat.length + 1,
+                            'No. Registrasi': rep.regNo,
+                            'Periode': rep.periodeLabel || '-',
+                            'Nama Perusahaan': rep.namaUsaha,
+                            'Pelapor': `${rep.namaPengisi} (${rep.jabatan})`,
+                            'No. Sumber': sIdx + 1,
+                            'Sumber Sampah': src.sumber || '-',
+                            'Jumlah Penghuni (orang)': Number(src.penghuni) || 0,
+                            'Jumlah Timbulan Sampah (ton/semester)': Number(m.timbulan.toFixed(3)),
+                            'Jumlah Sampah Terkumpul (ton/semester)': Number(m.terkumpul.toFixed(3)),
+                            'Sisa Makanan (ton)': Number(src.sisaMakanan) || 0,
+                            'Ranting, Daun & Sejenis (ton)': Number(src.rantingDaun) || 0,
+                            'Kaca (ton)': Number(src.kaca) || 0,
+                            'Kain (ton)': Number(src.kain) || 0,
+                            'Logam/Seng (ton)': Number(src.logam) || 0,
+                            'Karet/Kulit (ton)': Number(src.karet) || 0,
+                            'Plastik (ton)': Number(src.plastik) || 0,
+                            'Kertas (ton)': Number(src.kertas) || 0,
+                            'Residu (ton)': Number(src.residu) || 0,
+                            'Daur Ulang (ton)': Number(src.daurUlang) || 0,
+                            'Guna Ulang (ton)': Number(src.gunaUlang) || 0,
+                            'Ternak Maggot & Sejenisnya (ton)': Number(src.maggot) || 0,
+                            'TPS3R (ton)': Number(src.tps3r) || 0,
+                            'Bank Sampah (ton)': Number(src.bankSampah) || 0,
+                            'Rumah Kompos (ton)': Number(src.rumahKompos) || 0,
+                            'Residu Pengolahan (ton)': Number(src.residuPengolahan) || 0,
+                            'Total Sampah Terkelola Bersih (ton)': Number(m.terkelolaBersih.toFixed(3)),
+                            'Persentase Sampah Terkelola (%)': Number(m.pctTerkelola.toFixed(2)),
+                            'Jumlah Sampah ke TPA (ton)': Number(m.keTpa.toFixed(3)),
+                            'Persentase Sampah ke TPA (%)': Number(m.pctKeTpa.toFixed(2)),
+                            'Total Sampah Tidak Terkelola (ton)': Number(m.tidakTerkelola.toFixed(3)),
+                            'Persentase Sampah Tidak Terkelola (%)': Number(m.pctTidakTerkelola.toFixed(2)),
+                            'Kontrol Neraca (%)': Number(m.kontrolNeraca.toFixed(2)),
+                            'Selisih Alokasi (ton)': Number(m.selisihAlokasi.toFixed(3)),
+                            'Status Validasi': m.statusValidasi,
+                            'Link Bukti Foto': (rep.fotoBase64 && rep.fotoBase64.startsWith('http')) ? rep.fotoBase64 : '-'
+                        });
+                    });
+                });
+                return flat;
+            };
+
+            const wb = XLSX.utils.book_new();
+            const allRows = flattenReportRows(cachedServerSampahReports);
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allRows), 'Semua Perusahaan');
+
+            const grouped = {};
+            cachedServerSampahReports.forEach(r => {
+                const key = (r.namaUsaha || 'Perusahaan').trim();
+                if (!grouped[key]) grouped[key] = [];
+                grouped[key].push(r);
+            });
+
+            const usedNames = new Set(['semua perusahaan']);
+            Object.entries(grouped).forEach(([company, list], idx) => {
+                let sName = company.replace(/[\\/?*[\]:]/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 28) || `Perusahaan_${idx+1}`;
+                let finalName = sName;
+                let c = 2;
+                while (usedNames.has(finalName.toLowerCase())) {
+                    finalName = `${sName.substring(0, 25)}_${c++}`;
+                }
+                usedNames.add(finalName.toLowerCase());
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(flattenReportRows(list)), finalName);
+            });
+
+            XLSX.writeFile(wb, `Rekap_Pengelolaan_Sampah_SSRT_DLH_Bungo_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showToast('File Excel Neraca Sampah per perusahaan berhasil diunduh!');
         }
     </script>
 </body>
