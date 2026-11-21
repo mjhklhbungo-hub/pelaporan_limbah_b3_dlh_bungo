@@ -125,7 +125,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
             <div class="inline-flex flex-wrap p-1 bg-slate-200/80 rounded-xl border border-slate-300/70 gap-1">
                 <button id="tabFormBtn" onclick="switchTab('form')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white text-emerald-900 shadow-sm transition-all cursor-pointer">
-                    ☣️ Laporan pengelolaan Limbah B3
+                    ☣️ Formulir Limbah B3
                 </button>
                 <button id="tabSampahBtn" onclick="switchTab('sampah')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
                     ♻️ Laporan Pengelolaan Sampah Sejenis Sampah Rumah Tangga
@@ -352,6 +352,30 @@
                                 <h3 class="text-xs sm:text-sm font-extrabold text-emerald-950 uppercase tracking-wide">
                                     Rincian Pengeluaran / Penyerahan Limbah B3 ke Pihak Lain
                                 </h3>
+
+                                <!-- Pilihan Cepat Jenis Limbah B3 & Kode Otomatis untuk Penyerahan -->
+                                <div class="p-3 rounded-xl bg-white border border-emerald-300 space-y-2">
+                                    <label for="presetLimbahDiserahkanSelect" class="block text-xs font-bold text-emerald-950">
+                                        📋 Pilih Jenis Limbah B3 Diserahkan (Klik untuk Isi Otomatis Jenis &amp; Kode Limbah B3)
+                                    </label>
+                                    <select id="presetLimbahDiserahkanSelect" onchange="applyLimbahDiserahkanPreset(this.value)"
+                                        class="w-full px-3.5 py-2 rounded-lg bg-emerald-50/50 border border-emerald-300 focus:border-emerald-600 outline-none text-xs sm:text-sm font-semibold text-slate-800">
+                                        <option value="">-- Klik untuk Memilih Jenis Limbah B3 (Otomatis Menyesuaikan Kode Limbah B3) --</option>
+                                        <option value="B105d|Minyak Pelumas Bekas / Oli Bekas">B105d — Minyak Pelumas Bekas / Oli Bekas</option>
+                                        <option value="A102d|Aki / Baterai Bekas">A102d — Aki / Baterai Bekas</option>
+                                        <option value="B110d|Kain Majun Bekas (Used Rags) &amp; Filter Oli Bekas">B110d — Kain Majun Bekas &amp; Filter Oli Bekas</option>
+                                        <option value="B104d|Kemasan Bekas B3 (Drum / Jerigen / Kaleng Bekas B3)">B104d — Kemasan Bekas B3 / Drum / Jerigen Bekas B3</option>
+                                        <option value="B107d|Limbah Elektronik (Lampu TL, Cartridge Tinta, PCB Bekas)">B107d — Limbah Elektronik / Lampu TL / Cartridge Bekas</option>
+                                        <option value="A337-1|Limbah Klinis Memiliki Karakteristik Infeksius">A337-1 — Limbah Klinis Infeksius / Medis Fasyankes</option>
+                                        <option value="A337-2|Produk Farmasi Kedaluwarsa">A337-2 — Produk Farmasi Kedaluwarsa</option>
+                                        <option value="B409|Fly Ash (Abu Terbang) Pembakaran Batubara / Boiler">B409 — Fly Ash Pembakaran Boiler</option>
+                                        <option value="B410|Bottom Ash (Abu Dasar) Pembakaran Batubara / Boiler">B410 — Bottom Ash Pembakaran Boiler</option>
+                                        <option value="A108d|Limbah Terkontaminasi B3 (Tanah / Serbuk Gergaji Terkontaminasi Oli)">A108d — Limbah / Tanah Terkontaminasi B3</option>
+                                    </select>
+                                    <!-- Tombol Cepat dari Stok Limbah Tersimpan di TPS Perusahaan -->
+                                    <div id="tpsStoredQuickChips" class="flex flex-wrap items-center gap-1.5 pt-1"></div>
+                                </div>
+
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label for="jenisLimbahDiserahkan" class="block text-sm font-semibold text-slate-700 mb-1.5">
@@ -363,7 +387,7 @@
 
                                     <div>
                                         <label for="kodeLimbahDiserahkan" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                            Kode Limbah B3 Diserahkan (Opsional)
+                                            Kode Limbah B3 Diserahkan (Otomatis / Manual)
                                         </label>
                                         <input type="text" id="kodeLimbahDiserahkan" name="kodeLimbahDiserahkan" placeholder="Contoh: B105d / A102d"
                                             class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-emerald-600 outline-none text-sm font-mono uppercase">
@@ -1647,27 +1671,30 @@
 
         // --- TOGGLE FIELD PENYERAHAN LIMBAH ---
         function togglePenyerahanFields() {
-            const status = document.querySelector('input[name="statusPenyerahan"]:checked').value;
+            const status = document.querySelector('input[name="statusPenyerahan"]:checked')?.value;
             const wrapper = document.getElementById('penyerahanDetailsWrapper');
             const jenisDiserahkan = document.getElementById('jenisLimbahDiserahkan');
+            const kodeDiserahkanEl = document.getElementById('kodeLimbahDiserahkan');
             const tglPenyerahan = document.getElementById('tanggalPenyerahan');
             const beratDiserahkan = document.getElementById('beratDiserahkan');
             const noFestronik = document.getElementById('nomorFestronik');
 
-            // Field pada Bagian 3 (Rincian Data Limbah B3 Dihasilkan)
-            const bag3Fields = ['kodeLimbah', 'jenisLimbah', 'sumberLimbah', 'tanggalDihasilkan', 'beratLimbah'];
+            // Kewajiban pengisian Bagian 3 (Limbah B3 Dihasilkan) menjadi opsional ketika tombol penyerahan ditekan
             const isPenyerahan = status === 'Sudah Diserahkan ke Pihak Berizin';
+            const bagian3Fields = ['kodeLimbah', 'jenisLimbah', 'sumberLimbah', 'tanggalDihasilkan', 'beratLimbah'];
+            const bagian3Marks = ['kodeLimbahReqMark', 'jenisLimbahReqMark', 'sumberLimbahReqMark', 'tanggalDihasilkanReqMark', 'beratLimbahReqMark'];
 
-            // Ketika tombol/opsi penyerahan dipilih, Bagian 3 menjadi tidak wajib diisi
-            bag3Fields.forEach(fid => {
-                const el = document.getElementById(fid);
-                const mark = document.getElementById(`${fid}ReqMark`);
+            bagian3Fields.forEach(id => {
+                const el = document.getElementById(id);
                 if (el) el.required = !isPenyerahan;
-                if (mark) mark.classList.toggle('hidden', isPenyerahan);
+            });
+            bagian3Marks.forEach(id => {
+                const markEl = document.getElementById(id);
+                if (markEl) markEl.classList.toggle('hidden', isPenyerahan);
             });
 
             if (isPenyerahan) {
-                wrapper.classList.remove('hidden');
+                if (wrapper) wrapper.classList.remove('hidden');
                 if (jenisDiserahkan) {
                     jenisDiserahkan.required = true;
                     const jenisMasukVal = document.getElementById('jenisLimbah')?.value;
@@ -1675,12 +1702,11 @@
                         jenisDiserahkan.value = jenisMasukVal;
                     }
                 }
-                const kodeDiserahkanEl = document.getElementById('kodeLimbahDiserahkan');
                 const kodeMasukVal = document.getElementById('kodeLimbah')?.value;
                 if (kodeDiserahkanEl && !kodeDiserahkanEl.value && kodeMasukVal) {
                     kodeDiserahkanEl.value = kodeMasukVal;
                 }
-                tglPenyerahan.required = true;
+                if (tglPenyerahan) tglPenyerahan.required = true;
                 if (beratDiserahkan) {
                     beratDiserahkan.required = true;
                     // Isi default sama dengan jumlah masuk jika masih kosong agar memudahkan pengisian
@@ -1692,15 +1718,17 @@
                         if (satuanMasuk && satuanKeluarEl) satuanKeluarEl.value = satuanMasuk;
                     }
                 }
-                noFestronik.required = true;
+                if (noFestronik) noFestronik.required = true;
             } else {
-                wrapper.classList.add('hidden');
+                if (wrapper) wrapper.classList.add('hidden');
                 if (jenisDiserahkan) jenisDiserahkan.required = false;
-                tglPenyerahan.required = false;
+                if (tglPenyerahan) tglPenyerahan.required = false;
                 if (beratDiserahkan) beratDiserahkan.required = false;
-                noFestronik.required = false;
+                if (noFestronik) noFestronik.required = false;
             }
-            recalculateLb3Neraca();
+            if (typeof recalculateLb3Neraca === 'function') {
+                recalculateLb3Neraca();
+            }
         }
 
         // --- HANDLE CHECKBOX PIHAK LANJUTAN ---
@@ -2817,7 +2845,7 @@
             const batasHari = Number(rec.batasHari) || defaultBatasHari;
             const masukKg = Number(rec.masukKg) || 0;
             const isKeluar = rec.statusPenyerahan === 'Sudah Diserahkan ke Pihak Berizin';
-            const keluarKg = isKeluar ? (Number(rec.keluarKg) > 0 ? Number(rec.keluarKg) : masukKg) : 0;
+            const keluarKg = isKeluar ? (Number(rec.keluarKg) > 0 ? Number(rec.keluarKg) : (masukKg > 0 ? masukKg : 0)) : 0;
             // Rumus Kolom (L): Sisa Limbah B3 yang ada di TPS (kg) = F - I
             const sisaKg = Math.max(0, masukKg - keluarKg);
 
@@ -2936,7 +2964,44 @@
             const batasHari = parseInt(document.getElementById('lb3_batasSimpanHari')?.value, 10) || 90;
 
             const rawEntries = [];
+            const outgoingEvents = [];
             const seenRegNos = new Set();
+
+            const pushRecordToLogbookBuckets = (item) => {
+                const masukKg = Number(item.masukKg) || 0;
+                const keluarKg = Number(item.keluarKg) || 0;
+                const isPenyerahan = item.statusPenyerahan === 'Sudah Diserahkan ke Pihak Berizin';
+
+                // Catatan masuk TPS (jika ada limbah masuk baru)
+                if (masukKg > 0) {
+                    rawEntries.push({
+                        jenisLimbah: item.jenisLimbah || '-',
+                        kodeLimbah: item.kodeLimbah || '-',
+                        tanggalMasuk: item.tanggalMasuk || '',
+                        sumberLimbah: item.sumberLimbah || '-',
+                        masukKg,
+                        statusPenyerahan: 'Disimpan di TPS Limbah B3 (Belum Diserahkan)',
+                        tanggalKeluar: '',
+                        keluarKg: 0,
+                        tujuanPenyerahan: '',
+                        buktiDokumen: '',
+                        batasHari: Number(item.batasHari) || batasHari
+                    });
+                }
+
+                // Catatan pengeluaran / penyerahan ke pihak lanjutan (akan mengurangi stok jenis limbah B3 yang sama yang tersimpan sebelum/pada tanggal penyerahan)
+                if (isPenyerahan && keluarKg > 0) {
+                    outgoingEvents.push({
+                        jenisLimbah: item.jenisLimbahDiserahkan || item.jenisLimbah || '-',
+                        kodeLimbah: item.kodeLimbahDiserahkan || item.kodeLimbah || '-',
+                        tanggalKeluar: item.tanggalKeluar || '',
+                        keluarKg,
+                        tujuanPenyerahan: item.tujuanPenyerahan || '-',
+                        buktiDokumen: item.buktiDokumen || '',
+                        batasHari: Number(item.batasHari) || batasHari
+                    });
+                }
+            };
 
             // 1. Riwayat dari server Supabase untuk nama perusahaan yang sama
             companyLb3ServerHistory.forEach(r => {
@@ -2945,19 +3010,22 @@
                     const rawPihak = Array.isArray(r.pihak_lanjutan) ? r.pihak_lanjutan : [];
                     const lb3Meta = rawPihak.find(item => item && item._isLb3Meta) || {};
                     const cleanPihak = rawPihak.filter(item => item && !item._isLb3Meta);
+                    const masukKgVal = convertBeratToKg(r.berat_limbah, r.satuan_berat);
                     const keluarKgVal = r.status_penyerahan === 'Sudah Diserahkan ke Pihak Berizin'
                         ? (Number(lb3Meta.beratDiserahkan) > 0
                             ? convertBeratToKg(lb3Meta.beratDiserahkan, lb3Meta.satuanBeratDiserahkan || r.satuan_berat)
-                            : convertBeratToKg(r.berat_limbah, r.satuan_berat))
+                            : masukKgVal)
                         : 0;
-                    rawEntries.push({
+                    pushRecordToLogbookBuckets({
                         jenisLimbah: r.jenis_limbah || '-',
                         kodeLimbah: r.kode_limbah || '-',
-                        tanggalMasuk: r.tanggal_dihasilkan || '',
+                        tanggalMasuk: r.tanggal_dihasilkan && r.tanggal_dihasilkan !== '-' ? r.tanggal_dihasilkan : '',
                         sumberLimbah: lb3Meta.sumberLimbah || r.sumber_limbah || '-',
-                        masukKg: convertBeratToKg(r.berat_limbah, r.satuan_berat),
+                        masukKg: masukKgVal,
                         statusPenyerahan: r.status_penyerahan,
-                        tanggalKeluar: r.tanggal_penyerahan || '',
+                        jenisLimbahDiserahkan: lb3Meta.jenisLimbahDiserahkan || r.jenis_limbah || '-',
+                        kodeLimbahDiserahkan: lb3Meta.kodeLimbahDiserahkan || r.kode_limbah || '-',
+                        tanggalKeluar: r.tanggal_penyerahan && r.tanggal_penyerahan !== '-' ? r.tanggal_penyerahan : '',
                         keluarKg: keluarKgVal,
                         tujuanPenyerahan: cleanPihak.length ? cleanPihak.map(p => `${p.namaBadanUsaha} (${p.kategoriLabel})`).join('; ') : '-',
                         buktiDokumen: r.nomor_festronik && r.nomor_festronik !== '-' ? r.nomor_festronik : '',
@@ -2971,19 +3039,22 @@
                 if (r.reportType !== 'sampah' && namaUsaha && (r.namaUsaha || '').trim().toLowerCase() === namaUsaha.toLowerCase()) {
                     if (r.regNo && seenRegNos.has(r.regNo)) return;
                     if (r.regNo) seenRegNos.add(r.regNo);
+                    const masukKgVal = convertBeratToKg(r.beratLimbah, r.satuanBerat);
                     const keluarKgVal = r.statusPenyerahan === 'Sudah Diserahkan ke Pihak Berizin'
                         ? (Number(r.beratDiserahkan) > 0
                             ? convertBeratToKg(r.beratDiserahkan, r.satuanBeratDiserahkan || r.satuanBerat)
-                            : convertBeratToKg(r.beratLimbah, r.satuanBerat))
+                            : masukKgVal)
                         : 0;
-                    rawEntries.push({
+                    pushRecordToLogbookBuckets({
                         jenisLimbah: r.jenisLimbah || '-',
                         kodeLimbah: r.kodeLimbah || '-',
-                        tanggalMasuk: r.tanggalDihasilkan || '',
+                        tanggalMasuk: r.tanggalDihasilkan && r.tanggalDihasilkan !== '-' ? r.tanggalDihasilkan : '',
                         sumberLimbah: r.sumberLimbah || '-',
-                        masukKg: convertBeratToKg(r.beratLimbah, r.satuanBerat),
+                        masukKg: masukKgVal,
                         statusPenyerahan: r.statusPenyerahan,
-                        tanggalKeluar: r.tanggalPenyerahan || '',
+                        jenisLimbahDiserahkan: r.jenisLimbahDiserahkan || r.jenisLimbah || '-',
+                        kodeLimbahDiserahkan: r.kodeLimbahDiserahkan || r.kodeLimbah || '-',
+                        tanggalKeluar: r.tanggalPenyerahan && r.tanggalPenyerahan !== '-' ? r.tanggalPenyerahan : '',
                         keluarKg: keluarKgVal,
                         tujuanPenyerahan: Array.isArray(r.pihakLanjutan) && r.pihakLanjutan.length
                             ? r.pihakLanjutan.map(p => `${p.namaBadanUsaha} (${p.kategoriLabel})`).join('; ')
@@ -3019,6 +3090,89 @@
             const displayJenisLogbook = activeJenis || activeJenisDiserahkan;
             const displayKodeLogbook = activeKode || activeKodeDiserahkan;
 
+            if (activeBerat > 0 || activeKeluarKg > 0) {
+                pushRecordToLogbookBuckets({
+                    jenisLimbah: activeJenis || activeJenisDiserahkan || '-',
+                    kodeLimbah: activeKode || activeKodeDiserahkan || '-',
+                    tanggalMasuk: activeTgl,
+                    sumberLimbah: activeSumber || '-',
+                    masukKg: convertBeratToKg(activeBerat, activeSatuan),
+                    statusPenyerahan: activeStatus,
+                    jenisLimbahDiserahkan: activeJenisDiserahkan || activeJenis || '-',
+                    kodeLimbahDiserahkan: activeKodeDiserahkan || activeKode || '-',
+                    tanggalKeluar: activeTglSerah,
+                    keluarKg: activeKeluarKg,
+                    tujuanPenyerahan: activePihakText,
+                    buktiDokumen: activeFestronik,
+                    batasHari
+                });
+            }
+
+            // Urutkan penyimpanan masuk berdasarkan tanggal masuk (FIFO)
+            rawEntries.sort((a, b) => (a.tanggalMasuk || '9999-12-31').localeCompare(b.tanggalMasuk || '9999-12-31'));
+            outgoingEvents.sort((a, b) => (a.tanggalKeluar || '9999-12-31').localeCompare(b.tanggalKeluar || '9999-12-31'));
+
+            // Alokasikan setiap penyerahan limbah B3 untuk mengurangi jenis/kode limbah B3 yang sama yang tersimpan di TPS sebelum/pada tanggal penyerahan
+            const normText = (s) => String(s || '').trim().toLowerCase();
+            outgoingEvents.forEach(outEv => {
+                let remainingOutKg = outEv.keluarKg;
+                const outKode = normText(outEv.kodeLimbah);
+                const outJenis = normText(outEv.jenisLimbah);
+                const outDate = outEv.tanggalKeluar || '9999-12-31';
+
+                for (const entry of rawEntries) {
+                    if (remainingOutKg <= 0.00001) break;
+                    const availableKg = Math.max(0, entry.masukKg - entry.keluarKg);
+                    if (availableKg <= 0.00001) continue;
+
+                    const entryKode = normText(entry.kodeLimbah);
+                    const entryJenis = normText(entry.jenisLimbah);
+                    const isSameWaste = (outKode && outKode !== '-' && entryKode === outKode) ||
+                        (outJenis && outJenis !== '-' && (entryJenis === outJenis || entryJenis.includes(outJenis) || outJenis.includes(entryJenis)));
+                    const isStoredBeforeOrOnDate = !entry.tanggalMasuk || !outEv.tanggalKeluar || entry.tanggalMasuk <= outDate;
+
+                    if (isSameWaste && isStoredBeforeOrOnDate) {
+                        const deductKg = Math.min(availableKg, remainingOutKg);
+                        entry.keluarKg += deductKg;
+                        remainingOutKg -= deductKg;
+                        entry.statusPenyerahan = 'Sudah Diserahkan ke Pihak Berizin';
+                        entry.tanggalKeluar = outEv.tanggalKeluar || entry.tanggalKeluar;
+                        if (outEv.tujuanPenyerahan && outEv.tujuanPenyerahan !== '-') {
+                            entry.tujuanPenyerahan = entry.tujuanPenyerahan && !entry.tujuanPenyerahan.includes(outEv.tujuanPenyerahan)
+                                ? `${entry.tujuanPenyerahan}; ${outEv.tujuanPenyerahan}`
+                                : outEv.tujuanPenyerahan;
+                        }
+                        if (outEv.buktiDokumen && outEv.buktiDokumen !== '-') {
+                            entry.buktiDokumen = entry.buktiDokumen && !entry.buktiDokumen.includes(outEv.buktiDokumen)
+                                ? `${entry.buktiDokumen}, ${outEv.buktiDokumen}`
+                                : outEv.buktiDokumen;
+                        }
+                    }
+                }
+
+                // Jika masih ada sisa penyerahan yang belum memiliki catatan masuk sebelumnya, tampilkan tetap tercatat pada baris keluar
+                if (remainingOutKg > 0.00001) {
+                    rawEntries.push({
+                        jenisLimbah: outEv.jenisLimbah,
+                        kodeLimbah: outEv.kodeLimbah,
+                        tanggalMasuk: '',
+                        sumberLimbah: 'Saldo Penyimpanan TPS',
+                        masukKg: 0,
+                        statusPenyerahan: 'Sudah Diserahkan ke Pihak Berizin',
+                        tanggalKeluar: outEv.tanggalKeluar,
+                        keluarKg: remainingOutKg,
+                        tujuanPenyerahan: outEv.tujuanPenyerahan,
+                        buktiDokumen: outEv.buktiDokumen,
+                        batasHari: outEv.batasHari
+                    });
+                }
+            });
+
+            const entries = rawEntries.map(e => evaluateLogbookRow(e, batasHari));
+
+            // Perbarui tombol pilihan cepat stok limbah yang masih tersimpan di TPS pada Bagian 4
+            renderTpsStoredQuickChips(entries);
+
             const activeEvaluated = evaluateLogbookRow({
                 jenisLimbah: displayJenisLogbook,
                 kodeLimbah: displayKodeLogbook,
@@ -3033,24 +3187,6 @@
                 batasHari
             }, batasHari);
 
-            if (displayJenisLogbook || displayKodeLogbook || activeTgl || activeBerat > 0 || activeKeluarKg > 0) {
-                rawEntries.push({
-                    jenisLimbah: displayJenisLogbook,
-                    kodeLimbah: displayKodeLogbook,
-                    tanggalMasuk: activeTgl,
-                    sumberLimbah: activeSumber,
-                    masukKg: convertBeratToKg(activeBerat, activeSatuan),
-                    statusPenyerahan: activeStatus,
-                    tanggalKeluar: activeTglSerah,
-                    keluarKg: activeKeluarKg,
-                    tujuanPenyerahan: activePihakText,
-                    buktiDokumen: activeFestronik,
-                    batasHari
-                });
-            }
-
-            const entries = rawEntries.map(e => evaluateLogbookRow(e, batasHari));
-
             return {
                 namaUsaha,
                 entries,
@@ -3059,6 +3195,51 @@
                     detailText: activeEvaluated.detailText
                 }
             };
+        }
+
+        function renderTpsStoredQuickChips(entries) {
+            const container = document.getElementById('tpsStoredQuickChips');
+            if (!container) return;
+
+            const storedMap = {};
+            entries.forEach(e => {
+                if (e.sisaKg > 0.0001) {
+                    const key = `${e.kodeLimbah}|${e.jenisLimbah}`;
+                    if (!storedMap[key]) {
+                        storedMap[key] = { kode: e.kodeLimbah, jenis: e.jenisLimbah, sisaKg: 0 };
+                    }
+                    storedMap[key].sisaKg += e.sisaKg;
+                }
+            });
+
+            const storedList = Object.values(storedMap);
+            if (storedList.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = `<span class="text-[11px] font-semibold text-slate-600">Stok Tersimpan di TPS:</span>` +
+                storedList.map(item => `
+                    <button type="button" onclick="selectStoredWasteForPenyerahan('${escapeHtml(item.kode)}', '${escapeHtml(item.jenis)}', ${item.sisaKg})"
+                        class="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 text-emerald-950 text-[11px] font-bold cursor-pointer transition-all">
+                        ${escapeHtml(item.kode)} — ${escapeHtml(item.jenis)} (Sisa: ${Number(item.sisaKg.toFixed(2))} kg)
+                    </button>
+                `).join('');
+        }
+
+        function selectStoredWasteForPenyerahan(kode, jenis, sisaKg) {
+            const jenisEl = document.getElementById('jenisLimbahDiserahkan');
+            const kodeEl = document.getElementById('kodeLimbahDiserahkan');
+            const beratEl = document.getElementById('beratDiserahkan');
+            const satuanEl = document.getElementById('satuanBeratDiserahkan');
+            if (jenisEl) jenisEl.value = jenis;
+            if (kodeEl) kodeEl.value = kode;
+            if (beratEl && (!beratEl.value || Number(beratEl.value) <= 0)) {
+                beratEl.value = Number(sisaKg.toFixed(2));
+                if (satuanEl) satuanEl.value = 'Kg';
+            }
+            recalculateLb3Neraca();
+            showToast(`Dipilih: ${jenis} (${kode}) — Sisa TPS ${Number(sisaKg.toFixed(2))} kg`);
         }
 
         function buildLb3NeracaDataFromSingleReport(r) {
@@ -3904,6 +4085,15 @@
             if (kode) document.getElementById('kodeLimbah').value = kode;
             if (jenis) document.getElementById('jenisLimbah').value = jenis;
             if (sumber) document.getElementById('sumberLimbah').value = sumber;
+            recalculateLb3Neraca();
+        }
+
+        function applyLimbahDiserahkanPreset(val) {
+            if (!val) return;
+            const [kode, jenis] = val.split('|');
+            if (kode) document.getElementById('kodeLimbahDiserahkan').value = kode;
+            if (jenis) document.getElementById('jenisLimbahDiserahkan').value = jenis;
+            recalculateLb3Neraca();
         }
 
         function handleSampahDocUpload(event, docKey) {
